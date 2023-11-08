@@ -17,7 +17,7 @@ git clone https://github.com/kyma-project/community-modules
 cd community-modules
 kubectl proxy -w='app'
 ```
-Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.0.0.1:8001/static/kyma.html])
+Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.0.0.1:8001/static/kyma.html)
 
 
 ## Contributing
