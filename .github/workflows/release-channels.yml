@@ -43,15 +43,13 @@ jobs:
           npm install
       - name: Build channels
         run: |
-          mkdir out
-          cp channels.json out
-          cd out
+          cd app
           node ../script/release-channels.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
-          path: 'out'
+          path: 'app'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2

@@ -1,6 +1,6 @@
 const jsyaml = require('js-yaml')
 const fs = require('fs')
-const channels = require('../channels.json')
+const channels = require('../app/channels.json')
 
 async function loadModules(modules) {
   for (let m of modules) {
