@@ -33,6 +33,16 @@
         "crYaml": "https://github.com/kyma-project/nats-manager/releases/latest/download/nats_default_cr.yaml"
       },
       {
+        "name": "eventing",
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing_default_cr.yaml"
+      },
+      {
+        "name": "application-connector",
+        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml"
+      },
+      {
         "name": "keda",
         "deploymentYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-manager.yaml",
         "crYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-default-cr.yaml"
