@@ -369,5 +369,5 @@ function renderNotManagedResources(list) {
 }
 
 loadChannel()
-  .then(notManagedResources)
-  .then(renderNotManagedResources)
+  // .then(notManagedResources)
+  // .then(renderNotManagedResources)
