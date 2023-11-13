@@ -1,7 +1,8 @@
 var pods = []
 var groupVersions = {}
 var channel='https://kyma-project.github.io/community-modules/latest.json'
-var modules=[]
+// var channel = 'latest.json'
+var modules = []
 
 async function apply(res) {
   let path = await resPath(res)
@@ -15,6 +16,116 @@ async function applyModule(m) {
     await apply(r.resource)
   }
   await apply(m.cr.resource)
+}
+
+/**
+ * 
+ * @param {string} path api-server path, e.g /api/v1/namespaces/kyma-system/services/eventing-manager-metrics 
+ * @returns the resource or undefined (resource not found)
+ */
+function get(path) {
+  return fetch(path).then((res) => {
+    if (res.status == 200) {
+      return res.json()
+    }
+  }).catch((e) => console.log('e2', e))
+}
+
+/**
+ * 
+ * @param {Object} m module
+ * @param {string} m.name module name
+ * @param {String[]} m.managedResources list of paths to resources (usually resource list) that are managed, e.g. ["/apis/serverless.kyma-project.io/v1alpha2/functions"]
+ * @param {Object[]} m.resources list of kubernetes resources included in the module deployment
+ * @param {Object} m.cr module configuration resource
+ *  
+ */
+async function deleteModule(m) {
+  let toDelete = await managedResourcesList(m)
+  let body = `Do you want to delete module ${m.name}?`
+  if (toDelete.length > 0) {
+    body = "Can't delete module, because of these managed resources:<br>" + toDelete.join('<br/>')
+      + '</br>Do you want to delete them first?'
+    modal(body, "Delete confirmation", () => {
+      for (let i of toDelete) {
+        fetch(i, { method: 'DELETE' })
+      }
+    })
+    return;
+  }
+  modal("The module operator will be undeployed. Do you want to continue?", "Delete confirmation",
+    () => {
+      for (let r of m.resources) {
+        if (r.path=='/api/v1/namespaces/kyma-system') {
+          continue; // skip kyma-system deletion
+        }
+        fetch(r.path, { method: 'DELETE' })
+      }
+    })
+}
+async function allResources() {
+  let all = []
+  let apis = await get('/apis')
+  console.log(apis)
+  for (let api of apis.groups) {
+    for (let v of api.versions) {
+      let resources = await get(`/apis/${v.groupVersion}`)
+      if (resources) {
+        for (let r of resources.resources) {
+          if (!r.name.endsWith('/status')) {
+            all.push(`/apis/${v.groupVersion}/${r.name}`)
+          }
+        }
+      }
+    }
+  }
+  return all
+}
+async function notManagedResources() {
+  let all = await allResources()
+  let managed = [];
+  for (let m of modules) {
+    if (m.managedResources) {
+      for (let i of m.managedResources) {
+        managed.push(i)
+      }
+    } else {
+      console.log("No managed resources for ", m.name, m.managedResources)
+    }
+  }
+  return all.filter((r) => !managed.some((m) => m == r))
+}
+
+
+function modal(html, title, callback) {
+  document.getElementById("modal-body").innerHTML = html
+  document.getElementById("modalTitle").textContent = title
+  let modalOk = document.getElementById("modalOk")
+  let okBtn = modalOk.cloneNode(true)
+  modalOk.replaceWith(okBtn)
+  okBtn.addEventListener('click', () => {
+    callback()
+    myModal.toggle()
+  })
+  var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+  myModal.toggle()
+}
+
+async function managedResourcesList(m) {
+  let list = []
+  if (!m.managedResources) {
+    return list
+  }
+  for (let mr of m.managedResources) {
+    let res = await get(mr)
+    if (res && res.items) {
+      for (let i of res.items) {
+        let path = await resPath(i)
+        list.push(path)
+      }
+    }
+  }
+  return list.sort()
 }
 
 async function resPath(r) {
@@ -64,7 +175,7 @@ function deploymentList(m) {
       if (r.status === true) {
         badge = `<span class="badge bg-success">installed</span>`
       } else if (r.status === false) {
-        badge = `<span class="badge bg-success">not applied</span>`        
+        badge = `<span class="badge bg-success">not applied</span>`
       }
       html += `<li class="list-group-item"><small>
         <a href="${r.path}" target="_blank">${r.path}</a> ${badge}</small></li>`
@@ -99,7 +210,7 @@ function crBadge(m) {
 }
 function moduleBadge(m) {
   if (m.community) {
-    return `<span class="badge bg-info text-dark"> community </span>` 
+    return `<span class="badge bg-info text-dark"> community </span>`
   }
   return ''
 }
@@ -109,7 +220,7 @@ function installBtn(m) {
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
   btn.addEventListener("click", function (event) {
     applyModule(m)
-    setTimeout(()=>checkStatus(),3000)    
+    setTimeout(() => checkStatus(), 3000)
   })
   return btn
 }
@@ -118,9 +229,19 @@ function detailsBtn(m) {
   let btn = document.createElement("button")
   btn.textContent = (m.details) ? "hide details" : "details"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
-  btn.addEventListener("click", function (event) {
+  btn.addEventListener("click", function () {
     m.details = !m.details
     renderModules()
+  })
+  return btn
+}
+
+function deleteBtn(m) {
+  let btn = document.createElement("button")
+  btn.textContent = "delete"
+  btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.addEventListener("click", function () {
+    deleteModule(m)
   })
   return btn
 }
@@ -129,13 +250,14 @@ function moduleCard(m) {
   let buttons = document.createElement("div")
   buttons.appendChild(installBtn(m))
   buttons.appendChild(detailsBtn(m))
+  buttons.appendChild(deleteBtn(m))
   let col = document.createElement('div')
-  col.setAttribute('class','col mb-3')
+  col.setAttribute('class', 'col mb-3')
   let card = document.createElement("div")
   card.setAttribute('class', 'card h-100')
   let cardBody = document.createElement('div')
   cardBody.setAttribute('class', 'card-body')
-  let txt = document.createElement("div")  
+  let txt = document.createElement("div")
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
     <a href="${m.deploymentYaml}" target="_blank">deployment YAML</a> ${resourcesBadge(m)}<br/>
@@ -169,7 +291,7 @@ function renderModules(m) {
 async function loadChannel() {
   let res = await fetch(channel)
   let json = await res.json()
-  modules=json
+  modules = json
   for (let m of modules) {
     let crPath = await resPath(m.cr.resource)
     m.cr.path = crPath
@@ -191,8 +313,8 @@ function checkStatus() {
     }).then((res) => {
       if (res) {
         m.cr.status = (res.status == 200)
-        return m.cr.status ? res.json() : null  
-      } 
+        return m.cr.status ? res.json() : null
+      }
       return null
     }
     ).then((body) => {
@@ -209,8 +331,8 @@ function checkStatus() {
           }
           return null
         }).then((json) => {
-          r.value = json          
-        }).finally(()=>{
+          r.value = json
+        }).finally(() => {
           renderModules(m)
         })
       }
@@ -241,5 +363,10 @@ function renderPods() {
   document.getElementById('pods').innerHTML = html
 
 }
+function renderNotManagedResources(list) {
+  document.getElementById("unmanaged").innerHTML = list.join("<br/>")
+}
 
 loadChannel()
+  // .then(notManagedResources)
+  // .then(renderNotManagedResources)
