@@ -14,7 +14,7 @@ Install Kyma modules in your Kubernetes cluster
 
 Download [kyma.html](https://raw.githubusercontent.com/kyma-project/community-modules/main/app/kyma.html) file and save it in any folder:
 ```
-curl https://github.com/kyma-project/community-modules/kyma.html -o kyma.html
+curl https://kyma-project.github.io/community-modules/kyma.html -o kyma.html
 ```
 Go to that folder and execute kubectl proxy command:
 ```
