@@ -1,7 +1,6 @@
 var pods = []
 var groupVersions = {}
-var channel='https://kyma-project.github.io/community-modules/latest.json'
-// var channel = 'latest.json'
+const DEFAULT_CHANNEL='https://kyma-project.github.io/community-modules/latest.json'
 var modules = []
 
 async function apply(res) {
@@ -289,6 +288,8 @@ function renderModules(m) {
 }
 
 async function loadChannel() {
+  const url = new URL(window.location);
+  let channel = url.searchParams.get("channel") || DEFAULT_CHANNEL
   let res = await fetch(channel)
   let json = await res.json()
   modules = json
@@ -368,5 +369,5 @@ function renderNotManagedResources(list) {
 }
 
 loadChannel()
-  // .then(notManagedResources)
-  // .then(renderNotManagedResources)
+  .then(notManagedResources)
+  .then(renderNotManagedResources)
