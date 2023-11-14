@@ -57,6 +57,10 @@
         "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-manager.yaml",
         "crYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-operator-default-cr.yaml",
         "managedResources": [
+          "/apis/services.cloud.sap.com/v1/serviceinstances",
+          "/apis/services.cloud.sap.com/v1/servicebindings",
+          "/apis/services.cloud.sap.com/v1alpha1/servicebindings",
+          "/apis/services.cloud.sap.com/v1alpha1/serviceinstances",
           "/apis/operator.kyma-project.io/v1alpha1/btpoperators"
         ]
       },

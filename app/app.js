@@ -1,6 +1,8 @@
 var pods = []
 var groupVersions = {}
-const DEFAULT_CHANNEL='https://kyma-project.github.io/community-modules/latest.json'
+const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
+const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
+
 var modules = []
 
 async function apply(res) {
@@ -17,11 +19,6 @@ async function applyModule(m) {
   await apply(m.cr.resource)
 }
 
-/**
- * 
- * @param {string} path api-server path, e.g /api/v1/namespaces/kyma-system/services/eventing-manager-metrics 
- * @returns the resource or undefined (resource not found)
- */
 function get(path) {
   return fetch(path).then((res) => {
     if (res.status == 200) {
@@ -29,57 +26,67 @@ function get(path) {
     }
   }).catch((e) => console.log('e2', e))
 }
+
 function deleteModuleResources(m) {
   for (let r of m.resources) {
-    if (r.path=='/api/v1/namespaces/kyma-system') {
+    if (r.path == '/api/v1/namespaces/kyma-system') {
       continue; // skip kyma-system deletion
     }
     fetch(r.path, { method: 'DELETE' })
   }
 }
-/**
- * 
- * @param {Object} m module
- * @param {string} m.name module name
- * @param {String[]} m.managedResources list of paths to resources (usually resource list) that are managed, e.g. ["/apis/serverless.kyma-project.io/v1alpha2/functions"]
- * @param {Object[]} m.resources list of kubernetes resources included in the module deployment
- * @param {Object} m.cr module configuration resource
- *  
- */
+async function removeModuleFromKymaCR(name) {
+  let kyma = await get(KYMA_PATH)
+  if (kyma && kyma.spec.modules) {
+    for (let i=0;i<kyma.spec.modules.length;++i){
+      if (kyma.spec.modules[i].name ==name) {
+        let body = `[{"op":"remove","path":"/spec/modules/${i}"}]`
+        fetch(KYMA_PATH,{method:'PATCH',headers:{'content-type': 'application/json-patch+json'}, body})
+        return
+      }
+    }
+  }
+}
 async function deleteModule(m) {
+  if (m.managed) {
+    modal("This is managed module. Do you want to remove it from SKR managed resources?", "Delete confirmation", async () => {
+      removeModuleFromKymaCR(m.name)
+    })
+    return
+  }
   let toDelete = await managedResourcesList(m)
   let body = `Do you want to delete module ${m.name}?`
   if (toDelete.length > 0) {
     body = "Can't delete module, because of these managed resources:<br>" + toDelete.join('<br/>')
       + '</br>Do you want to delete them first?'
     modal(body, "Delete confirmation", async () => {
-      for (let i=0;i<5 && toDelete.length>0;++i) {
+      for (let i = 0; i < 5 && toDelete.length > 0; ++i) {
         for (let i of toDelete) {
           fetch(i, { method: 'DELETE' })
         }
         toDelete = await managedResourcesList(m)
         setTimeout(() => checkStatus(), 1000)
         await new Promise(r => setTimeout(r, 1000));
-        
+
       }
-      if (toDelete.length>0) {
+      if (toDelete.length > 0) {
         deleteModule(m)
       } else {
-        deleteModuleResources(m)        
+        deleteModuleResources(m)
         setTimeout(() => checkStatus(), 3000)
       }
     })
-    return 
+    return
   }
   modal("The module operator will be undeployed. Do you want to continue?", "Delete confirmation",
-    () => {deleteModuleResources(m)
+    () => {
+      deleteModuleResources(m)
       setTimeout(() => checkStatus(), 3000)
     })
 }
 async function allResources() {
   let all = []
   let apis = await get('/apis')
-  console.log(apis)
   for (let api of apis.groups) {
     for (let v of api.versions) {
       let resources = await get(`/apis/${v.groupVersion}`)
@@ -102,9 +109,7 @@ async function notManagedResources() {
       for (let i of m.managedResources) {
         managed.push(i)
       }
-    } else {
-      console.log("No managed resources for ", m.name, m.managedResources)
-    }
+    } 
   }
   return all.filter((r) => !managed.some((m) => m == r))
 }
@@ -158,8 +163,8 @@ async function resPath(r) {
     return url + nsPath + `/${resource.name}/${r.metadata.name}`
   }
   return null
-
 }
+
 async function exists(path) {
   if (!path) {
     return false;
@@ -196,17 +201,12 @@ function deploymentList(m) {
   return div
 }
 function resourcesBadge(m) {
-  let c = 0
-  for (let r of m.resources) {
-    if (r.status) {
-      c++
-    }
-  }
-  if (c == m.resources.length) {
-    return `<span class="badge bg-success">${c} / ${m.resources.length}</span>`
-  }
-  return `<span class="badge bg-secondary">${c} / ${m.resources.length}</span>`
+  let applied = 0
+  m.resources.forEach(r => applied += (r.status) ? 1 : 0)
+  let color = (applied == m.resources.length) ? 'bg-success' : 'bg-secondary'
+  return `<span class="badge ${color}">${applied} / ${m.resources.length}</span>`
 }
+
 function crBadge(m) {
   if (m.cr.status) {
     if (m.cr.value && m.cr.value.status && m.cr.value.status.state == "Ready") {
@@ -219,6 +219,7 @@ function crBadge(m) {
   }
   return `<span class="badge bg-secondary"> - </span>`
 }
+
 function moduleBadge(m) {
   if (m.managed) {
     return `<span class="badge text-bg-dark">SKR</span>`
@@ -262,11 +263,11 @@ function deleteBtn(m) {
 
 function moduleCard(m) {
   let buttons = document.createElement("div")
-  buttons.setAttribute('class','d-inline-flex gap-1')
+  buttons.setAttribute('class', 'd-inline-flex gap-1')
   if (!m.managed) {
     buttons.appendChild(installBtn(m))
-    buttons.appendChild(deleteBtn(m))
   }
+  buttons.appendChild(deleteBtn(m))
   buttons.appendChild(detailsBtn(m))
   let col = document.createElement('div')
   col.setAttribute('class', 'col mb-3')
@@ -289,7 +290,6 @@ function moduleCard(m) {
   return col
 }
 
-
 function renderModules(m) {
   if (m) {
     let mDiv = document.getElementById('module-' + m.name)
@@ -304,17 +304,19 @@ function renderModules(m) {
     }
   }
 }
+
 async function managedModules() {
-  const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
   let kyma = await get(KYMA_PATH)
-  console.log('KYMA',kyma)
   if (kyma) {
-    kyma.spec.modules.push({name:'istio'})  // implicit SKR module
-    kyma.spec.modules.push({name:'api-gateway'}) // implicit SKR module
-    for (let m of kyma.spec.modules) {
-      let module = modules.find((mod)=> mod.name==m.name)
-      if (module) {
-        module.managed=true
+
+    for (let m of modules) {
+      if (m.name=='istio' || m.name=='api-gateway') {
+        m.managed=true 
+        continue;
+      }
+      if (kyma.spec.modules) {
+        let mm = kyma.spec.modules.find((mod) => mod.name == m.name)
+        m.managed = (mm) ? true : false  
       }
     }
   }
@@ -336,11 +338,11 @@ async function loadChannel() {
     }
   }
   renderModules()
-  await managedModules()
   checkStatus()
 }
 
 function checkStatus() {
+  managedModules()
   for (let m of modules) {
     resPath(m.cr.resource).then((p) => {
       m.cr.path = p
@@ -406,5 +408,5 @@ function renderNotManagedResources(list) {
 }
 
 loadChannel()
-  // .then(notManagedResources)
-  // .then(renderNotManagedResources)
+  .then(notManagedResources)
+  .then(renderNotManagedResources)
