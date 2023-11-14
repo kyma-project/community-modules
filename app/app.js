@@ -29,7 +29,14 @@ function get(path) {
     }
   }).catch((e) => console.log('e2', e))
 }
-
+function deleteModuleResources(m) {
+  for (let r of m.resources) {
+    if (r.path=='/api/v1/namespaces/kyma-system') {
+      continue; // skip kyma-system deletion
+    }
+    fetch(r.path, { method: 'DELETE' })
+  }
+}
 /**
  * 
  * @param {Object} m module
@@ -45,21 +52,28 @@ async function deleteModule(m) {
   if (toDelete.length > 0) {
     body = "Can't delete module, because of these managed resources:<br>" + toDelete.join('<br/>')
       + '</br>Do you want to delete them first?'
-    modal(body, "Delete confirmation", () => {
-      for (let i of toDelete) {
-        fetch(i, { method: 'DELETE' })
+    modal(body, "Delete confirmation", async () => {
+      for (let i=0;i<5 && toDelete.length>0;++i) {
+        for (let i of toDelete) {
+          fetch(i, { method: 'DELETE' })
+        }
+        toDelete = await managedResourcesList(m)
+        setTimeout(() => checkStatus(), 1000)
+        await new Promise(r => setTimeout(r, 1000));
+        
+      }
+      if (toDelete.length>0) {
+        deleteModule(m)
+      } else {
+        deleteModuleResources(m)        
+        setTimeout(() => checkStatus(), 3000)
       }
     })
-    return;
+    return 
   }
   modal("The module operator will be undeployed. Do you want to continue?", "Delete confirmation",
-    () => {
-      for (let r of m.resources) {
-        if (r.path=='/api/v1/namespaces/kyma-system') {
-          continue; // skip kyma-system deletion
-        }
-        fetch(r.path, { method: 'DELETE' })
-      }
+    () => {deleteModuleResources(m)
+      setTimeout(() => checkStatus(), 3000)
     })
 }
 async function allResources() {
@@ -173,8 +187,6 @@ function deploymentList(m) {
       let badge = `<span class="badge bg-secondary"> - </span>`
       if (r.status === true) {
         badge = `<span class="badge bg-success">installed</span>`
-      } else if (r.status === false) {
-        badge = `<span class="badge bg-success">not applied</span>`
       }
       html += `<li class="list-group-item"><small>
         <a href="${r.path}" target="_blank">${r.path}</a> ${badge}</small></li>`
@@ -351,6 +363,9 @@ function checkStatus() {
           if (res.status == 200) {
             r.status = true
             return res.json()
+          } else {
+            r.status = false
+            r.value = undefined
           }
           return null
         }).then((json) => {
