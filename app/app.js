@@ -208,8 +208,11 @@ function crBadge(m) {
   return `<span class="badge bg-secondary"> - </span>`
 }
 function moduleBadge(m) {
+  if (m.managed) {
+    return `<span class="badge text-bg-dark">SKR</span>`
+  }
   if (m.community) {
-    return `<span class="badge bg-info text-dark"> community </span>`
+    return `<span class="badge bg-info text-dark">community</span>`
   }
   return ''
 }
@@ -247,9 +250,12 @@ function deleteBtn(m) {
 
 function moduleCard(m) {
   let buttons = document.createElement("div")
-  buttons.appendChild(installBtn(m))
+  buttons.setAttribute('class','d-inline-flex gap-1')
+  if (!m.managed) {
+    buttons.appendChild(installBtn(m))
+    buttons.appendChild(deleteBtn(m))
+  }
   buttons.appendChild(detailsBtn(m))
-  buttons.appendChild(deleteBtn(m))
   let col = document.createElement('div')
   col.setAttribute('class', 'col mb-3')
   let card = document.createElement("div")
@@ -286,6 +292,21 @@ function renderModules(m) {
     }
   }
 }
+async function managedModules() {
+  const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
+  let kyma = await get(KYMA_PATH)
+  console.log('KYMA',kyma)
+  if (kyma) {
+    kyma.spec.modules.push({name:'istio'})  // implicit SKR module
+    kyma.spec.modules.push({name:'api-gateway'}) // implicit SKR module
+    for (let m of kyma.spec.modules) {
+      let module = modules.find((mod)=> mod.name==m.name)
+      if (module) {
+        module.managed=true
+      }
+    }
+  }
+}
 
 async function loadChannel() {
   const url = new URL(window.location);
@@ -301,8 +322,9 @@ async function loadChannel() {
       let path = await resPath(i.resource)
       i.path = path
     }
-    renderModules()
   }
+  renderModules()
+  await managedModules()
   checkStatus()
 }
 
