@@ -175,8 +175,8 @@
       },
       {
         "name": "cluster-ip",
-        "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.27/cluster-ip-operator.yaml",
-        "crYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.27/cluster-ip-nodes.yaml",
+        "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-operator.yaml",
+        "crYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-nodes.yaml",
         "documentation": "https://github.com/pbochynski/cluster-ip#readme",
         "repository": "https://github.com/pbochynski/cluster-ip.git",
         "managedResources": [],
