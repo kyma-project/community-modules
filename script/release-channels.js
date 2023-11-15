@@ -10,14 +10,10 @@ async function loadModules(modules) {
     m.resources = []
     jsyaml.loadAll(body, (doc) => {
       m.resources.push({ resource: doc })
-      if (doc.kind == 'Deployment' && m.managerSelector) {        
-        let labels = doc.spec.template.metadata.labels
-        let miss = Object.keys(m.managerSelector).some(key => m.managerSelector[key]!=labels[key])
-        if (!miss) {
-          m.version='unknown'
-          for (let c of doc.spec.template.spec.containers) {
-            m.version=c.image
-          }
+      if (doc.kind == 'Deployment' && m.managerSelector) {
+        m.version = 'unknown'
+        for (let c of doc.spec.template.spec.containers) {
+          m.version = c.image
         }
       }
     });
@@ -26,15 +22,15 @@ async function loadModules(modules) {
     response = await fetch(url)
     body = await response.text()
     m.cr = { resource: jsyaml.load(body) }
-    m.cr.resource.metadata.namespace='kyma-system'
+    m.cr.resource.metadata.namespace = 'kyma-system'
   }
 }
 
-async function releaseChannels(){
-  for(let ch of channels) {
+async function releaseChannels() {
+  for (let ch of channels) {
     await loadModules(ch.modules)
     console.log("channel loaded")
-    fs.writeFileSync(`${ch.name}.json`,JSON.stringify(ch.modules,null,2))
+    fs.writeFileSync(`${ch.name}.json`, JSON.stringify(ch.modules, null, 2))
     console.log("channel written")
   }
 }

@@ -8,9 +8,6 @@
         "crYaml": "https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml",
         "documentation": "https://kyma-project.io/#/istio/user/00-overview/README",
         "repository": "https://github.com/kyma-project/istio.git",
-        "managerSelector": {
-          "app.kubernetes.io/component": "istio-operator.kyma-project.io"
-        },
         "managedResources": [
           "/apis/extensions.istio.io/v1alpha1/wasmplugins",
           "/apis/install.istio.io/v1alpha1/istiooperators",
@@ -49,10 +46,7 @@
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/apigateways",
           "/apis/gateway.kyma-project.io/v1beta1/apirules"
-        ],
-        "managerSelector": {
-          "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io"
-        }
+        ]
       },
       {
         "name": "serverless",
@@ -63,10 +57,7 @@
         "managedResources": [
           "/apis/serverless.kyma-project.io/v1alpha2/functions",
           "/apis/operator.kyma-project.io/v1alpha1/serverlesses"
-        ],
-        "managerSelector": {
-          "app.kubernetes.io/component": "serverless-operator.kyma-project.io"
-        }
+        ]
       },
       {
         "name": "btp-operator",
@@ -96,10 +87,7 @@
           "/apis/telemetry.kyma-project.io/v1alpha1/logparsers",
           "/apis/telemetry.kyma-project.io/v1alpha1/logpipelines",
           "/apis/telemetry.kyma-project.io/v1alpha1/tracepipelines"
-        ],
-        "managerSelector": {
-          "app.kubernetes.io/instance": "telemetry"
-        }
+        ]
       },
       {
         "name": "nats",
@@ -109,10 +97,7 @@
         "repository": "https://github.com/kyma-project/nats-manager.git",
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/nats"
-        ],
-        "managerSelector": {
-          "control-plane": "manager"
-        }
+        ]
       },
       {
         "name": "eventing",
@@ -124,10 +109,7 @@
           "/apis/eventing.kyma-project.io/v1alpha1/subscriptions",
           "/apis/eventing.kyma-project.io/v1alpha2/subscriptions",
           "/apis/operator.kyma-project.io/v1alpha1/eventings"
-        ],
-        "managerSelector": {
-          "app.kubernetes.io/component": "eventing-manager"
-        }
+        ]
       },
       {
         "name": "application-connector",
@@ -137,10 +119,7 @@
         "repository": "https://github.com/kyma-project/application-connector-manager.git",
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/applicationconnectors"
-        ],
-        "managerSelector": {
-          "control-plane": "controller-manager"
-        }
+        ]
       },
       {
         "name": "keda",
@@ -154,10 +133,7 @@
           "/apis/keda.sh/v1alpha1/scaledjobs",
           "/apis/keda.sh/v1alpha1/scaledobjects",
           "/apis/keda.sh/v1alpha1/triggerauthentications"
-        ],
-        "managerSelector": {
-          "app.kubernetes.io/component": "keda-manager.kyma-project.io"
-        }
+        ]
       },
       {
         "name": "cap-operator",
@@ -168,9 +144,6 @@
         "managedResources": [
           "/apis/operator.sme.sap.com/v1alpha1/capoperators"
         ],
-        "managerSelector": {
-          "app.kubernetes.io/component": "cap-operator.sme.sap.com"
-        },
         "community": true
       },
       {
@@ -180,9 +153,6 @@
         "documentation": "https://github.com/pbochynski/cluster-ip#readme",
         "repository": "https://github.com/pbochynski/cluster-ip.git",
         "managedResources": [],
-        "managerSelector": {
-          "app.kubernetes.io/component": "cluster-ip.kyma-project.io"
-        },
         "community": true
       }
     ]

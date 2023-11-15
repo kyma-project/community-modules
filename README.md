@@ -23,8 +23,6 @@ kubectl proxy -w='.'
 Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.0.0.1:8001/static/kyma.html)
 
 
-## Architecture
-
 ## Contribute your module
 
 Checkout the community-modules repository and add your own module by adding an entry in the [channels.json](app/channels.json) file. Example:
@@ -33,6 +31,8 @@ Checkout the community-modules repository and add your own module by adding an e
       "name": "api-gateway",
       "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
       "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml",
+      "documentation": "https://kyma-project.io/#/api-gateway/user/README",
+      "repository": "https://github.com/kyma-project/api-gateway.git",
       "managedResources": [
         "/apis/operator.kyma-project.io/v1alpha1/apigateways",
         "/apis/gateway.kyma-project.io/v1beta1/apirules"
@@ -43,6 +43,8 @@ Mandatory fields:
 - **name** - name of your module (keep it short)
 - **deploymentYaml** - URL of your module deployment YAML (usually the artifact of your module release)
 - **crYaml** - URL of your module default configuration (custom resource)
+- **documentatio** - documentation URL
+- **repository** - main source code repository
 - **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
 
 The channels.json file is processed by the build process and generates release channels files (right now only latest release is generated: [https://kyma-project.github.io/community-modules/latest.json](https://kyma-project.github.io/community-modules/latest.json)
