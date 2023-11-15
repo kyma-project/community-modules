@@ -191,7 +191,7 @@ function deploymentList(m) {
     for (let r of m.resources) {
       let badge = `<span class="badge bg-secondary"> - </span>`
       if (r.status === true) {
-        badge = `<span class="badge bg-success">installed</span>`
+        badge = `<span class="badge bg-success">applied</span>`
       }
       html += `<li class="list-group-item"><small>
         <a href="${r.path}" target="_blank">${r.path}</a> ${badge}</small></li>`
@@ -229,9 +229,9 @@ function moduleBadge(m) {
   }
   return ''
 }
-function installBtn(m) {
+function applyBtn(m) {
   let btn = document.createElement("button")
-  btn.textContent = "install"
+  btn.textContent = "apply"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
   btn.addEventListener("click", function (event) {
     applyModule(m)
@@ -265,7 +265,7 @@ function moduleCard(m) {
   let buttons = document.createElement("div")
   buttons.setAttribute('class', 'd-inline-flex gap-1')
   if (!m.managed) {
-    buttons.appendChild(installBtn(m))
+    buttons.appendChild(applyBtn(m))
   }
   buttons.appendChild(deleteBtn(m))
   buttons.appendChild(detailsBtn(m))
