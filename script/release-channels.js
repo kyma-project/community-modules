@@ -10,7 +10,7 @@ async function loadModules(modules) {
     m.resources = []
     jsyaml.loadAll(body, (doc) => {
       m.resources.push({ resource: doc })
-      if (doc.kind == 'Deployment' && m.managerSelector) {
+      if (doc.kind == 'Deployment') {
         m.version = 'unknown'
         for (let c of doc.spec.template.spec.containers) {
           m.version = c.image
