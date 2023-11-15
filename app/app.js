@@ -49,7 +49,7 @@ async function removeModuleFromKymaCR(name) {
 }
 async function deleteModule(m) {
   if (m.managed) {
-    modal("This is managed module. Do you want to remove it from SKR managed resources?", "Delete confirmation", async () => {
+    modal("This is a managed module. Do you want to remove it from SKR managed resources?", "Delete confirmation", async () => {
       removeModuleFromKymaCR(m.name)
     })
     return
@@ -276,10 +276,16 @@ function moduleCard(m) {
   let cardBody = document.createElement('div')
   cardBody.setAttribute('class', 'card-body')
   let txt = document.createElement("div")
+  let version = m.version.split(':')[m.version.split(':').length-1]
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
-    <a href="${m.deploymentYaml}" target="_blank">deployment YAML</a> ${resourcesBadge(m)}<br/>
-    <a href="${m.cr.path}" target="_blank">configuration CR</a> ${crBadge(m)}<br/></small><br/>`
+    <a href="${m.deploymentYaml}" class="text-decoration-none" target="_blank">deployment YAML</a> ${resourcesBadge(m)}<br/>
+    <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration CR</a> ${crBadge(m)}<br/>
+    version: ${version}<br/>
+    <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
+    <a href="${m.repository}" class="text-decoration-none" target="_blank">repo <i class="bi bi-box-arrow-up-right"></i></a><br/>
+    <br/>
+    </small>`
   txt.innerHTML = html
   cardBody.appendChild(txt)
   cardBody.appendChild(buttons)
@@ -304,13 +310,15 @@ function renderModules(m) {
     }
   }
 }
+async function actualVersion(m){
 
+}
 async function managedModules() {
   let kyma = await get(KYMA_PATH)
   if (kyma) {
 
     for (let m of modules) {
-      if (m.name=='istio' || m.name=='api-gateway') {
+      if (m.name=='istio') {
         m.managed=true 
         continue;
       }
@@ -408,5 +416,5 @@ function renderNotManagedResources(list) {
 }
 
 loadChannel()
-  .then(notManagedResources)
-  .then(renderNotManagedResources)
+  // .then(notManagedResources)
+  // .then(renderNotManagedResources)

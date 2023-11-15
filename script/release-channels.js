@@ -10,6 +10,16 @@ async function loadModules(modules) {
     m.resources = []
     jsyaml.loadAll(body, (doc) => {
       m.resources.push({ resource: doc })
+      if (doc.kind == 'Deployment' && m.managerSelector) {        
+        let labels = doc.spec.template.metadata.labels
+        let miss = Object.keys(m.managerSelector).some(key => m.managerSelector[key]!=labels[key])
+        if (!miss) {
+          m.version='unknown'
+          for (let c of doc.spec.template.spec.containers) {
+            m.version=c.image
+          }
+        }
+      }
     });
 
     url = m.crYaml

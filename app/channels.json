@@ -6,6 +6,11 @@
         "name": "istio",
         "deploymentYaml": "https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml",
         "crYaml": "https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml",
+        "documentation": "https://kyma-project.io/#/istio/user/00-overview/README",
+        "repository": "https://github.com/kyma-project/istio.git",
+        "managerSelector": {
+          "app.kubernetes.io/component": "istio-operator.kyma-project.io"
+        },
         "managedResources": [
           "/apis/extensions.istio.io/v1alpha1/wasmplugins",
           "/apis/install.istio.io/v1alpha1/istiooperators",
@@ -32,95 +37,152 @@
           "/apis/security.istio.io/v1beta1/authorizationpolicies",
           "/apis/security.istio.io/v1beta1/peerauthentications",
           "/apis/security.istio.io/v1beta1/requestauthentications",
-          "/apis/telemetry.istio.io/v1alpha1/telemetries"        ]
+          "/apis/telemetry.istio.io/v1alpha1/telemetries"
+        ]
       },
       {
         "name": "api-gateway",
         "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
         "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml",
+        "documentation": "https://kyma-project.io/#/api-gateway/user/README",
+        "repository": "https://github.com/kyma-project/api-gateway.git",
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/apigateways",
           "/apis/gateway.kyma-project.io/v1beta1/apirules"
-        ]
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io"
+        }
       },
       {
         "name": "serverless",
         "deploymentYaml": "https://github.com/kyma-project/serverless-manager/releases/latest/download/serverless-operator.yaml",
         "crYaml": "https://github.com/kyma-project/serverless-manager/releases/latest/download/default-serverless-cr.yaml",
-        "managedResources" : [
+        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
+        "repository": "https://github.com/kyma-project/serverless-manager.git",
+        "managedResources": [
           "/apis/serverless.kyma-project.io/v1alpha2/functions",
           "/apis/operator.kyma-project.io/v1alpha1/serverlesses"
-        ]
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "serverless-operator.kyma-project.io"
+        }
       },
       {
         "name": "btp-operator",
         "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-manager.yaml",
         "crYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-operator-default-cr.yaml",
+        "documentation": "https://kyma-project.io/#/btp-manager/user/README",
+        "repository": "https://github.com/kyma-project/btp-manager.git",
         "managedResources": [
           "/apis/services.cloud.sap.com/v1/serviceinstances",
           "/apis/services.cloud.sap.com/v1/servicebindings",
           "/apis/services.cloud.sap.com/v1alpha1/servicebindings",
           "/apis/services.cloud.sap.com/v1alpha1/serviceinstances",
           "/apis/operator.kyma-project.io/v1alpha1/btpoperators"
-        ]
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+        }
       },
       {
         "name": "telemetry",
         "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-manager.yaml",
         "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-default-cr.yaml",
-        "managedResources":[
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git",
+        "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/telemetries",
           "/apis/telemetry.kyma-project.io/v1alpha1/logparsers",
           "/apis/telemetry.kyma-project.io/v1alpha1/logpipelines",
           "/apis/telemetry.kyma-project.io/v1alpha1/tracepipelines"
-        ]
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/instance": "telemetry"
+        }
       },
       {
         "name": "nats",
         "deploymentYaml": "https://github.com/kyma-project/nats-manager/releases/latest/download/nats-manager.yaml",
         "crYaml": "https://github.com/kyma-project/nats-manager/releases/latest/download/nats_default_cr.yaml",
+        "documentation": "https://kyma-project.io/#/nats-manager/user/README",
+        "repository": "https://github.com/kyma-project/nats-manager.git",
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/nats"
-        ]
+        ],
+        "managerSelector": {
+          "control-plane": "manager"
+        }
       },
       {
         "name": "eventing",
         "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml",
         "crYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing_default_cr.yaml",
+        "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
+        "repository": "https://github.com/kyma-project/eventing-manager.git",
         "managedResources": [
           "/apis/eventing.kyma-project.io/v1alpha1/subscriptions",
           "/apis/eventing.kyma-project.io/v1alpha2/subscriptions",
           "/apis/operator.kyma-project.io/v1alpha1/eventings"
-              ]
-
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "eventing-manager"
+        }
       },
       {
         "name": "application-connector",
         "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml",
         "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml",
+        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
+        "repository": "https://github.com/kyma-project/application-connector-manager.git",
         "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/applicationconnectors"
-        ]
+        ],
+        "managerSelector": {
+          "control-plane": "controller-manager"
+        }
       },
       {
         "name": "keda",
         "deploymentYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-manager.yaml",
         "crYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-default-cr.yaml",
-        "managedResources":[
+        "documentation": "https://kyma-project.io/#/keda-manager/user/README",
+        "repository": "https://github.com/kyma-project/keda-manager.git",
+        "managedResources": [
           "/apis/operator.kyma-project.io/v1alpha1/kedas",
           "/apis/keda.sh/v1alpha1/clustertriggerauthentications",
           "/apis/keda.sh/v1alpha1/scaledjobs",
           "/apis/keda.sh/v1alpha1/scaledobjects",
           "/apis/keda.sh/v1alpha1/triggerauthentications"
-        ]
+        ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "keda-manager.kyma-project.io"
+        }
       },
       {
         "name": "cap-operator",
         "deploymentYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager%2Fv0.0.1/manager_manifest.yaml",
         "crYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager%2Fv0.0.1/manager_default_CR.yaml",
-        "managedResources":[
+        "documentation": "https://sap.github.io/cap-operator/docs/",
+        "repository": "https://github.com/SAP/cap-operator-lifecycle.git",
+        "managedResources": [
           "/apis/operator.sme.sap.com/v1alpha1/capoperators"
         ],
+        "managerSelector": {
+          "app.kubernetes.io/component": "cap-operator.sme.sap.com"
+        },
+        "community": true
+      },
+      {
+        "name": "cluster-ip",
+        "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.27/cluster-ip-operator.yaml",
+        "crYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.27/cluster-ip-nodes.yaml",
+        "documentation": "https://github.com/pbochynski/cluster-ip#readme",
+        "repository": "https://github.com/pbochynski/cluster-ip.git",
+        "managedResources": [],
+        "managerSelector": {
+          "app.kubernetes.io/component": "cluster-ip.kyma-project.io"
+        },
         "community": true
       }
     ]
