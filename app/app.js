@@ -1,6 +1,11 @@
 var pods = []
 var groupVersions = {}
 const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
+const CHANNELS = [
+  'https://kyma-project.github.io/community-modules/regular.json',
+  'https://kyma-project.github.io/community-modules/fast.json',
+  'https://kyma-project.github.io/community-modules/latest.json',
+]
 const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
 
 var modules = []
@@ -10,6 +15,14 @@ async function apply(res) {
   path += '?fieldManager=kubectl&fieldValidation=Strict&force=false'
   let response = await fetch(path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
   return response
+}
+async function openChannel(index) {
+  const channelUrl=CHANNELS[index]
+  const url = new URL(window.location);
+  
+  url.searchParams.set("channel", channelUrl);
+  window.location=url
+  
 }
 
 async function applyModule(m) {
@@ -315,7 +328,7 @@ function versionBadge(m){
     return `<span class="badge bg-success">ok</span>`
   } else if (m.actualVersion) {
     let v = m.actualVersion.split(':')[m.actualVersion.split(':').length-1]
-    return `<span class="badge bg-warning text-dark">current: ${v}</span>`
+    return `<span class="badge bg-warning text-dark">applied: ${v}</span>`
   }
   return ""
 }
