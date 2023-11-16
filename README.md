@@ -22,6 +22,8 @@ kubectl proxy -w='.'
 ```
 Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.0.0.1:8001/static/kyma.html)
 
+If you don't have any cluster at hand you can use this playground:
+[https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)
 
 ## Contribute your module
 
