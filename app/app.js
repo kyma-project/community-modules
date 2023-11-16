@@ -279,7 +279,7 @@ function moduleCard(m) {
   let version = m.version.split(':')[m.version.split(':').length-1]
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
-    status: ${availableBadge(m)} ${resourcesBadge(m)}<br/>
+    deployment: ${resourcesBadge(m)} ${availableBadge(m)} <br/>
     <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration CR</a> ${crBadge(m)}<br/>
     version: ${version} ${versionBadge(m)}<br/>
     <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
