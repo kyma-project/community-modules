@@ -280,7 +280,7 @@ function moduleCard(m) {
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
     deployment: ${resourcesBadge(m)} ${availableBadge(m)} <br/>
-    <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration CR</a> ${crBadge(m)}<br/>
+    <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration</a> ${crBadge(m)}<br/>
     version: ${version} ${versionBadge(m)}<br/>
     <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
     <a href="${m.repository}" class="text-decoration-none" target="_blank">repo <i class="bi bi-box-arrow-up-right"></i></a><br/>
