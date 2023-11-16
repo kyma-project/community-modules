@@ -2,8 +2,7 @@ const jsyaml = require('js-yaml')
 const fs = require('fs')
 const channels = require('../app/channels.json')
 
-async function loadModules(modules) {
-  for (let m of modules) {
+async function loadModule(m) {
     let url = m.deploymentYaml
     let response = await fetch(url)
     let body = await response.text()
@@ -11,10 +10,7 @@ async function loadModules(modules) {
     jsyaml.loadAll(body, (doc) => {
       m.resources.push({ resource: doc })
       if (doc.kind == 'Deployment') {
-        m.version = 'unknown'
-        for (let c of doc.spec.template.spec.containers) {
-          m.version = c.image
-        }
+        m.version = doc.spec.template.spec.containers[0].image
       }
     });
 
@@ -23,15 +19,29 @@ async function loadModules(modules) {
     body = await response.text()
     m.cr = { resource: jsyaml.load(body) }
     m.cr.resource.metadata.namespace = 'kyma-system'
-  }
 }
 
 async function releaseChannels() {
   for (let ch of channels) {
-    await loadModules(ch.modules)
-    console.log("channel loaded")
+    for (let m of ch.modules) {
+      if (ch.base) {
+        let baseChannel = channels.find((c)=> c.name==ch.base)
+        let baseModule = baseChannel.modules.find((mod)=>mod.name==m.name)
+        if (!m.documentation) {
+          m.documentation=baseModule.documentation
+        }
+        if (!m.repository) {
+          m.repository=baseModule.repository
+        }
+        if (!m.managedResources) {
+          m.managedResources=baseModule.managedResources
+        }
+      }
+      await loadModule(m)
+    }
+    console.log("channel loaded:",ch.name)
     fs.writeFileSync(`${ch.name}.json`, JSON.stringify(ch.modules, null, 2))
-    console.log("channel written")
+    console.log("channel written:",`${ch.name}.json`)
   }
 }
 

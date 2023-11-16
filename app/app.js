@@ -194,7 +194,7 @@ function deploymentList(m) {
         badge = `<span class="badge bg-success">applied</span>`
       }
       html += `<li class="list-group-item"><small>
-        <a href="${r.path}" target="_blank">${r.path}</a> ${badge}</small></li>`
+        <a href="${r.path}" class="text-decoration-none" target="_blank">${r.path}</a> ${badge}</small></li>`
     }
     div.innerHTML = html + '</ul>'
   }
@@ -279,9 +279,9 @@ function moduleCard(m) {
   let version = m.version.split(':')[m.version.split(':').length-1]
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
-    <a href="${m.deploymentYaml}" class="text-decoration-none" target="_blank">deployment YAML</a> ${resourcesBadge(m)}<br/>
+    status: ${availableBadge(m)} ${resourcesBadge(m)}<br/>
     <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration CR</a> ${crBadge(m)}<br/>
-    version: ${version}<br/>
+    version: ${version} ${versionBadge(m)}<br/>
     <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
     <a href="${m.repository}" class="text-decoration-none" target="_blank">repo <i class="bi bi-box-arrow-up-right"></i></a><br/>
     <br/>
@@ -310,8 +310,22 @@ function renderModules(m) {
     }
   }
 }
-async function actualVersion(m){
-
+function versionBadge(m){
+  if (m.version == m.actualVersion) {
+    return `<span class="badge bg-success">ok</span>`
+  } else if (m.actualVersion) {
+    let v = m.actualVersion.split(':')[m.actualVersion.split(':').length-1]
+    return `<span class="badge bg-warning text-dark">current: ${v}</span>`
+  }
+  return ""
+}
+function availableBadge(m) {
+  if (m.available) {
+    return `<span class="badge bg-success">Ready</span>`
+  } else if (m.actualVersion) {
+    return `<span class="badge bg-secondary">Not Ready</span>`
+  } 
+  return ""
 }
 async function managedModules() {
   let kyma = await get(KYMA_PATH)
@@ -368,6 +382,8 @@ function checkStatus() {
     })
 
     for (let r of m.resources) {
+      m.available=false
+      m.actualVersion=undefined
       if (r.path) {
         fetch(r.path).then((res) => {
           if (res.status == 200) {
@@ -380,6 +396,17 @@ function checkStatus() {
           return null
         }).then((json) => {
           r.value = json
+          if (json && json.kind == 'Deployment') {
+              m.actualVersion = json.spec.template.spec.containers[0].image
+              console.log(m.actualVersion, json.status)
+              if (json.status && json.status.conditions) {
+                let av = json.status.conditions.find (c=>c.type=='Available')
+                if (av && av.status=="True") {
+                  m.available=true
+                }
+              }
+          }
+             
         }).finally(() => {
           renderModules(m)
         })
