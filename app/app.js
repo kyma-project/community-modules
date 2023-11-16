@@ -2,9 +2,9 @@ var pods = []
 var groupVersions = {}
 const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
 const CHANNELS = [
-  'https://kyma-project.github.io/community-modules/regular.json',
-  'https://kyma-project.github.io/community-modules/fast.json',
-  'https://kyma-project.github.io/community-modules/latest.json',
+  {name:'regular', url:'https://kyma-project.github.io/community-modules/regular.json'},
+  {name:'fast',url:'https://kyma-project.github.io/community-modules/fast.json'},
+  {name:'latest',url:'https://kyma-project.github.io/community-modules/latest.json'}
 ]
 const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
 
@@ -16,13 +16,48 @@ async function apply(res) {
   let response = await fetch(path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
   return response
 }
-async function openChannel(index) {
-  const channelUrl=CHANNELS[index]
+function channelDropdown() {
   const url = new URL(window.location);
-  
-  url.searchParams.set("channel", channelUrl);
-  window.location=url
-  
+  let channel = url.searchParams.get("channel") || DEFAULT_CHANNEL
+  let currentChannel = CHANNELS.find((ch)=>ch.url==channel) 
+  let channelName=channel
+  if (currentChannel) {
+    channelName=currentChannel.name
+  }
+  let div = document.getElementById("topButtons")
+  div.innerHTML=""
+  let a = document.createElement('a')
+  a.setAttribute('class','btn btn-secondary dropdown-toggle btn-sm')
+  a.setAttribute('role','button')
+  a.setAttribute('data-bs-toggle','dropdown')
+  a.setAttribute('aria-expanded','false')
+  a.textContent=channelName
+  let ul = document.createElement('a')
+  ul.setAttribute('class','dropdown-menu')
+  for (let ch of CHANNELS) {
+    if (ch.url!=channel) {
+      let li = document.createElement('li')
+      let a = document.createElement('a')
+      a.setAttribute('class','dropdown-item')
+      a.textContent=ch.name
+      a.addEventListener('click',()=>{
+        const url = new URL(window.location);
+        url.searchParams.set("channel", ch.url);
+        window.location=url
+      })
+      li.appendChild(a)
+      ul.appendChild(li)
+    }
+  }
+  let updateBtn = document.createElement('button')
+  updateBtn.setAttribute('class','btn btn-outline-primary btn-sm')
+  updateBtn.setAttribute('type','button')
+  updateBtn.textContent='Update status'
+  updateBtn.addEventListener('click',checkStatus)
+  div.appendChild(a)
+  div.appendChild(ul)
+  div.appendChild(updateBtn)
+  return div
 }
 
 async function applyModule(m) {
@@ -455,6 +490,7 @@ function renderNotManagedResources(list) {
   document.getElementById("unmanaged").innerHTML = list.join("<br/>")
 }
 
+channelDropdown()
 loadChannel()
   // .then(notManagedResources)
   // .then(renderNotManagedResources)
