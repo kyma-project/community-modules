@@ -45,6 +45,12 @@ jobs:
         run: |
           cd app
           node ../script/release-channels.js
+      - name: Build busola
+        run: |
+          container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/busola:latest)
+          docker cp $container_id:/app/core-ui ./busola
+          cp ./app/kyma.html ./busola/
+          tar -zcvf app/busola.tar.gz busola
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
