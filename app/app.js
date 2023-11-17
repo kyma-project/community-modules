@@ -1,10 +1,12 @@
 var pods = []
 var groupVersions = {}
+const KUBECONFIG = { "kubernetes-admin@kubernetes": { "name": "kubernetes-admin@kubernetes", "kubeconfig": { "apiVersion": "v1", "clusters": [{ "cluster": { "server": "http://127.0.0.1:8001/backend" }, "name": "kyma-katacoda" }], "contexts": [{ "context": { "cluster": "kyma-katacoda", "user": "kubernetes-admin" }, "name": "kubernetes-admin@kubernetes" }], "current-context": "kubernetes-admin@kubernetes", "kind": "Config", "preferences": {}, "users": [{ "name": "kubernetes-admin", "user": { "token": "tokentokentoken" } }] }, "contextName": "kubernetes-admin@kubernetes", "config": { "storage": "sessionStorage" }, "currentContext": { "cluster": { "cluster": { "server": "http://127.0.0.1:8001/backend" }, "name": "kyma-katacoda" }, "user": { "name": "kubernetes-admin", "user": { "token": "tokentokentoken" } } } } }
+var API_PREFIX = ''
 const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
 const CHANNELS = [
-  {name:'regular', url:'https://kyma-project.github.io/community-modules/regular.json'},
-  {name:'fast',url:'https://kyma-project.github.io/community-modules/fast.json'},
-  {name:'latest',url:'https://kyma-project.github.io/community-modules/latest.json'}
+  { name: 'regular', url: 'https://kyma-project.github.io/community-modules/regular.json' },
+  { name: 'fast', url: 'https://kyma-project.github.io/community-modules/fast.json' },
+  { name: 'latest', url: 'https://kyma-project.github.io/community-modules/latest.json' }
 ]
 const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
 
@@ -13,50 +15,62 @@ var modules = []
 async function apply(res) {
   let path = await resPath(res)
   path += '?fieldManager=kubectl&fieldValidation=Strict&force=false'
-  let response = await fetch(path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
+  let response = await fetch(API_PREFIX+path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
   return response
 }
 function channelDropdown() {
   const url = new URL(window.location);
   let channel = url.searchParams.get("channel") || DEFAULT_CHANNEL
-  let currentChannel = CHANNELS.find((ch)=>ch.url==channel) 
-  let channelName=channel
+  API_PREFIX = url.searchParams.get("api") || ''
+  let currentChannel = CHANNELS.find((ch) => ch.url == channel)
+  let channelName = channel
   if (currentChannel) {
-    channelName=currentChannel.name
+    channelName = currentChannel.name
   }
   let div = document.getElementById("topButtons")
-  div.innerHTML=""
+  div.innerHTML = ""
   let a = document.createElement('a')
-  a.setAttribute('class','btn btn-secondary dropdown-toggle btn-sm')
-  a.setAttribute('role','button')
-  a.setAttribute('data-bs-toggle','dropdown')
-  a.setAttribute('aria-expanded','false')
-  a.textContent=channelName
+  a.setAttribute('class', 'btn btn-secondary dropdown-toggle btn-sm')
+  a.setAttribute('role', 'button')
+  a.setAttribute('data-bs-toggle', 'dropdown')
+  a.setAttribute('aria-expanded', 'false')
+  a.textContent = channelName
   let ul = document.createElement('a')
-  ul.setAttribute('class','dropdown-menu')
+  ul.setAttribute('class', 'dropdown-menu')
   for (let ch of CHANNELS) {
-    if (ch.url!=channel) {
+    if (ch.url != channel) {
       let li = document.createElement('li')
       let a = document.createElement('a')
-      a.setAttribute('class','dropdown-item')
-      a.textContent=ch.name
-      a.addEventListener('click',()=>{
+      a.setAttribute('class', 'dropdown-item')
+      a.textContent = ch.name
+      a.addEventListener('click', () => {
         const url = new URL(window.location);
         url.searchParams.set("channel", ch.url);
-        window.location=url
+        window.location = url
       })
       li.appendChild(a)
       ul.appendChild(li)
     }
   }
   let updateBtn = document.createElement('button')
-  updateBtn.setAttribute('class','btn btn-outline-primary btn-sm')
-  updateBtn.setAttribute('type','button')
-  updateBtn.textContent='Update status'
-  updateBtn.addEventListener('click',checkStatus)
+  updateBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  updateBtn.setAttribute('type', 'button')
+  updateBtn.textContent = 'Update status'
+  updateBtn.addEventListener('click', checkStatus)
+
   div.appendChild(a)
   div.appendChild(ul)
   div.appendChild(updateBtn)
+
+  if (API_PREFIX!='') { 
+    let busolaBtn = document.createElement('button')
+    busolaBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+    busolaBtn.setAttribute('type', 'button')
+    busolaBtn.textContent = 'Kyma Dashboard'
+    busolaBtn.addEventListener('click', openBusola)
+    div.appendChild(busolaBtn)  
+  }
+
   return div
 }
 
@@ -66,9 +80,13 @@ async function applyModule(m) {
   }
   await apply(m.cr.resource)
 }
+function openBusola() {
+  localStorage.setItem('busola.clusters','{"kyma":{"name":"kyma","kubeconfig":{"apiVersion":"v1","clusters":[{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"}],"contexts":[{"context":{"cluster":"kyma","user":"admin"},"name":"kyma"}],"current-context":"kyma","kind":"Config","preferences":{},"users":[{"name":"admin","user":{"token":"tokentokentoken"}}]},"contextName":"kyma","config":{"storage":"localStorage"},"currentContext":{"cluster":{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"},"user":{"name":"admin","user":{"token":"tokentokentoken"}}}}}')
+  window.open('/index.html','_blank')
+}
 
 function get(path) {
-  return fetch(path).then((res) => {
+  return fetch(API_PREFIX+path).then((res) => {
     if (res.status == 200) {
       return res.json()
     }
@@ -80,16 +98,16 @@ function deleteModuleResources(m) {
     if (r.path == '/api/v1/namespaces/kyma-system') {
       continue; // skip kyma-system deletion
     }
-    fetch(r.path, { method: 'DELETE' })
+    fetch(API_PREFIX+r.path, { method: 'DELETE' })
   }
 }
 async function removeModuleFromKymaCR(name) {
   let kyma = await get(KYMA_PATH)
   if (kyma && kyma.spec.modules) {
-    for (let i=0;i<kyma.spec.modules.length;++i){
-      if (kyma.spec.modules[i].name ==name) {
+    for (let i = 0; i < kyma.spec.modules.length; ++i) {
+      if (kyma.spec.modules[i].name == name) {
         let body = `[{"op":"remove","path":"/spec/modules/${i}"}]`
-        fetch(KYMA_PATH,{method:'PATCH',headers:{'content-type': 'application/json-patch+json'}, body})
+        fetch(API_PREFIX+KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
         return
       }
     }
@@ -110,7 +128,7 @@ async function deleteModule(m) {
     modal(body, "Delete confirmation", async () => {
       for (let i = 0; i < 5 && toDelete.length > 0; ++i) {
         for (let i of toDelete) {
-          fetch(i, { method: 'DELETE' })
+          fetch(API_PREFIX+i, { method: 'DELETE' })
         }
         toDelete = await managedResourcesList(m)
         setTimeout(() => checkStatus(), 1000)
@@ -157,7 +175,7 @@ async function notManagedResources() {
       for (let i of m.managedResources) {
         managed.push(i)
       }
-    } 
+    }
   }
   return all.filter((r) => !managed.some((m) => m == r))
 }
@@ -217,13 +235,13 @@ async function exists(path) {
   if (!path) {
     return false;
   }
-  let response = await fetch(path)
+  let response = await fetch(API_PREFIX+path)
   return (response.status == 200)
 }
 
 async function cacheAPI(apiVersion) {
   let url = (apiVersion === 'v1') ? '/api/v1' : `/apis/${apiVersion}`
-  let res = await fetch(url)
+  let res = await fetch(API_PREFIX+url)
   if (res.status == 200) {
     let body = await res.json()
     groupVersions[apiVersion] = body
@@ -242,7 +260,7 @@ function deploymentList(m) {
         badge = `<span class="badge bg-success">applied</span>`
       }
       html += `<li class="list-group-item"><small>
-        <a href="${r.path}" class="text-decoration-none" target="_blank">${r.path}</a> ${badge}</small></li>`
+        <a href="${API_PREFIX+r.path}" class="text-decoration-none" target="_blank">${r.path}</a> ${badge}</small></li>`
     }
     div.innerHTML = html + '</ul>'
   }
@@ -324,11 +342,11 @@ function moduleCard(m) {
   let cardBody = document.createElement('div')
   cardBody.setAttribute('class', 'card-body')
   let txt = document.createElement("div")
-  let version = m.version.split(':')[m.version.split(':').length-1]
+  let version = m.version.split(':')[m.version.split(':').length - 1]
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
     deployment: ${resourcesBadge(m)} ${availableBadge(m)} <br/>
-    <a href="${m.cr.path}" class="text-decoration-none" target="_blank">configuration</a> ${crBadge(m)}<br/>
+    <a href="${API_PREFIX+m.cr.path}" class="text-decoration-none" target="_blank">configuration</a> ${crBadge(m)}<br/>
     version: ${version} ${versionBadge(m)}<br/>
     <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
     <a href="${m.repository}" class="text-decoration-none" target="_blank">repo <i class="bi bi-box-arrow-up-right"></i></a><br/>
@@ -358,11 +376,11 @@ function renderModules(m) {
     }
   }
 }
-function versionBadge(m){
+function versionBadge(m) {
   if (m.version == m.actualVersion) {
     return `<span class="badge bg-success">ok</span>`
   } else if (m.actualVersion) {
-    let v = m.actualVersion.split(':')[m.actualVersion.split(':').length-1]
+    let v = m.actualVersion.split(':')[m.actualVersion.split(':').length - 1]
     return `<span class="badge bg-warning text-dark">applied: ${v}</span>`
   }
   return ""
@@ -372,7 +390,7 @@ function availableBadge(m) {
     return `<span class="badge bg-success">Ready</span>`
   } else if (m.actualVersion) {
     return `<span class="badge bg-secondary">Not Ready</span>`
-  } 
+  }
   return ""
 }
 async function managedModules() {
@@ -380,13 +398,13 @@ async function managedModules() {
   if (kyma) {
 
     for (let m of modules) {
-      if (m.name=='istio') {
-        m.managed=true 
+      if (m.name == 'istio') {
+        m.managed = true
         continue;
       }
       if (kyma.spec.modules) {
         let mm = kyma.spec.modules.find((mod) => mod.name == m.name)
-        m.managed = (mm) ? true : false  
+        m.managed = (mm) ? true : false
       }
     }
   }
@@ -416,7 +434,7 @@ function checkStatus() {
   for (let m of modules) {
     resPath(m.cr.resource).then((p) => {
       m.cr.path = p
-      return (p) ? fetch(p) : null
+      return (p) ? fetch(API_PREFIX+p) : null
     }).then((res) => {
       if (res) {
         m.cr.status = (res.status == 200)
@@ -430,10 +448,10 @@ function checkStatus() {
     })
 
     for (let r of m.resources) {
-      m.available=false
-      m.actualVersion=undefined
+      m.available = false
+      m.actualVersion = undefined
       if (r.path) {
-        fetch(r.path).then((res) => {
+        fetch(API_PREFIX+r.path).then((res) => {
           if (res.status == 200) {
             r.status = true
             return res.json()
@@ -445,16 +463,16 @@ function checkStatus() {
         }).then((json) => {
           r.value = json
           if (json && json.kind == 'Deployment') {
-              m.actualVersion = json.spec.template.spec.containers[0].image
-              console.log(m.actualVersion, json.status)
-              if (json.status && json.status.conditions) {
-                let av = json.status.conditions.find (c=>c.type=='Available')
-                if (av && av.status=="True") {
-                  m.available=true
-                }
+            m.actualVersion = json.spec.template.spec.containers[0].image
+            console.log(m.actualVersion, json.status)
+            if (json.status && json.status.conditions) {
+              let av = json.status.conditions.find(c => c.type == 'Available')
+              if (av && av.status == "True") {
+                m.available = true
               }
+            }
           }
-             
+
         }).finally(() => {
           renderModules(m)
         })
@@ -464,7 +482,7 @@ function checkStatus() {
 }
 
 function getPods() {
-  fetch('/api/v1/pods')
+  fetch(API_PREFIX+'/api/v1/pods')
     .then((response) => response.json())
     .then((podList) => {
       pods = podList.items.sort((a, b) => {
@@ -492,5 +510,5 @@ function renderNotManagedResources(list) {
 
 channelDropdown()
 loadChannel()
-  // .then(notManagedResources)
-  // .then(renderNotManagedResources)
+// .then(notManagedResources)
+// .then(renderNotManagedResources)

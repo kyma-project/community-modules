@@ -25,6 +25,12 @@ Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.
 If you don't have any cluster at hand you can use this playground:
 [https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)
 
+## Usage 
+
+1. Apply - install module manager and default configuration
+2. Delete - delete all manage resources including module configuration and when all of them are gone delete module manager deployment
+3. Details - show resources included in the module manager deployment Yaml
+
 ## Contribute your module
 
 Checkout the community-modules repository and add your own module by adding an entry in the [channels.json](app/channels.json) file. Example:
@@ -41,15 +47,17 @@ Checkout the community-modules repository and add your own module by adding an e
       ]
     },
 ```
-Mandatory fields:
+Fields description:
 - **name** - name of your module (keep it short)
 - **deploymentYaml** - URL of your module deployment YAML (usually the artifact of your module release)
 - **crYaml** - URL of your module default configuration (custom resource)
 - **documentatio** - documentation URL
 - **repository** - main source code repository
 - **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
+- **base** - the name of the other channel that should be used as a base for fields not specified in current entry.  Documentation, repository and managedResources usually are the same for all the channels, so you can use base reference instead of copying these values across all channels
 
-The channels.json file is processed by the build process and generates release channels files (right now only latest release is generated: [https://kyma-project.github.io/community-modules/latest.json](https://kyma-project.github.io/community-modules/latest.json)
+
+The channels.json file is processed by the build process and generates release channels files ([latest.json](https://kyma-project.github.io/community-modules/latest.json), [fast.json](https://kyma-project.github.io/community-modules/fast.json), and [regular.json](https://kyma-project.github.io/community-modules/regular.json))
 If you want to test your module, you can generate that file on your own:
 ```
 cd script
