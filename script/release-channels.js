@@ -13,7 +13,6 @@ async function loadModule(m) {
       });  
     }
     for (let r of m.resources) {
-      console.log(m.name, r.resource.kind)
       if (r.resource.kind == 'Deployment') {
         m.version = r.resource.spec.template.spec.containers[0].image
         break;

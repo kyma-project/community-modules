@@ -50,7 +50,7 @@
       },
       {
         "name": "transparent-proxy",
-        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment"
       },
       {
         "name": "cap-operator",
@@ -117,7 +117,7 @@
       },
       {
         "name": "transparent-proxy",
-        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment"
       },
       {
         "name": "cap-operator",
@@ -270,7 +270,7 @@
         "name": "transparent-proxy",
         "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
         "managedResources": [
-          'apis/operator.kyma-project.io/v1alpha1/transparentproxies'
+          "apis/operator.kyma-project.io/v1alpha1/transparentproxies"
         ],
         "cr": {
           "resource": {
