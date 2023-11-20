@@ -326,11 +326,25 @@ function deleteBtn(m) {
   })
   return btn
 }
+function externalLink(href,name) {
+  if (href) {
+    return `<a href="${href}" class="text-decoration-none" target="_blank">
+      ${name} <i class="bi bi-box-arrow-up-right"></i></a>` 
+  }
+  return ""
+}
+function configLink(m) {
+  if (m.cr.status) {
+    return `<a href="${API_PREFIX+m.cr.path}" class="text-decoration-none" target="_blank">
+      configuration </i></a>` 
+  }
+  return "configuration"
+}
 
 function moduleCard(m) {
   let buttons = document.createElement("div")
   buttons.setAttribute('class', 'd-inline-flex gap-1')
-  if (!m.managed) {
+  if (!m.managed && m.deploymentYaml) {
     buttons.appendChild(applyBtn(m))
   }
   buttons.appendChild(deleteBtn(m))
@@ -342,14 +356,17 @@ function moduleCard(m) {
   let cardBody = document.createElement('div')
   cardBody.setAttribute('class', 'card-body')
   let txt = document.createElement("div")
-  let version = m.version.split(':')[m.version.split(':').length - 1]
+  let version = "-"
+  if (m.version) {
+    version=m.version.split(':')[m.version.split(':').length - 1]
+  }
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
     <small>
     deployment: ${resourcesBadge(m)} ${availableBadge(m)} <br/>
-    <a href="${API_PREFIX+m.cr.path}" class="text-decoration-none" target="_blank">configuration</a> ${crBadge(m)}<br/>
+    ${configLink(m)} ${crBadge(m)}<br/>
     version: ${version} ${versionBadge(m)}<br/>
-    <a href="${m.documentation}" class="text-decoration-none" target="_blank">docs <i class="bi bi-box-arrow-up-right"></i></a> 
-    <a href="${m.repository}" class="text-decoration-none" target="_blank">repo <i class="bi bi-box-arrow-up-right"></i></a><br/>
+    ${externalLink(m.documentation,"docs")}
+    ${externalLink(m.repository,"repo")}
     <br/>
     </small>`
   txt.innerHTML = html
@@ -463,7 +480,15 @@ function checkStatus() {
         }).then((json) => {
           r.value = json
           if (json && json.kind == 'Deployment') {
-            m.actualVersion = json.spec.template.spec.containers[0].image
+            if (json.spec.template.spec.containers.length==1) {
+              m.actualVersion = json.spec.template.spec.containers[0].image
+            } else {
+              for (let c of json.spec.template.spec.containers){
+                if (!c.image.indexOf('proxy')>=0) {
+                  m.actualVersion = c.image
+                }                
+              }
+            }
             console.log(m.actualVersion, json.status)
             if (json.status && json.status.conditions) {
               let av = json.status.conditions.find(c => c.type == 'Available')

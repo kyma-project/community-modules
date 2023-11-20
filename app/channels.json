@@ -1,7 +1,7 @@
 [
   {
-    "name":"fast",
-    "base":"latest",
+    "name": "fast",
+    "base": "latest",
     "modules": [
       {
         "name": "istio",
@@ -49,6 +49,10 @@
         "crYaml": "https://github.com/kyma-project/keda-manager/releases/download/1.0.0/keda-default-cr.yaml"
       },
       {
+        "name": "transparent-proxy",
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+      },
+      {
         "name": "cap-operator",
         "deploymentYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager%2Fv0.0.1/manager_manifest.yaml",
         "crYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager%2Fv0.0.1/manager_default_CR.yaml",
@@ -63,8 +67,8 @@
     ]
   },
   {
-    "name":"regular",
-    "base":"latest",
+    "name": "regular",
+    "base": "latest",
     "modules": [
       {
         "name": "istio",
@@ -110,6 +114,10 @@
         "name": "keda",
         "deploymentYaml": "https://github.com/kyma-project/keda-manager/releases/download/1.0.0/keda-manager.yaml",
         "crYaml": "https://github.com/kyma-project/keda-manager/releases/download/1.0.0/keda-default-cr.yaml"
+      },
+      {
+        "name": "transparent-proxy",
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
       },
       {
         "name": "cap-operator",
@@ -256,6 +264,46 @@
           "/apis/keda.sh/v1alpha1/scaledjobs",
           "/apis/keda.sh/v1alpha1/scaledobjects",
           "/apis/keda.sh/v1alpha1/triggerauthentications"
+        ]
+      },
+      {
+        "name": "transparent-proxy",
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+        "managedResources": [
+          'apis/operator.kyma-project.io/v1alpha1/transparentproxies'
+        ],
+        "cr": {
+          "resource": {
+            "apiVersion": "operator.kyma-project.io/v1alpha1",
+            "kind": "TransparentProxy",
+            "metadata": {
+              "name": "transparent-proxy",
+              "namespace": "sap-transp-proxy-system"
+            }
+          }
+        },
+        "resources": [
+          {
+            "resource": {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "metadata": {
+                "name": "sap-transp-proxy-operator-controller-manager",
+                "namespace": "sap-transp-proxy-system"
+              },
+              "spec": {
+                "template": {
+                  "spec": {
+                    "containers": [
+                      {
+                        "image": "sapse/sap-transp-proxy-operator:1.3.1"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
         ]
       },
       {
