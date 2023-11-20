@@ -258,9 +258,12 @@ function deploymentList(m) {
       let badge = `<span class="badge bg-secondary"> - </span>`
       if (r.status === true) {
         badge = `<span class="badge bg-success">applied</span>`
+        html += `<li class="list-group-item"><small>
+        <a href="${API_PREFIX+r.path}" class="text-decoration-none" target="_blank">
+          ${r.resource.kind}: ${r.resource.metadata.name}</a> ${badge}</small></li>`
+      } else {
+        html += `<li class="list-group-item"><small>${r.resource.kind}: ${r.resource.metadata.name}</a> ${badge}</small></li>`
       }
-      html += `<li class="list-group-item"><small>
-        <a href="${API_PREFIX+r.path}" class="text-decoration-none" target="_blank">${r.path}</a> ${badge}</small></li>`
     }
     div.innerHTML = html + '</ul>'
   }
@@ -357,14 +360,15 @@ function moduleCard(m) {
   cardBody.setAttribute('class', 'card-body')
   let txt = document.createElement("div")
   let version = "-"
-  if (m.version) {
-    version=m.version.split(':')[m.version.split(':').length - 1]
+  if (m.deploymentVersion) {
+    version=m.deploymentVersion.split('/')[m.deploymentVersion.split('/').length - 1]
   }
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
-    <small>
-    deployment: ${resourcesBadge(m)} ${availableBadge(m)} <br/>
+  <small>
+    module version: ${m.version} <br/>
+    deployment: ${resourcesBadge(m)} <br/>
+    ${version} ${versionBadge(m)} ${availableBadge(m)} <br/>
     ${configLink(m)} ${crBadge(m)}<br/>
-    version: ${version} ${versionBadge(m)}<br/>
     ${externalLink(m.documentation,"docs")}
     ${externalLink(m.repository,"repo")}
     <br/>
@@ -394,7 +398,7 @@ function renderModules(m) {
   }
 }
 function versionBadge(m) {
-  if (m.version == m.actualVersion) {
+  if (m.deploymentVersion == m.actualVersion) {
     return `<span class="badge bg-success">ok</span>`
   } else if (m.actualVersion) {
     let v = m.actualVersion.split(':')[m.actualVersion.split(':').length - 1]
