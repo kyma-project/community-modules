@@ -33,19 +33,31 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Contribute your module
 
-Checkout the community-modules repository and add your own module by adding an entry in the [channels.json](app/channels.json) file. Example:
+Checkout the community-modules repository and add your own module by adding an entry in the [modules.json](app/modules.json) file. Example:
 ```
-    {
-      "name": "api-gateway",
-      "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
-      "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml",
-      "documentation": "https://kyma-project.io/#/api-gateway/user/README",
-      "repository": "https://github.com/kyma-project/api-gateway.git",
-      "managedResources": [
-        "/apis/operator.kyma-project.io/v1alpha1/apigateways",
-        "/apis/gateway.kyma-project.io/v1beta1/apirules"
-      ]
-    },
+  {
+    "name": "api-gateway",
+    "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
+    "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml",
+    "documentation": "https://kyma-project.io/#/api-gateway/user/README",
+    "repository": "https://github.com/kyma-project/api-gateway.git",
+    "managedResources": [
+      "/apis/operator.kyma-project.io/v1alpha1/apigateways",
+      "/apis/gateway.kyma-project.io/v1beta1/apirules"
+    ],
+    "versions": [
+      {
+        "version": "latest",
+        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml"
+      },
+      {
+        "version": "2.0.0",
+        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.0.0/api-gateway-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.0.0/apigateway-default-cr.yaml"
+      }
+    ]
+  },
 ```
 Fields description:
 - **name** - name of your module (keep it short)
@@ -54,10 +66,10 @@ Fields description:
 - **documentatio** - documentation URL
 - **repository** - main source code repository
 - **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
-- **base** - the name of the other channel that should be used as a base for fields not specified in current entry.  Documentation, repository and managedResources usually are the same for all the channels, so you can use base reference instead of copying these values across all channels
+- **versions** - list of module versions that can be included in release channels. In version entry you can override some module properties (usually deploymentYaml and crYaml)
 
-
-The channels.json file is processed by the build process and generates release channels files ([latest.json](https://kyma-project.github.io/community-modules/latest.json), [fast.json](https://kyma-project.github.io/community-modules/fast.json), and [regular.json](https://kyma-project.github.io/community-modules/regular.json))
+You should assign module versions to release channels. The channels are defined in the [channels.json](app/channels.json). You define there for each release channel the list of modules and their versions. 
+The channels.json and modules.json files are processed by the build workflow that generates release channels files ([latest.json](https://kyma-project.github.io/community-modules/latest.json), [fast.json](https://kyma-project.github.io/community-modules/fast.json), and [regular.json](https://kyma-project.github.io/community-modules/regular.json))
 If you want to test your module, you can generate that file on your own:
 ```
 cd script
