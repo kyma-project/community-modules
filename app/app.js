@@ -15,7 +15,7 @@ var modules = []
 async function apply(res) {
   let path = await resPath(res)
   path += '?fieldManager=kubectl&fieldValidation=Strict&force=false'
-  let response = await fetch(API_PREFIX+path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
+  let response = await fetch(API_PREFIX + path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
   return response
 }
 function channelDropdown() {
@@ -62,13 +62,13 @@ function channelDropdown() {
   div.appendChild(ul)
   div.appendChild(updateBtn)
 
-  if (API_PREFIX!='') { 
+  if (API_PREFIX != '') {
     let busolaBtn = document.createElement('button')
     busolaBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
     busolaBtn.setAttribute('type', 'button')
     busolaBtn.textContent = 'Kyma Dashboard'
     busolaBtn.addEventListener('click', openBusola)
-    div.appendChild(busolaBtn)  
+    div.appendChild(busolaBtn)
   }
 
   return div
@@ -81,12 +81,12 @@ async function applyModule(m) {
   await apply(m.cr.resource)
 }
 function openBusola() {
-  localStorage.setItem('busola.clusters','{"kyma":{"name":"kyma","kubeconfig":{"apiVersion":"v1","clusters":[{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"}],"contexts":[{"context":{"cluster":"kyma","user":"admin"},"name":"kyma"}],"current-context":"kyma","kind":"Config","preferences":{},"users":[{"name":"admin","user":{"token":"tokentokentoken"}}]},"contextName":"kyma","config":{"storage":"localStorage"},"currentContext":{"cluster":{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"},"user":{"name":"admin","user":{"token":"tokentokentoken"}}}}}')
-  window.open('/index.html','_blank')
+  localStorage.setItem('busola.clusters', '{"kyma":{"name":"kyma","kubeconfig":{"apiVersion":"v1","clusters":[{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"}],"contexts":[{"context":{"cluster":"kyma","user":"admin"},"name":"kyma"}],"current-context":"kyma","kind":"Config","preferences":{},"users":[{"name":"admin","user":{"token":"tokentokentoken"}}]},"contextName":"kyma","config":{"storage":"localStorage"},"currentContext":{"cluster":{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"},"user":{"name":"admin","user":{"token":"tokentokentoken"}}}}}')
+  window.open('/index.html', '_blank')
 }
 
 function get(path) {
-  return fetch(API_PREFIX+path).then((res) => {
+  return fetch(API_PREFIX + path).then((res) => {
     if (res.status == 200) {
       return res.json()
     }
@@ -98,7 +98,7 @@ function deleteModuleResources(m) {
     if (r.path == '/api/v1/namespaces/kyma-system') {
       continue; // skip kyma-system deletion
     }
-    fetch(API_PREFIX+r.path, { method: 'DELETE' })
+    fetch(API_PREFIX + r.path, { method: 'DELETE' })
   }
 }
 async function removeModuleFromKymaCR(name) {
@@ -107,12 +107,21 @@ async function removeModuleFromKymaCR(name) {
     for (let i = 0; i < kyma.spec.modules.length; ++i) {
       if (kyma.spec.modules[i].name == name) {
         let body = `[{"op":"remove","path":"/spec/modules/${i}"}]`
-        fetch(API_PREFIX+KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
+        fetch(API_PREFIX + KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
         return
       }
     }
   }
 }
+async function addModuleToKymaCR(name) {
+  let kyma = await get(KYMA_PATH)
+  if (kyma && kyma.spec.modules) {
+    let body = `[{"op":"add","path":"/spec/modules/-","value":{"name":"${name}"}}]`
+    fetch(API_PREFIX + KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
+    return
+  }
+}
+
 async function deleteModule(m) {
   if (m.managed) {
     modal("This is a managed module. Do you want to remove it from SKR managed resources?", "Delete confirmation", async () => {
@@ -128,7 +137,7 @@ async function deleteModule(m) {
     modal(body, "Delete confirmation", async () => {
       for (let i = 0; i < 5 && toDelete.length > 0; ++i) {
         for (let i of toDelete) {
-          fetch(API_PREFIX+i, { method: 'DELETE' })
+          fetch(API_PREFIX + i, { method: 'DELETE' })
         }
         toDelete = await managedResourcesList(m)
         setTimeout(() => checkStatus(), 1000)
@@ -235,13 +244,13 @@ async function exists(path) {
   if (!path) {
     return false;
   }
-  let response = await fetch(API_PREFIX+path)
+  let response = await fetch(API_PREFIX + path)
   return (response.status == 200)
 }
 
 async function cacheAPI(apiVersion) {
   let url = (apiVersion === 'v1') ? '/api/v1' : `/apis/${apiVersion}`
-  let res = await fetch(API_PREFIX+url)
+  let res = await fetch(API_PREFIX + url)
   if (res.status == 200) {
     let body = await res.json()
     groupVersions[apiVersion] = body
@@ -259,7 +268,7 @@ function deploymentList(m) {
       if (r.status === true) {
         badge = `<span class="badge bg-success">applied</span>`
         html += `<li class="list-group-item"><small>
-        <a href="${API_PREFIX+r.path}" class="text-decoration-none" target="_blank">
+        <a href="${API_PREFIX + r.path}" class="text-decoration-none" target="_blank">
           ${r.resource.kind}: ${r.resource.metadata.name}</a> ${badge}</small></li>`
       } else {
         html += `<li class="list-group-item"><small>${r.resource.kind}: ${r.resource.metadata.name}</a> ${badge}</small></li>`
@@ -308,6 +317,16 @@ function applyBtn(m) {
   })
   return btn
 }
+function addBtn(m) {
+  let btn = document.createElement("button")
+  btn.textContent = "add"
+  btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.addEventListener("click", function (event) {
+    addModuleToKymaCR(m.name)
+    setTimeout(() => checkStatus(), 3000)
+  })
+  return btn
+}
 
 function detailsBtn(m) {
   let btn = document.createElement("button")
@@ -329,17 +348,17 @@ function deleteBtn(m) {
   })
   return btn
 }
-function externalLink(href,name) {
+function externalLink(href, name) {
   if (href) {
     return `<a href="${href}" class="text-decoration-none" target="_blank">
-      ${name} <i class="bi bi-box-arrow-up-right"></i></a>` 
+      ${name} <i class="bi bi-box-arrow-up-right"></i></a>`
   }
   return ""
 }
 function configLink(m) {
   if (m.cr.status) {
-    return `<a href="${API_PREFIX+m.cr.path}" class="text-decoration-none" target="_blank">
-      configuration </i></a>` 
+    return `<a href="${API_PREFIX + m.cr.path}" class="text-decoration-none" target="_blank">
+      configuration </i></a>`
   }
   return "configuration"
 }
@@ -347,6 +366,9 @@ function configLink(m) {
 function moduleCard(m) {
   let buttons = document.createElement("div")
   buttons.setAttribute('class', 'd-inline-flex gap-1')
+  if (m.manageable && !m.managed) {
+    buttons.appendChild(addBtn(m))
+  }
   if (!m.managed && m.deploymentYaml) {
     buttons.appendChild(applyBtn(m))
   }
@@ -361,7 +383,7 @@ function moduleCard(m) {
   let txt = document.createElement("div")
   let version = "-"
   if (m.deploymentVersion) {
-    version=m.deploymentVersion.split('/')[m.deploymentVersion.split('/').length - 1]
+    version = m.deploymentVersion.split('/')[m.deploymentVersion.split('/').length - 1]
   }
   let html = `<h5>${m.name} ${moduleBadge(m)}</h5>
   <small>
@@ -369,8 +391,8 @@ function moduleCard(m) {
     deployment: ${resourcesBadge(m)} <br/>
     ${version} ${versionBadge(m)} ${availableBadge(m)} <br/>
     ${configLink(m)} ${crBadge(m)}<br/>
-    ${externalLink(m.documentation,"docs")}
-    ${externalLink(m.repository,"repo")}
+    ${externalLink(m.documentation, "docs")}
+    ${externalLink(m.repository, "repo")}
     <br/>
     </small>`
   txt.innerHTML = html
@@ -417,16 +439,15 @@ function availableBadge(m) {
 async function managedModules() {
   let kyma = await get(KYMA_PATH)
   if (kyma) {
-
     for (let m of modules) {
-      if (m.name == 'istio') {
-        m.managed = true
-        continue;
-      }
       if (kyma.spec.modules) {
         let mm = kyma.spec.modules.find((mod) => mod.name == m.name)
         m.managed = (mm) ? true : false
       }
+    }
+  } else {
+    for (let m of modules) {
+      m.manageable = false
     }
   }
 }
@@ -455,7 +476,7 @@ function checkStatus() {
   for (let m of modules) {
     resPath(m.cr.resource).then((p) => {
       m.cr.path = p
-      return (p) ? fetch(API_PREFIX+p) : null
+      return (p) ? fetch(API_PREFIX + p) : null
     }).then((res) => {
       if (res) {
         m.cr.status = (res.status == 200)
@@ -472,7 +493,7 @@ function checkStatus() {
       m.available = false
       m.actualVersion = undefined
       if (r.path) {
-        fetch(API_PREFIX+r.path).then((res) => {
+        fetch(API_PREFIX + r.path).then((res) => {
           if (res.status == 200) {
             r.status = true
             return res.json()
@@ -484,13 +505,13 @@ function checkStatus() {
         }).then((json) => {
           r.value = json
           if (json && json.kind == 'Deployment') {
-            if (json.spec.template.spec.containers.length==1) {
+            if (json.spec.template.spec.containers.length == 1) {
               m.actualVersion = json.spec.template.spec.containers[0].image
             } else {
-              for (let c of json.spec.template.spec.containers){
-                if (!c.image.indexOf('proxy')>=0) {
+              for (let c of json.spec.template.spec.containers) {
+                if (!c.image.indexOf('proxy') >= 0) {
                   m.actualVersion = c.image
-                }                
+                }
               }
             }
             console.log(m.actualVersion, json.status)
@@ -511,7 +532,7 @@ function checkStatus() {
 }
 
 function getPods() {
-  fetch(API_PREFIX+'/api/v1/pods')
+  fetch(API_PREFIX + '/api/v1/pods')
     .then((response) => response.json())
     .then((podList) => {
       pods = podList.items.sort((a, b) => {

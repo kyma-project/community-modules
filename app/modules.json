@@ -33,6 +33,7 @@
       "/apis/security.istio.io/v1beta1/requestauthentications",
       "/apis/telemetry.istio.io/v1alpha1/telemetries"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -79,6 +80,7 @@
       "/apis/serverless.kyma-project.io/v1alpha2/functions",
       "/apis/operator.kyma-project.io/v1alpha1/serverlesses"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -110,6 +112,7 @@
       "/apis/services.cloud.sap.com/v1alpha1/serviceinstances",
       "/apis/operator.kyma-project.io/v1alpha1/btpoperators"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -140,6 +143,7 @@
       "/apis/telemetry.kyma-project.io/v1alpha1/logpipelines",
       "/apis/telemetry.kyma-project.io/v1alpha1/tracepipelines"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -168,6 +172,7 @@
     "managedResources": [
       "/apis/operator.kyma-project.io/v1alpha1/nats"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -188,6 +193,7 @@
     "crYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing_default_cr.yaml",
     "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
     "repository": "https://github.com/kyma-project/eventing-manager.git",
+    "manageable": true,
     "managedResources": [
       "/apis/eventing.kyma-project.io/v1alpha1/subscriptions",
       "/apis/eventing.kyma-project.io/v1alpha2/subscriptions",
@@ -213,6 +219,7 @@
     "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml",
     "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
     "repository": "https://github.com/kyma-project/application-connector-manager.git",
+    "manageable": true,
     "managedResources": [
       "/apis/operator.kyma-project.io/v1alpha1/applicationconnectors"
     ],
@@ -243,6 +250,7 @@
       "/apis/keda.sh/v1alpha1/scaledobjects",
       "/apis/keda.sh/v1alpha1/triggerauthentications"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
@@ -263,6 +271,7 @@
     "managedResources": [
       "apis/operator.kyma-project.io/v1alpha1/transparentproxies"
     ],
+    "manageable": true,
     "cr": {
       "resource": {
         "apiVersion": "operator.kyma-project.io/v1alpha1",

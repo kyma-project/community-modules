@@ -35,7 +35,9 @@ async function loadModule(m) {
 
 async function releaseChannels() {
   for (let ch of channels) {
+    console.log("processing channel:", ch.name)
     for (let mod of ch.modules) {
+      console.log(" -", mod.name)
       for (let m of modules) {
         if (m.name == mod.name) {
           mod.deploymentYaml = m.deploymentYaml
@@ -46,6 +48,7 @@ async function releaseChannels() {
           mod.resources = m.resources
           mod.cr = m.cr
           mod.community = m.community
+          mod.manageable = m.manageable
           for (let v of m.versions) {
             if (mod.version == v.version) {
               if (v.managedResources) {
@@ -75,7 +78,6 @@ async function releaseChannels() {
       }
       await loadModule(mod)
     }
-    console.log("channel loaded:", ch.name)
     fs.writeFileSync(`${ch.name}.json`, JSON.stringify(ch.modules, null, 2))
     console.log("channel written:", `${ch.name}.json`)
   }
