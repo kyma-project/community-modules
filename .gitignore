@@ -1,2 +1,5 @@
 script/node_modules
 .DS_Store
+app/fast.json
+app/latest.json
+app/regular.json
