@@ -49,8 +49,8 @@ jobs:
         run: |
           cd app
           version=$(date +"%Y%m%dT%H%M")
-          cp app.js app-${version}.js
-          sed "s+app.js+https://kyma-project.github.io/community-modules/app-${version}.js+g" kyma.html > kyma2.html
+          cp kyma-modules.js kyma-modules-${version}.js
+          sed "s+kyma-modules.js+https://kyma-project.github.io/community-modules/kyma-modules-${version}.js+g" kyma.html > kyma2.html
           sed "s+VERSION+${version}+g" kyma2.html >kyma.html
       - name: Ship busola
         run: |

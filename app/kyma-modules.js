@@ -312,8 +312,18 @@ function applyBtn(m) {
   btn.textContent = "apply"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
   btn.addEventListener("click", function (event) {
-    applyModule(m)
-    setTimeout(() => checkStatus(), 3000)
+    if (m.manageable) {
+      modal("This module can be managed by Kyma Control Plane. "
+      + "If you continue it will be applied as an open source (community) module "
+      + "and will not be automatically upgraded. Do you want to continue?",
+      "Opt out from managed version",()=>{
+        applyModule(m)
+        setTimeout(() => checkStatus(), 3000)
+      })
+    } else {
+      applyModule(m)
+      setTimeout(() => checkStatus(), 3000)  
+    }
   })
   return btn
 }
