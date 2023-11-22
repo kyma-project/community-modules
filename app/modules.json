@@ -1,8 +1,6 @@
 [
   {
     "name": "istio",
-    "deploymentYaml": "https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml",
     "documentation": "https://kyma-project.io/#/istio/user/00-overview/README",
     "repository": "https://github.com/kyma-project/istio.git",
     "managedResources": [
@@ -49,8 +47,6 @@
   },
   {
     "name": "api-gateway",
-    "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml",
     "documentation": "https://kyma-project.io/#/api-gateway/user/README",
     "repository": "https://github.com/kyma-project/api-gateway.git",
     "managedResources": [
@@ -73,8 +69,6 @@
   },
   {
     "name": "serverless",
-    "deploymentYaml": "https://github.com/kyma-project/serverless-manager/releases/latest/download/serverless-operator.yaml",
-    "crYaml": "https://github.com/kyma-project/serverless-manager/releases/latest/download/default-serverless-cr.yaml",
     "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
     "repository": "https://github.com/kyma-project/serverless-manager.git",
     "managedResources": [
@@ -102,8 +96,6 @@
   },
   {
     "name": "btp-operator",
-    "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/btp-manager/releases/latest/download/btp-operator-default-cr.yaml",
     "documentation": "https://kyma-project.io/#/btp-manager/user/README",
     "repository": "https://github.com/kyma-project/btp-manager.git",
     "managedResources": [
@@ -134,8 +126,6 @@
   },
   {
     "name": "telemetry",
-    "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-default-cr.yaml",
     "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
     "repository": "https://github.com/kyma-project/telemetry-manager.git",
     "managedResources": [
@@ -166,8 +156,6 @@
   },
   {
     "name": "nats",
-    "deploymentYaml": "https://github.com/kyma-project/nats-manager/releases/latest/download/nats-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/nats-manager/releases/latest/download/nats_default_cr.yaml",
     "documentation": "https://kyma-project.io/#/nats-manager/user/README",
     "repository": "https://github.com/kyma-project/nats-manager.git",
     "managedResources": [
@@ -190,8 +178,6 @@
   },
   {
     "name": "eventing",
-    "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing_default_cr.yaml",
     "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
     "repository": "https://github.com/kyma-project/eventing-manager.git",
     "manageable": true,
@@ -216,8 +202,6 @@
   },
   {
     "name": "application-connector",
-    "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml",
     "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
     "repository": "https://github.com/kyma-project/application-connector-manager.git",
     "manageable": true,
@@ -240,8 +224,6 @@
   },
   {
     "name": "keda",
-    "deploymentYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-manager.yaml",
-    "crYaml": "https://github.com/kyma-project/keda-manager/releases/latest/download/keda-default-cr.yaml",
     "documentation": "https://kyma-project.io/#/keda-manager/user/README",
     "repository": "https://github.com/kyma-project/keda-manager.git",
     "managedResources": [
@@ -364,8 +346,6 @@
   },
   {
     "name": "cap-operator",
-    "deploymentYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/latest/download/manager_manifest.yaml",
-    "crYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/latest/download/manager_default_CR.yaml",
     "documentation": "https://sap.github.io/cap-operator/docs/",
     "repository": "https://github.com/SAP/cap-operator-lifecycle.git",
     "managedResources": [
@@ -388,8 +368,6 @@
   },
   {
     "name": "cluster-ip",
-    "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-operator.yaml",
-    "crYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-nodes.yaml",
     "documentation": "https://github.com/pbochynski/cluster-ip#readme",
     "repository": "https://github.com/pbochynski/cluster-ip.git",
     "managedResources": [
@@ -398,12 +376,12 @@
     "community": true,
     "versions": [
       {
-        "name": "latest",
+        "version": "latest",
         "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-operator.yaml",
         "crYaml": "https://github.com/pbochynski/cluster-ip/releases/latest/download/cluster-ip-nodes.yaml"
       },
       {
-        "name": "0.0.28",
+        "version": "0.0.28",
         "deploymentYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.28/cluster-ip-operator.yaml",
         "crYaml": "https://github.com/pbochynski/cluster-ip/releases/download/0.0.28/cluster-ip-nodes.yaml"
       }
