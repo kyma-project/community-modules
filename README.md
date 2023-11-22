@@ -27,6 +27,8 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Usage 
 
+<img src="serverless-card.png" height=200 />
+
 - **add** - adds module to Kyma custom resource (default Kyma CR in kyma-system namespace) and makes it a managed module. It means the module upgrades will be performed automatically when new version is available in the release channel. Available only for manageable modules in the managed Kyma cluster (SKR)
 - **apply** - applies the module manager and default configuration directly in your cluster. It means that the module is not managed and the new versions have to be applied manually. When module is managed the option is not available - you need to delete module first (remove it from Kyma CR)
 - **delete** - for managed modules it removes entry in the Kyma CR that initiates module deletion from Kyma Control Plane. For manually installed modules the action deletes all manage resources including module configuration, and when all of them are gone, deletes module manager deployment
@@ -34,7 +36,7 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Module view
 
-![](api-gateway-card.png)
+<img src="api-gateway-card.png" height=200 />
 
 The module view contains following information:
 - module name with optional badges (**managed** for modules managed by Kyma Control Plane, **community** modules that come from the community) 

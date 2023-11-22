@@ -57,6 +57,7 @@
       "/apis/operator.kyma-project.io/v1alpha1/apigateways",
       "/apis/gateway.kyma-project.io/v1beta1/apirules"
     ],
+    "manageable": true,
     "versions": [
       {
         "version": "latest",
