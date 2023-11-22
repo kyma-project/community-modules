@@ -47,6 +47,7 @@ jobs:
           node ../script/release-channels.js
       - name: Release app
         run: |
+          cd app
           version=$(date +"%Y%m%dT%H%M")
           cp app.js app-${version}.js
           sed "s+app.js+https://kyma-project.github.io/community-modules/app-${version}.js+g" kyma.html > kyma2.html
