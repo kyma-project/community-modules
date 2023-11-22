@@ -27,9 +27,23 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Usage 
 
-1. Apply - install module manager and default configuration
-2. Delete - delete all manage resources including module configuration and when all of them are gone delete module manager deployment
-3. Details - show resources included in the module manager deployment Yaml
+- **add** - adds module to Kyma custom resource (default Kyma CR in kyma-system namespace) and makes it a managed module. It means the module upgrades will be performed automatically when new version is available in the release channel. Available only for manageable modules in the managed Kyma cluster (SKR)
+- **apply** - applies the module manager and default configuration directly in your cluster. It means that the module is not managed and the new versions have to be applied manually. When module is managed the option is not available - you need to delete module first (remove it from Kyma CR)
+- **delete** - for managed modules it removes entry in the Kyma CR that initiates module deletion from Kyma Control Plane. For manually installed modules the action deletes all manage resources including module configuration, and when all of them are gone, deletes module manager deployment
+- **details** - show resources included in the module manager deployment Yaml
+
+## Module view
+
+![](api-gateway-card.png)
+
+The module view contains following information:
+- module name with optional badges (**managed** for modules managed by Kyma Control Plane, **community** modules that come from the community) 
+- module version
+- status of module operator (manager) deployment - number of applied resources / total number of resources
+- name, version and status of module operator 
+- status of module configuration ('applied' - configuration file exists, '-' module configuration does not exist, 'Processing, Ready, Warning, Error, Deleting' - value of the state field of module configuration status). If the configuration CR exists it can be fetched using the link.
+- module documentation (docs link)
+- source code repository (repo link)
 
 ## Contribute your module
 
