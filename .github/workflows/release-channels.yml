@@ -45,7 +45,13 @@ jobs:
         run: |
           cd app
           node ../script/release-channels.js
-      - name: Build busola
+      - name: Release app
+        run: |
+          version=$(date +"%Y%m%dT%H%M")
+          cp app.js app-${version}.js
+          sed "s+app.js+https://kyma-project.github.io/community-modules/app-${version}.js+g" kyma.html > kyma2.html
+          sed "s+VERSION+${version}+g" kyma2.html >kyma.html
+      - name: Ship busola
         run: |
           container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/busola:latest)
           docker cp $container_id:/app/core-ui ./busola

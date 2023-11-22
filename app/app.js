@@ -300,7 +300,7 @@ function crBadge(m) {
 
 function moduleBadge(m) {
   if (m.managed) {
-    return `<span class="badge text-bg-dark">SKR</span>`
+    return `<span class="badge text-bg-dark">managed</span>`
   }
   if (m.community) {
     return `<span class="badge bg-info text-dark">community</span>`
