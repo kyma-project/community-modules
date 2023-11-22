@@ -32,12 +32,17 @@ async function loadModule(m) {
     }
   }
 }
-
 async function releaseChannels() {
+  let tasks = []
   for (let ch of channels) {
-    console.log("processing channel:", ch.name)
+    tasks.push(releaseChannel(ch))
+  }
+  await Promise.all(tasks)
+}
+
+async function releaseChannel(ch) {
     for (let mod of ch.modules) {
-      console.log(" -", mod.name)
+      console.log(ch.name,':', mod.name)
       for (let m of modules) {
         if (m.name == mod.name) {
           mod.deploymentYaml = m.deploymentYaml
@@ -80,7 +85,7 @@ async function releaseChannels() {
     }
     fs.writeFileSync(`${ch.name}.json`, JSON.stringify(ch.modules, null, 2))
     console.log("channel written:", `${ch.name}.json`)
-  }
+    return 'ok'
 }
 
 releaseChannels();
