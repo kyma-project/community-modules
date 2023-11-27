@@ -1,6 +1,5 @@
-var pods = []
-var groupVersions = {}
-const KUBECONFIG = { "kubernetes-admin@kubernetes": { "name": "kubernetes-admin@kubernetes", "kubeconfig": { "apiVersion": "v1", "clusters": [{ "cluster": { "server": "http://127.0.0.1:8001/backend" }, "name": "kyma-katacoda" }], "contexts": [{ "context": { "cluster": "kyma-katacoda", "user": "kubernetes-admin" }, "name": "kubernetes-admin@kubernetes" }], "current-context": "kubernetes-admin@kubernetes", "kind": "Config", "preferences": {}, "users": [{ "name": "kubernetes-admin", "user": { "token": "tokentokentoken" } }] }, "contextName": "kubernetes-admin@kubernetes", "config": { "storage": "sessionStorage" }, "currentContext": { "cluster": { "cluster": { "server": "http://127.0.0.1:8001/backend" }, "name": "kyma-katacoda" }, "user": { "name": "kubernetes-admin", "user": { "token": "tokentokentoken" } } } } }
+import { apply, get, resPath, deleteResource, patchResource } from './k8s.js'
+
 var API_PREFIX = ''
 const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
 const CHANNELS = [
@@ -12,12 +11,6 @@ const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system
 
 var modules = []
 
-async function apply(res) {
-  let path = await resPath(res)
-  path += '?fieldManager=kubectl&fieldValidation=Strict&force=false'
-  let response = await fetch(API_PREFIX + path, { method: 'PATCH', headers: { 'content-type': 'application/apply-patch+yaml' }, body: JSON.stringify(res) })
-  return response
-}
 function channelDropdown() {
   const url = new URL(window.location);
   let channel = url.searchParams.get("channel") || DEFAULT_CHANNEL
@@ -85,20 +78,13 @@ function openBusola() {
   window.open('/index.html', '_blank')
 }
 
-function get(path) {
-  return fetch(API_PREFIX + path).then((res) => {
-    if (res.status == 200) {
-      return res.json()
-    }
-  }).catch((e) => console.log('e2', e))
-}
 
 function deleteModuleResources(m) {
   for (let r of m.resources) {
     if (r.path == '/api/v1/namespaces/kyma-system') {
       continue; // skip kyma-system deletion
     }
-    fetch(API_PREFIX + r.path, { method: 'DELETE' })
+    deleteResource(r.path)
   }
 }
 async function removeModuleFromKymaCR(name) {
@@ -107,7 +93,7 @@ async function removeModuleFromKymaCR(name) {
     for (let i = 0; i < kyma.spec.modules.length; ++i) {
       if (kyma.spec.modules[i].name == name) {
         let body = `[{"op":"remove","path":"/spec/modules/${i}"}]`
-        fetch(API_PREFIX + KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
+        patchResource(KYMA_PATH, body)
         return
       }
     }
@@ -117,7 +103,7 @@ async function addModuleToKymaCR(name) {
   let kyma = await get(KYMA_PATH)
   if (kyma && kyma.spec.modules) {
     let body = `[{"op":"add","path":"/spec/modules/-","value":{"name":"${name}"}}]`
-    fetch(API_PREFIX + KYMA_PATH, { method: 'PATCH', headers: { 'content-type': 'application/json-patch+json' }, body })
+    patchResource(KYMA_PATH, body)
     return
   }
 }
@@ -136,8 +122,8 @@ async function deleteModule(m) {
       + '</br>Do you want to delete them first?'
     modal(body, "Delete confirmation", async () => {
       for (let i = 0; i < 5 && toDelete.length > 0; ++i) {
-        for (let i of toDelete) {
-          fetch(API_PREFIX + i, { method: 'DELETE' })
+        for (let p of toDelete) {
+          deleteResource(p)
         }
         toDelete = await managedResourcesList(m)
         setTimeout(() => checkStatus(), 1000)
@@ -159,36 +145,6 @@ async function deleteModule(m) {
       setTimeout(() => checkStatus(), 3000)
     })
 }
-async function allResources() {
-  let all = []
-  let apis = await get('/apis')
-  for (let api of apis.groups) {
-    for (let v of api.versions) {
-      let resources = await get(`/apis/${v.groupVersion}`)
-      if (resources) {
-        for (let r of resources.resources) {
-          if (!r.name.endsWith('/status')) {
-            all.push(`/apis/${v.groupVersion}/${r.name}`)
-          }
-        }
-      }
-    }
-  }
-  return all
-}
-async function notManagedResources() {
-  let all = await allResources()
-  let managed = [];
-  for (let m of modules) {
-    if (m.managedResources) {
-      for (let i of m.managedResources) {
-        managed.push(i)
-      }
-    }
-  }
-  return all.filter((r) => !managed.some((m) => m == r))
-}
-
 
 function modal(html, title, callback) {
   document.getElementById("modal-body").innerHTML = html
@@ -219,44 +175,6 @@ async function managedResourcesList(m) {
     }
   }
   return list.sort()
-}
-
-async function resPath(r) {
-  let url = (r.apiVersion === 'v1') ? '/api/v1' : `/apis/${r.apiVersion}`
-  let api = groupVersions[r.apiVersion]
-  let resource = null
-  if (api) {
-    resource = api.resources.find((res) => res.kind == r.kind)
-  }
-  if (resource == null) {
-    api = await cacheAPI(r.apiVersion)
-    resource = api.resources.find((res) => res.kind == r.kind)
-  }
-  if (resource) {
-    let ns = r.metadata.namespace || 'default'
-    let nsPath = resource.namespaced ? `/namespaces/${ns}` : ''
-    return url + nsPath + `/${resource.name}/${r.metadata.name}`
-  }
-  return null
-}
-
-async function exists(path) {
-  if (!path) {
-    return false;
-  }
-  let response = await fetch(API_PREFIX + path)
-  return (response.status == 200)
-}
-
-async function cacheAPI(apiVersion) {
-  let url = (apiVersion === 'v1') ? '/api/v1' : `/apis/${apiVersion}`
-  let res = await fetch(API_PREFIX + url)
-  if (res.status == 200) {
-    let body = await res.json()
-    groupVersions[apiVersion] = body
-    return body
-  }
-  return { resources: [] }
 }
 
 function deploymentList(m) {
@@ -314,15 +232,15 @@ function applyBtn(m) {
   btn.addEventListener("click", function (event) {
     if (m.manageable) {
       modal("This module can be managed by Kyma Control Plane. "
-      + "If you continue it will be applied as an open source (community) module "
-      + "and will not be automatically upgraded. Do you want to continue?",
-      "Opt out from managed version",()=>{
-        applyModule(m)
-        setTimeout(() => checkStatus(), 3000)
-      })
+        + "If you continue it will be applied as an open source (community) module "
+        + "and will not be automatically upgraded. Do you want to continue?",
+        "Opt out from managed version", () => {
+          applyModule(m)
+          setTimeout(() => checkStatus(), 3000)
+        })
     } else {
       applyModule(m)
-      setTimeout(() => checkStatus(), 3000)  
+      setTimeout(() => checkStatus(), 3000)
     }
   })
   return btn
@@ -422,7 +340,7 @@ function renderModules(m) {
       mDiv.parentNode.replaceChild(moduleCard(m), mDiv)
     }
   } else {
-    let div = document.getElementById('modules');
+    let div = document.getElementById('content');
     div.innerHTML = ""
     for (let m of modules) {
       div.appendChild(moduleCard(m))
@@ -486,16 +404,12 @@ function checkStatus() {
   for (let m of modules) {
     resPath(m.cr.resource).then((p) => {
       m.cr.path = p
-      return (p) ? fetch(API_PREFIX + p) : null
-    }).then((res) => {
-      if (res) {
-        m.cr.status = (res.status == 200)
-        return m.cr.status ? res.json() : null
-      }
-      return null
-    }
-    ).then((body) => {
+      console.log('Module', m.name, 'CR path', p)
+      return (p) ? get(p) : null
+    }).then((body) => {
       m.cr.value = body
+      m.cr.status = (body) ? true : false
+      console.log('Module', m.name, 'CR status', m.cr.status)
       renderModules(m)
     })
 
@@ -503,16 +417,12 @@ function checkStatus() {
       m.available = false
       m.actualVersion = undefined
       if (r.path) {
-        fetch(API_PREFIX + r.path).then((res) => {
-          if (res.status == 200) {
-            r.status = true
-            return res.json()
-          } else {
+        get(r.path).then((json) => {
+          if (!json) {
             r.status = false
-            r.value = undefined
+          } else {
+            r.status = true
           }
-          return null
-        }).then((json) => {
           r.value = json
           if (json && json.kind == 'Deployment') {
             if (json.spec.template.spec.containers.length == 1) {
@@ -524,7 +434,6 @@ function checkStatus() {
                 }
               }
             }
-            console.log(m.actualVersion, json.status)
             if (json.status && json.status.conditions) {
               let av = json.status.conditions.find(c => c.type == 'Available')
               if (av && av.status == "True") {
@@ -540,35 +449,43 @@ function checkStatus() {
     }
   }
 }
+function navbar() {
+  console.log('NAVBAR')
+  let navItems = [
+    { name: "Modules", hash: "#modules" },
+    // {name:"Services",hash:"#services"},
+  ]
+  let nav = document.getElementById('navigation')
+  nav.innerHTML = ""
+  let hash = window.location.hash
+  for (let i of navItems) {
+    let active = (hash == i.hash) ? 'active' : ''
+    let li = document.createElement('li')
+    li.setAttribute('class', 'nav-item')
+    let a = document.createElement('a')
+    a.setAttribute('class', `nav-link ${active}`)
+    a.href = i.hash
+    a.textContent = i.name
 
-function getPods() {
-  fetch(API_PREFIX + '/api/v1/pods')
-    .then((response) => response.json())
-    .then((podList) => {
-      pods = podList.items.sort((a, b) => {
-        let cmp = a.metadata.namespace.localeCompare(b.metadata.namespace)
-        if (cmp == 0) {
-          cmp = a.metadata.name.localeCompare(b.metadata.name)
-        }
-        return cmp
-      })
-      renderPods()
-    })
+    li.appendChild(a)
+    nav.appendChild(li)
+  }
 }
 
-function renderPods() {
-  let html = ''
-  pods.forEach(element => {
-    html += element.metadata.namespace + ' ' + element.metadata.name + '<br/>'
-  });
-  document.getElementById('pods').innerHTML = html
-
-}
-function renderNotManagedResources(list) {
-  document.getElementById("unmanaged").innerHTML = list.join("<br/>")
+function render() {
+  console.log('render')
+  navbar()
+  let hash = window.location.hash
+  channelDropdown()
+  loadChannel()
 }
 
-channelDropdown()
-loadChannel()
-// .then(notManagedResources)
-// .then(renderNotManagedResources)
+const registerBrowserBackAndForth = () => {
+  window.onpopstate = function (e) {
+    console.log('onpopstate')
+    render()
+  };
+};
+
+registerBrowserBackAndForth()
+render()
