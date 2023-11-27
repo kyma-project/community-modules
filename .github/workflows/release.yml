@@ -46,7 +46,7 @@ jobs:
           version=$(date +"%Y%m%dT%H%M") 
           echo "export const version='${version}'">app/version.mjs       
           npm run release
-          cp -a dist/ app/
+          cp  dist/* app/
       - name: Ship busola
         run: |
           container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/busola:latest)
