@@ -37,21 +37,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-      - name: Install node dependencies
-        run: |
-          cd script
-          npm install
       - name: Build channels
         run: |
-          cd app
-          node ../script/release-channels.js
+          npm install
+          node release-channels.js
       - name: Release app
         run: |
-          cd app
-          version=$(date +"%Y%m%dT%H%M")
-          cp kyma-modules.js kyma-modules-${version}.js
-          sed "s+kyma-modules.js+https://kyma-project.github.io/community-modules/kyma-modules-${version}.js+g" kyma.html > kyma2.html
-          sed "s+VERSION+${version}+g" kyma2.html >kyma.html
+          version=$(date +"%Y%m%dT%H%M") 
+          echo "export const version='${version}'">app/version.mjs       
+          npm run release
+          cp -a dist/ app/
       - name: Ship busola
         run: |
           container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/busola:latest)
