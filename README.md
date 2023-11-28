@@ -27,7 +27,7 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Usage 
 
-<img src="api-gateway-card.png" width=200 />
+<img src="api-gateway-card.png" width=300 />
 
 - **add** - adds module to Kyma custom resource (default Kyma CR in kyma-system namespace) and makes it a managed module. It means the module upgrades will be performed automatically when new version is available in the release channel. Available only for manageable modules in the managed Kyma cluster (SKR)
 - **remove** - removes module from Kyma custom resource (default Kyma CR in kyma-system namespace). Available only for managed modules in the managed Kyma cluster (SKR)
