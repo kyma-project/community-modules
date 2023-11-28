@@ -27,16 +27,15 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Usage 
 
-<img src="serverless-card.png" height=200 />
+<img src="api-gateway-card.png" width=200 />
 
 - **add** - adds module to Kyma custom resource (default Kyma CR in kyma-system namespace) and makes it a managed module. It means the module upgrades will be performed automatically when new version is available in the release channel. Available only for manageable modules in the managed Kyma cluster (SKR)
+- **remove** - removes module from Kyma custom resource (default Kyma CR in kyma-system namespace). Available only for managed modules in the managed Kyma cluster (SKR)
 - **apply** - applies the module manager and default configuration directly in your cluster. It means that the module is not managed and the new versions have to be applied manually. When module is managed the option is not available - you need to delete module first (remove it from Kyma CR)
-- **delete** - for managed modules it removes entry in the Kyma CR that initiates module deletion from Kyma Control Plane. For manually installed modules the action deletes all manage resources including module configuration, and when all of them are gone, deletes module manager deployment
+- **delete** - the action checks if there are any managed resources controlled by the module and asks for permission to delete them first (including module configuration resource), and when all of them are gone, deletes module manager deployment
 - **details** - show resources included in the module manager deployment Yaml
 
 ## Module view
-
-<img src="api-gateway-card.png" height=200 />
 
 The module view contains following information:
 - module name with optional badges (**managed** for modules managed by Kyma Control Plane, **community** modules that come from the community) 
@@ -79,7 +78,7 @@ Fields description:
 - **name** - name of your module (keep it short)
 - **deploymentYaml** - URL of your module deployment YAML (usually the artifact of your module release)
 - **crYaml** - URL of your module default configuration (custom resource)
-- **documentatio** - documentation URL
+- **documentation** - documentation URL
 - **repository** - main source code repository
 - **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
 - **versions** - list of module versions that can be included in release channels. In version entry you can override some module properties (usually deploymentYaml and crYaml)
