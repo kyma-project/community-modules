@@ -109,12 +109,6 @@ async function addModuleToKymaCR(name) {
 }
 
 async function deleteModule(m) {
-  if (m.managed) {
-    modal("This is a managed module. Do you want to remove it from SKR managed resources?", "Delete confirmation", async () => {
-      removeModuleFromKymaCR(m.name)
-    })
-    return
-  }
   let toDelete = await managedResourcesList(m)
   let body = `Do you want to delete module ${m.name}?`
   if (toDelete.length > 0) {
@@ -229,6 +223,7 @@ function applyBtn(m) {
   let btn = document.createElement("button")
   btn.textContent = "apply"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.disabled = m.managed || !m.deploymentYaml
   btn.addEventListener("click", function (event) {
     if (m.manageable) {
       modal("This module can be managed by Kyma Control Plane. "
@@ -249,6 +244,7 @@ function addBtn(m) {
   let btn = document.createElement("button")
   btn.textContent = "add"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.disabled = m.managed || !m.manageable
   btn.addEventListener("click", function (event) {
     addModuleToKymaCR(m.name)
     setTimeout(() => checkStatus(), 3000)
@@ -266,11 +262,28 @@ function detailsBtn(m) {
   })
   return btn
 }
+function removeBtn(m) {
+  let btn = document.createElement("button")
+  btn.textContent = "remove"
+  btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.disabled = !m.managed
+  btn.addEventListener("click", function () {
+    if (m.managed) {
+      modal("This is a managed module. Do you want to remove it from SKR managed resources?", "Remove module from Kyma CR", async () => {
+        removeModuleFromKymaCR(m.name)
+      })
+      return
+    }
+  
+  })
+  return btn
+}
 
 function deleteBtn(m) {
   let btn = document.createElement("button")
   btn.textContent = "delete"
   btn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  btn.disabled=m.managed
   btn.addEventListener("click", function () {
     deleteModule(m)
   })
@@ -292,14 +305,13 @@ function configLink(m) {
 }
 
 function moduleCard(m) {
+  let managedButtons = document.createElement("div")
+  managedButtons.setAttribute('class', 'd-inline-flex gap-1')
   let buttons = document.createElement("div")
   buttons.setAttribute('class', 'd-inline-flex gap-1')
-  if (m.manageable && !m.managed) {
-    buttons.appendChild(addBtn(m))
-  }
-  if (!m.managed && m.deploymentYaml) {
-    buttons.appendChild(applyBtn(m))
-  }
+  managedButtons.appendChild(addBtn(m))
+  managedButtons.appendChild(removeBtn(m))
+  buttons.appendChild(applyBtn(m))
   buttons.appendChild(deleteBtn(m))
   buttons.appendChild(detailsBtn(m))
   let col = document.createElement('div')
@@ -325,6 +337,10 @@ function moduleCard(m) {
     </small>`
   txt.innerHTML = html
   cardBody.appendChild(txt)
+  if (m.manageable) {
+    cardBody.appendChild(managedButtons)
+    cardBody.appendChild(document.createElement('p'))  
+  }
   cardBody.appendChild(buttons)
   cardBody.appendChild(deploymentList(m))
   card.appendChild(cardBody)
