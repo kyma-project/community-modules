@@ -87,10 +87,8 @@ You should assign module versions to release channels. The channels are defined 
 The channels.json and modules.json files are processed by the build workflow that generates release channels files ([latest.json](https://kyma-project.github.io/community-modules/latest.json), [fast.json](https://kyma-project.github.io/community-modules/fast.json), and [regular.json](https://kyma-project.github.io/community-modules/regular.json))
 If you want to test your module, you can generate that file on your own:
 ```
-cd script
 npm install
-cd ../app
-node ../script/release-channels.js
+node release-channels.js
 ```
 The latest.json file should be created. To test the UI with this file just add `channel` query parameter pointing to the desired channel: [http://127.0.0.1:8001/static/kyma.html?channel=latest.json](http://127.0.0.1:8001/static/kyma.html?channel=latest.json)
 
