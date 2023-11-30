@@ -1,5 +1,9 @@
 # Kyma community modules
 
+
+> **This repository contains an early prototype, and is not meant to be used in the production use case. Feel free to try it out, leave feedback, and report issues.**
+
+
 ## Overview
 
 Install Kyma modules in your Kubernetes cluster
