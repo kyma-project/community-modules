@@ -73,6 +73,7 @@ async function applyModule(m) {
   }
   await apply(m.cr.resource)
 }
+
 function openBusola() {
   localStorage.setItem('busola.clusters', '{"kyma":{"name":"kyma","kubeconfig":{"apiVersion":"v1","clusters":[{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"}],"contexts":[{"context":{"cluster":"kyma","user":"admin"},"name":"kyma"}],"current-context":"kyma","kind":"Config","preferences":{},"users":[{"name":"admin","user":{"token":"tokentokentoken"}}]},"contextName":"kyma","config":{"storage":"localStorage"},"currentContext":{"cluster":{"cluster":{"server":"http://127.0.0.1:8001/backend"},"name":"kyma"},"user":{"name":"admin","user":{"token":"tokentokentoken"}}}}}')
   window.open('/index.html', '_blank')
@@ -426,7 +427,6 @@ function checkStatus() {
       m.cr.value = body
       m.cr.status = (body) ? true : false
       console.log('Module', m.name, 'CR status', m.cr.status)
-      renderModules(m)
     })
 
     for (let r of m.resources) {
@@ -457,12 +457,10 @@ function checkStatus() {
               }
             }
           }
-
-        }).finally(() => {
-          renderModules(m)
         })
       }
     }
+    renderModules(m)
   }
 }
 function navbar() {
