@@ -1,4 +1,5 @@
 import { apply, get, resPath, deleteResource, patchResource } from './k8s.js'
+import "@ui5/webcomponents/dist/Button.js";
 
 var API_PREFIX = ''
 const DEFAULT_CHANNEL = 'https://kyma-project.github.io/community-modules/latest.json'
@@ -45,9 +46,9 @@ function channelDropdown() {
       ul.appendChild(li)
     }
   }
-  let updateBtn = document.createElement('button')
-  updateBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
-  updateBtn.setAttribute('type', 'button')
+  let updateBtn = document.createElement('ui5-button')
+  // updateBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+  // updateBtn.setAttribute('type', 'button')
   updateBtn.textContent = 'Update status'
   updateBtn.addEventListener('click', checkStatus)
 
@@ -56,9 +57,9 @@ function channelDropdown() {
   div.appendChild(updateBtn)
 
   if (API_PREFIX != '') {
-    let busolaBtn = document.createElement('button')
-    busolaBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
-    busolaBtn.setAttribute('type', 'button')
+    let busolaBtn = document.createElement('ui5-button')
+    // busolaBtn.setAttribute('class', 'btn btn-outline-primary btn-sm')
+    // busolaBtn.setAttribute('type', 'button')
     busolaBtn.textContent = 'Kyma Dashboard'
     busolaBtn.addEventListener('click', openBusola)
     div.appendChild(busolaBtn)
@@ -426,7 +427,7 @@ function checkStatus() {
     }).then((body) => {
       m.cr.value = body
       m.cr.status = (body) ? true : false
-      console.log('Module', m.name, 'CR status', m.cr.status)
+      renderModules(m)
     })
 
     for (let r of m.resources) {
@@ -457,10 +458,9 @@ function checkStatus() {
               }
             }
           }
-        })
+        }).then(() => {renderModules(m)}  ) 
       }
     }
-    renderModules(m)
   }
 }
 function navbar() {

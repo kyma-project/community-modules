@@ -5,11 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build app/kyma.html --public-url ./",
-    "release": "parcel build app/kyma.html --public-url https://kyma-project.github.io/community-modules/"
+    "release": "parcel build app/kyma.html --public-url https://kyma-project.github.io/community-modules/",
+    "dev": "parcel app/kyma.html --open"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ui5/webcomponents": "^1.19.1",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
