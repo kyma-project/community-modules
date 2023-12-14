@@ -159,7 +159,6 @@ async function build() {
   await latestVersions()
   const tasks = []
   for (let m of modules) {
-    m.versions.sort(semVerCompare)
     for (let v of m.versions) {
       v.cr = v.cr || m.cr
       tasks.push(loadModule(m, v))
@@ -192,6 +191,9 @@ async function build() {
   } else{
     console.log("No managed modules found. Clone module-manifests repo to add managed modules.")
   }
+  modules.forEach(m => {
+    m.versions.sort(semVerCompare)
+  })
   let filtered = modules.filter(m => m.versions.length > 0) 
   let code = `export default ${JSON.stringify(filtered, null, 2)}`
   fs.writeFileSync(`model.js`, code)
