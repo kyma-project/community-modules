@@ -28,5 +28,6 @@ jobs:
           node-version: '20.x'
       - name: Build channels
         run: |
+          mkdir -p public
           npm install
-          node release-channels.js
+          npm run build

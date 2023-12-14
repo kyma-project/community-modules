@@ -32,10 +32,12 @@ async function resPath(r) {
 function get(path) {
   return fetch(API_PREFIX + path).then((res) => {
     if (res.status == 200) {
-      return res.json()
+        return res.json()
     }
     return undefined
-  }).catch((e) => console.log('e2', e))
+  }).catch((e) => {
+    return undefined
+  })
 }
 async function deleteResource(pathOrResource) {
   if (typeof pathOrResource === 'string' || pathOrResource instanceof String) {
@@ -60,6 +62,5 @@ async function cacheAPI(apiVersion) {
   }
   return { resources: [] }
 }
-
 
 export {apply, get, deleteResource, patchResource, resPath}

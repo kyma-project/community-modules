@@ -2,6 +2,7 @@
 name: Deploy static content to Pages
 
 on:
+  repository_dispatch:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
@@ -31,33 +32,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Clone tools repo
+        run: |
+          git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-      - name: Build channels
-        run: |
-          npm install
-          node release-channels.js
       - name: Release app
         run: |
-          version=$(date +"%Y%m%dT%H%M") 
-          echo "export const version='${version}'">app/version.mjs       
-          npm run release
-          cp  dist/* app/
-      - name: Ship busola
-        run: |
-          container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/busola:latest)
-          docker cp $container_id:/app/core-ui ./busola
-          cp ./app/kyma.html ./busola/
-          tar -zcvf app/busola.tar.gz busola
+          mkdir -p public
+          npm install
+          npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
-          path: 'app'
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
