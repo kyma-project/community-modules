@@ -31,7 +31,7 @@ If you don't have any cluster at hand you can use this playground:
 
 ## Contribute your module
 
-Checkout the community-modules repository and add your own module by adding an entry in the [modules.json](modules.json) file. Example:
+Checkout the community-modules repository and add your own module by adding an entry in the [modules.js](./modules.js) file. Example:
 ```
   {
     "name": "api-gateway",
