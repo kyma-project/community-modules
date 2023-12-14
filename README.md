@@ -29,6 +29,9 @@ Open Web UI with this link: [http://127.0.0.1:8001/static/](http://127.0.0.1:800
 If you don't have any cluster at hand you can use this playground:
 [https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)
 
+Sample view for managed Kyma Runtime:
+![](modules-ui.png)
+
 ## Contribute your module
 
 Checkout the community-modules repository and add your own module by adding an entry in the [modules.js](./modules.js) file. Example:

@@ -37,14 +37,6 @@ self.MonacoEnvironment = {
 
 
 const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
-const url = new URL(window.location);
-let ASSETS_PATH = url.searchParams.get("assets") || ''
-
-async function loadModules() {
-  // return fetch(ASSETS_PATH+"modules.json").then(res => res.json())
-  return modules
-}
-
 
 async function installedManagers(modules) {
   let paths = {}
@@ -88,6 +80,7 @@ async function installedManagers(modules) {
       }
     }
   }
+  return modules
 }
 
 function render(modules) {
@@ -137,10 +130,6 @@ async function managedModules(modules) {
   return modules
 }
 
-async function userModules(modules) {
-  await installedManagers(modules)
-  return modules
-}
 
 async function managedResourcesList(m) {
   let list = []
@@ -221,7 +210,10 @@ async function deleteModule(m, btn) {
         console.log('removing', r)
         deleteResource(r)
       }
-      setTimeout(() => { deleteModule(m, btn) }, 1000)
+      if (m.managed) {
+        removeModuleFromKymaCR(m.name)
+      }  
+      setTimeout(() => { deleteModule(m, btn) }, 5000)
     })
   } else {
     if (m.managed) {
@@ -268,7 +260,7 @@ function refreshBtn() {
   btn.setAttribute('icon', 'refresh')
   btn.textContent = 'Refresh'
   btn.addEventListener('click', () => {
-    loadModules().then(managedModules).then(userModules).then(render)
+    installedManagers(modules).then(managedModules).then(render)
   })
   return btn
 }
@@ -544,4 +536,4 @@ function popover(title, content, anchor, btnText, onClick) {
   return popover
 }
 
-loadModules().then(managedModules).then(userModules).then(render)
+installedManagers(modules).then(managedModules).then(render)
