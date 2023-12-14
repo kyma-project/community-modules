@@ -24,7 +24,7 @@ Go to that folder and execute kubectl proxy command:
 ```
 kubectl proxy -w='.'
 ```
-Open Web UI with this link: [http://127.0.0.1:8001/static/kyma.html](http://127.0.0.1:8001/static/kyma.html)
+Open Web UI with this link: [http://127.0.0.1:8001/static/](http://127.0.0.1:8001/static/)
 
 If you don't have any cluster at hand you can use this playground:
 [https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)
