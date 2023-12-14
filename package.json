@@ -1,20 +1,22 @@
 {
-  "name": "script",
-  "version": "0.0.2",
-  "description": "",
+  "name": "modules-ui",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build app/kyma.html --public-url ./",
-    "release": "parcel build app/kyma.html --public-url https://kyma-project.github.io/community-modules/",
-    "dev": "parcel app/kyma.html --open"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@ui5/webcomponents": "^1.19.1",
-    "js-yaml": "^4.1.0"
+    "dev": "vite",
+    "prebuild": "node build-modules.js",
+    "build": "vite build --base https://kyma-project.github.io/community-modules/",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "parcel": "^2.10.3"
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@ui5/webcomponents": "^1.20.0",
+    "@ui5/webcomponents-icons": "^1.20.0",
+    "js-yaml": "^4.1.0",
+    "monaco-editor": "^0.45.0",
+    "monaco-yaml": "^5.1.0"
   }
 }
