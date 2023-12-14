@@ -444,7 +444,7 @@ function managedModulesTable(modules) {
     const row = document.createElement('ui5-table-row')
     row.innerHTML = `<ui5-table-cell>${externalLinkHtml(m.documentation, m.name)}</ui5-table-cell>
     <ui5-table-cell>${m.channel}</ui5-table-cell>
-    <ui5-table-cell>${m.actualVersion}</ui5-table-cell>
+    <ui5-table-cell>${m.actualVersion || '-'}</ui5-table-cell>
     <ui5-table-cell>${deploymentBadge(m)} ${image}</ui5-table-cell>`
 
     const actions = document.createElement('ui5-table-cell')
@@ -490,7 +490,7 @@ function installedModulesTable(modules) {
     let image = m.managerImage.split('/')[m.managerImage.split('/').length - 1]
     const row = document.createElement('ui5-table-row')
     row.innerHTML = `<ui5-table-cell>${externalLinkHtml(m.documentation, m.name)} ${notManagedWarning(m)}</ui5-table-cell>
-    <ui5-table-cell>${m.actualVersion}</ui5-table-cell>
+    <ui5-table-cell>${m.actualVersion || '-'}</ui5-table-cell>
     <ui5-table-cell>${deploymentBadge(m)} ${image}</ui5-table-cell>`
 
     const actions = document.createElement('ui5-table-cell')
