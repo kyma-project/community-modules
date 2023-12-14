@@ -336,7 +336,8 @@ function installPanel(m) {
   const managed = document.createElement('ui5-checkbox')
   managed.setAttribute('text', 'add as managed module (auto-update with the release channel)')
   managed.setAttribute('id', 'managedCheckbox')
-  const version = dropdownSelector(m.name + '-version', 'Version', m.versions.map(v => v.version).reverse())
+  const version = dropdownSelector(m.name + '-version', 'Version', m.versions
+  .filter(v => v.resources).map(v => v.version).reverse())
   const channel = dropdownSelector(m.name + '-channel', 'Channel', channelList(m))
   managed.addEventListener('change', () => {
     if (managed.checked) {
