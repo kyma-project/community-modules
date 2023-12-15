@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node build-modules.js",
-    "build": "vite build --base https://kyma-project.github.io/community-modules/",
-    "build-docker": "vite build",
+    "build": "node build-modules.js && vite build --base https://kyma-project.github.io/community-modules/",
+    "build-docker": "node build-modules.js && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
