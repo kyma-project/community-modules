@@ -19,19 +19,13 @@ import "@ui5/webcomponents-icons/dist/add-product.js";
 import "@ui5/webcomponents-icons/dist/chain-link.js";
 import { get, deleteResource, apply, patchResource } from "./k8s.js";
 import modules from "./model.js";
-import * as monaco from 'monaco-editor';
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import {editor} from 'monaco-editor';
 import yamlWorker from 'monaco-yaml/yaml.worker?worker';
 import * as jsYaml from 'js-yaml'
 
 self.MonacoEnvironment = {
   getWorker: function (workerId, label) {
-    switch (label) {
-      case 'yaml':
-        return yamlWorker();
-      default:
-        return editorWorker();
-    }
+    return yamlWorker();
   }
 };
 
@@ -246,7 +240,7 @@ function configureBtn(m) {
     popover(m.name + ' Configuration', div, btn, "Close", async () => {})
     let code  = jsYaml.dump(m.config)
     setTimeout(() => {
-      monaco.editor.create(div, {
+      editor.create(div, {
       value: code,
       language: 'yaml'
     });},0)
