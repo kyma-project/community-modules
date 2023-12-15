@@ -531,4 +531,5 @@ function popover(title, content, anchor, btnText, onClick) {
   return popover
 }
 
+render(modules)
 installedManagers(modules).then(managedModules).then(render)

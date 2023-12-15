@@ -17,7 +17,14 @@
 </head>
 
 <body data-ui5-compact-size>
-  <div id="app"></div>
+  <div id="app">
+    If the page is not loading, please <a href="https://kyma-project.github.io/community-modules/index.html" download>download the latest version</a> and save it in some directory.
+    You can do this also from command line:
+    <pre>curl https://kyma-project.github.io/community-modules/index.html -o index.html</pre>
+    Then execute the following command to start the local server:
+    <pre>kubectl proxy -w='.'</pre>
+    and open Web UI with this link: <a href="http://127.0.0.1:8001/static/">http://127.0.0.1:8001/static/</a>
+  </div>
   <div id="overlay"></div>
   <script type="module" src="/main.js"></script>
 </body>

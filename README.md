@@ -16,25 +16,52 @@ Install Kyma modules in your Kubernetes cluster
 
 ## Installation
 
-Download `index.html` file and save it in any folder:
 ```
-curl https://kyma-project.github.io/community-modules/index.html -o index.html
+kubectl run ui --image=ghcr.io/kyma-project/community-modules:latest
 ```
-Go to that folder and execute kubectl proxy command:
+
+When the pod is ready, start kubectl proxy:
 ```
-kubectl proxy -w='.'
+kubectl wait --for=condition=ready pod ui
+kubectl proxy
 ```
-Open Web UI with this link: [http://127.0.0.1:8001/static/](http://127.0.0.1:8001/static/)
+
+Open Web UI with this link: [http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/](http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/)
+
 
 If you don't have any cluster at hand you can use this playground:
 [https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)
 
 Sample view for managed Kyma Runtime:
+
 ![](modules-ui.png)
+
+## Clean up
+
+Just stop the proxy (Ctrl+C) and delete the UI pod:
+```
+kubectl delete pod ui
+```
+
+## Run (develop) locally
+
+Prepare your development cluster and configure kubectl (KUBECONFIG). Start the proxy:
+```
+kubectl proxy
+```
+Now open new terminal window and execute:
+```
+npm install
+npm run build
+npm run dev
+```
+Now open the provided URL with the query parameter `api=backend`, e.g.: [http://localhost:5173/?api=backend](http://localhost:5173/?api=backend)
+
+
 
 ## Contribute your module
 
-Checkout the community-modules repository and add your own module by adding an entry in the [modules.js](./modules.js) file. Example:
+Add your own module by adding an entry in the [modules.js](./modules.js) file. Example:
 ```
   {
     "name": "api-gateway",
@@ -61,27 +88,21 @@ Checkout the community-modules repository and add your own module by adding an e
 ```
 Fields description:
 - **name** - name of your module (keep it short)
-- **deploymentYaml** - URL of your module deployment YAML (usually the artifact of your module release)
-- **crYaml** - URL of your module default configuration (custom resource)
+- **latestGithubRelease** - information how to fetch the latest github release
+  - **repository** - repository owner / repository name
+  - **deploymentYaml** - release artifact name of deployment YAML
+  - **crYaml** - release artifact name of your module default configuration
 - **documentation** - documentation URL
 - **repository** - main source code repository
 - **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
 - **versions** - list of module versions that can be included in release channels. In version entry you can override some module properties (usually deploymentYaml and crYaml)
+  - **deploymentYaml** - URL of your module version deployment YAML (usually the artifact of your module release)
+  - **crYaml** - URL of your module version default configuration (custom resource)
 
 If you want to test your module, you can have to regenerate modules:
 ```
-npm install
 npm run build
 ```
-The public/modules.json file should be created. To test the UI run:
-```
-kubectl proxy 
-```
-In another terminal open run
-```
-npm run dev
-```
-And open the URL with the query parameter `api=backend`, e.g.: [http://localhost:5173/?api=backend](http://localhost:5173/?api=backend)
 
 
 For standard contribution rules see [CONTRIBUTING.md](CONTRIBUTING.md).
