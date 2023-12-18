@@ -86,14 +86,14 @@ function render(modules) {
   let managed = modules.filter(m => m.managed)
   if (managed.length > 0) {
     app.appendChild(modulesCard(managedModulesTable(managed), 'Managed Modules',
-    'Modules managed by the Kyma Control Plane (auto-update with the release channel)'))
+    'Modules managed by the Kyma Control Plane (SLA, auto-update with the release channel)'))
   }
 
   let installed = modules.filter(m => m.actualVersion && !m.managed)
   if (installed.length > 0) {
     app.appendChild(
       modulesCard(installedModulesTable(installed), 'User Modules',
-        'Modules installed by the user (no auto-update)'))
+        'Modules installed by the user (no SLA, no auto-update)'))
   
   }
 
@@ -419,9 +419,9 @@ function availableModulesTable(modules) {
 }
 function deploymentBadge(m) {
   if (m.available) {
-    return `<ui5-badge color-scheme="8">Ready</ui5-badge>`
+    return `<ui5-badge color-scheme="8" class="small-badge">Ready</ui5-badge>`
   } else {
-    return `<ui5-badge color-scheme="1">Not Ready</ui5-badge>`
+    return `<ui5-badge color-scheme="1" class="small-badge">Not Ready</ui5-badge>`
   }
 
 }
@@ -454,7 +454,7 @@ function managedModulesTable(modules) {
 }
 function notManagedWarning(m) {
   if (m.actualVersion && m.manageable && !m.managed) {
-    return `<ui5-badge color-scheme="1">Not Managed</ui5-badge>`
+    return `<ui5-badge color-scheme="1" class="small-badge">Not Managed</ui5-badge>`
   }
   return ''
 }
@@ -464,13 +464,6 @@ function externalLinkHtml(href, name) {
     return `<ui5-link href="${href}" target="_blank">${name}</ui5-link>`
   }
   return name
-}
-
-function externalLink(href, name) {
-  if (href) {
-    return `<ui5-link href="${href}" target="_blank">${name} <ui5-icon name="sap-icon://chain-link"></ui5-icon></ui5-link>`
-  }
-  return null
 }
 
 
