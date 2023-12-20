@@ -17,6 +17,10 @@ import "@ui5/webcomponents-icons/dist/refresh.js";
 import "@ui5/webcomponents-icons/dist/settings.js";
 import "@ui5/webcomponents-icons/dist/add-product.js";
 import "@ui5/webcomponents-icons/dist/chain-link.js";
+import "@ui5/webcomponents-icons/dist/menu2.js";
+
+import "@ui5/webcomponents-fiori/dist/ShellBar.js";
+import "@ui5/webcomponents-fiori/dist/ShellBarItem.js";
 import { get, deleteResource, apply, patchResource } from "./k8s.js";
 import modules from "./model.js";
 import {editor} from 'monaco-editor';
@@ -80,8 +84,6 @@ async function installedManagers(modules) {
 function render(modules) {
   let app = document.querySelector('#app');
   app.innerHTML = ""
-
-  app.appendChild(refreshBtn())
 
   let managed = modules.filter(m => m.managed)
   if (managed.length > 0) {
@@ -523,6 +525,11 @@ function popover(title, content, anchor, btnText, onClick) {
   setTimeout(() => popover.showAt(anchor), 0)
   return popover
 }
-
+function registerListeners() {
+  document.querySelector('#refreshBtn').addEventListener('click', () => {
+    installedManagers(modules).then(managedModules).then(render)
+  })
+}
+registerListeners()
 render(modules)
 installedManagers(modules).then(managedModules).then(render)
