@@ -141,6 +141,7 @@ async function latestVersions() {
 function isSemVer(version) {
   return /^\d+\.\d+\.\d+$/.test(version)
 }
+
 function semVerCompare(a, b) {
   const aParts = a.version.split('.')
   const bParts = b.version.split('.')
@@ -293,4 +294,3 @@ function loadModulesFromManifests(folder) {
   return modules
 }
 build()
-// loadModulesFromManifests('module-manifests/modules')

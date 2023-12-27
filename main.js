@@ -1,34 +1,44 @@
+import '@ui5/webcomponents/dist/Badge.js';
 import '@ui5/webcomponents/dist/Button';
-import '@ui5/webcomponents/dist/Table';
-import '@ui5/webcomponents/dist/TableColumn';
-import '@ui5/webcomponents/dist/TableRow';
-import '@ui5/webcomponents/dist/TableCell';
 import '@ui5/webcomponents/dist/Card';
 import '@ui5/webcomponents/dist/CardHeader';
-import '@ui5/webcomponents/dist/ResponsivePopover.js';
-import '@ui5/webcomponents/dist/Badge.js';
-import '@ui5/webcomponents/dist/Select.js';
-import '@ui5/webcomponents/dist/Option.js';
 import '@ui5/webcomponents/dist/Icon.js';
 import '@ui5/webcomponents/dist/Link.js';
+import '@ui5/webcomponents/dist/Option.js';
+import '@ui5/webcomponents/dist/ResponsivePopover.js';
+import '@ui5/webcomponents/dist/Select.js';
+import '@ui5/webcomponents/dist/Table';
+import '@ui5/webcomponents/dist/TableCell';
+import '@ui5/webcomponents/dist/TableColumn';
+import '@ui5/webcomponents/dist/TableRow';
 
+import "@ui5/webcomponents-icons/dist/add-product.js";
+import "@ui5/webcomponents-icons/dist/calendar.js";
+import "@ui5/webcomponents-icons/dist/chain-link.js";
 import "@ui5/webcomponents-icons/dist/delete.js";
+import "@ui5/webcomponents-icons/dist/group.js";
+import "@ui5/webcomponents-icons/dist/history.js";
+import "@ui5/webcomponents-icons/dist/home.js";
+import "@ui5/webcomponents-icons/dist/locate-me.js";
+import "@ui5/webcomponents-icons/dist/menu2.js";
+import "@ui5/webcomponents-icons/dist/product.js";
+import "@ui5/webcomponents-icons/dist/puzzle.js";
 import "@ui5/webcomponents-icons/dist/refresh.js";
 import "@ui5/webcomponents-icons/dist/settings.js";
-import "@ui5/webcomponents-icons/dist/add-product.js";
-import "@ui5/webcomponents-icons/dist/chain-link.js";
-import "@ui5/webcomponents-icons/dist/menu2.js";
 
 import "@ui5/webcomponents-fiori/dist/ShellBar.js";
 import "@ui5/webcomponents-fiori/dist/ShellBarItem.js";
-import { get, deleteResource, apply, patchResource } from "./k8s.js";
-import modules from "./model.js";
-import {editor} from 'monaco-editor';
+import "@ui5/webcomponents-fiori/dist/SideNavigation.js";
+import "@ui5/webcomponents-fiori/dist/SideNavigationItem.js";
+
+import * as jsYaml from 'js-yaml';
+import { editor } from 'monaco-editor';
 import yamlWorker from 'monaco-yaml/yaml.worker?worker';
-import * as jsYaml from 'js-yaml'
+import { apply, deleteResource, get, patchResource } from "./k8s.js";
+import modules from "./model.js";
 
 self.MonacoEnvironment = {
-  getWorker: function (workerId, label) {
+  getWorker: function () {
     return yamlWorker();
   }
 };
@@ -88,7 +98,7 @@ function render(modules) {
   let managed = modules.filter(m => m.managed)
   if (managed.length > 0) {
     app.appendChild(modulesCard(managedModulesTable(managed), 'Managed Modules',
-    'Modules managed by the Kyma Control Plane (SLA, auto-update with the release channel)'))
+      'Modules managed by the Kyma Control Plane (SLA, auto-update with the release channel)'))
   }
 
   let installed = modules.filter(m => m.actualVersion && !m.managed)
@@ -96,7 +106,7 @@ function render(modules) {
     app.appendChild(
       modulesCard(installedModulesTable(installed), 'User Modules',
         'Modules installed by the user (no SLA, no auto-update)'))
-  
+
   }
 
   app.appendChild(modulesCard(availableModulesTable(modules), 'Available Modules',
@@ -208,7 +218,7 @@ async function deleteModule(m, btn) {
       }
       if (m.managed) {
         removeModuleFromKymaCR(m.name)
-      }  
+      }
       setTimeout(() => { deleteModule(m, btn) }, 5000)
     })
   } else {
@@ -239,27 +249,19 @@ function configureBtn(m) {
   btn.addEventListener('click', async () => {
     const div = document.createElement('div')
     div.setAttribute('class', 'code')
-    popover(m.name + ' Configuration', div, btn, "Close", async () => {})
-    let code  = jsYaml.dump(m.config)
+    popover(m.name + ' Configuration', div, btn, "Close", async () => { })
+    let code = jsYaml.dump(m.config)
     setTimeout(() => {
       editor.create(div, {
-      value: code,
-      language: 'yaml'
-    });},0)
-  
+        value: code,
+        language: 'yaml'
+      });
+    }, 0)
+
   })
   return btn
 }
 
-function refreshBtn() {
-  const btn = document.createElement('ui5-button')
-  btn.setAttribute('icon', 'refresh')
-  btn.textContent = 'Refresh'
-  btn.addEventListener('click', () => {
-    installedManagers(modules).then(managedModules).then(render)
-  })
-  return btn
-}
 
 function removeBtn(m) {
   const btn = document.createElement('ui5-button')
@@ -333,7 +335,7 @@ function installPanel(m) {
   managed.setAttribute('text', 'add as managed module (auto-update with the release channel)')
   managed.setAttribute('id', 'managedCheckbox')
   const version = dropdownSelector(m.name + '-version', 'Version', m.versions
-  .filter(v => v.resources).map(v => v.version).reverse())
+    .filter(v => v.resources).map(v => v.version).reverse())
   const channel = dropdownSelector(m.name + '-channel', 'Channel', channelList(m))
   managed.addEventListener('change', () => {
     if (managed.checked) {
@@ -373,7 +375,7 @@ function installBtn(m) {
   btn.setAttribute('icon', 'add-product')
   let options = installPanel(m)
   btn.addEventListener('click', () => {
-    const pop = popover(`Add ${m.name}`, options, btn, "Install", async () => {
+    popover(`Add ${m.name}`, options, btn, "Install", async () => {
       if (options.querySelector('#managedCheckbox').checked) {
         console.log('adding', m.name, options.getChannel())
         addModuleToKymaCR(m.name, options.querySelector('#defaultConfigCheckbox').checked, options.getChannel())
@@ -529,6 +531,13 @@ function registerListeners() {
   document.querySelector('#refreshBtn').addEventListener('click', () => {
     installedManagers(modules).then(managedModules).then(render)
   })
+  // const sidenav = document.querySelector("ui5-side-navigation");
+  // document.getElementById("toggle").addEventListener("click", () => {
+  //   sidenav.toggleAttribute("collapsed");
+  // });
+  // document.querySelector('#navItemModules').addEventListener('item-click', () => {
+  //   installedManagers(modules).then(managedModules).then(render)
+  // })
 }
 registerListeners()
 render(modules)
