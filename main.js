@@ -531,13 +531,13 @@ function registerListeners() {
   document.querySelector('#refreshBtn').addEventListener('click', () => {
     installedManagers(modules).then(managedModules).then(render)
   })
-  // const sidenav = document.querySelector("ui5-side-navigation");
-  // document.getElementById("toggle").addEventListener("click", () => {
-  //   sidenav.toggleAttribute("collapsed");
-  // });
-  // document.querySelector('#navItemModules').addEventListener('item-click', () => {
-  //   installedManagers(modules).then(managedModules).then(render)
-  // })
+  const sidenav = document.querySelector("ui5-side-navigation");
+  document.getElementById("toggle").addEventListener("click", () => {
+    sidenav.toggleAttribute("collapsed");
+  });
+  document.querySelector('#navItemModules').addEventListener('click', () => {
+    installedManagers(modules).then(managedModules).then(render)
+  })
 }
 registerListeners()
 render(modules)
