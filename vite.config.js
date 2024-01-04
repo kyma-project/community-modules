@@ -1,4 +1,8 @@
-export default 
+
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+
+export default defineConfig(
 {
   server: {
     proxy: {
@@ -9,5 +13,13 @@ export default
         rewrite: (path) => path.replace(/^\/backend/, '/'),
       }
     }
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        nested: resolve(__dirname, 'test/test.html'),
+      },
+    },
   }
-}
+})

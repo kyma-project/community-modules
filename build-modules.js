@@ -1,16 +1,44 @@
 import * as jsYaml from 'js-yaml'
 import * as fs from 'fs'
 import modules from "./modules.js";
+import { semVerCompare, isSemVer } from './semver.js'
+
+async function getGithubRelease(m,v) {
+  if (m.latestGithubRelease) {
+    const headers = {}
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`
+    }
+
+    let path = `https://api.github.com/repos/${m.latestGithubRelease.repository}/releases`
+    try {
+      let res = await fetch(path, { headers })
+      if (res.status != 200) {
+        console.log("error fetching release", m.name, res.status)
+        return
+      }
+      let body = await res.json()
+      for (let r of body) {
+        if (r.tag_name == v.version) {
+          let deploymentYaml = r.assets.find(a => a.name == m.latestGithubRelease.deploymentYaml)
+          let crYaml = r.assets.find(a => a.name == m.latestGithubRelease.crYaml)
+          if (!v.deploymentYaml) {
+            v.deploymentYaml = deploymentYaml.browser_download_url
+            console.log("deploymentYaml", v.deploymentYaml)
+          }
+          if (!v.crYaml) {
+            v.crYaml = crYaml.browser_download_url
+            console.log("crYaml", v.crYaml) 
+          }          
+        }
+      }
 
 
-function trimNonDigitsPrefix(s){
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] >= '0' && s[i] <= '9') {
-      return s.substring(i)
+    } catch(e) {
+      console.log(e)
     }
   }
 }
-
 async function getLatestVersion(m) {
   if (m.latestGithubRelease) {
     const headers = {}
@@ -38,10 +66,10 @@ async function getLatestVersion(m) {
           console.log(crYaml.browser_download_url, "<>", existing.crYaml)
           throw new Error("CR YAML URL mismatch for latest release of module " + m.name)
         }
-      } else {
+      } else if (isSemVer(version)) {
         console.log("adding latest version", version, "to module", m.name)
         m.versions.push({
-          version: trimNonDigitsPrefix(version),
+          version: version,//trimNonDigitsPrefix(version),
           deploymentYaml: deploymentYaml.browser_download_url,
           crYaml: crYaml.browser_download_url
         })
@@ -138,24 +166,6 @@ async function latestVersions() {
   console.log("latest versions checked")
 }
 
-function isSemVer(version) {
-  return /^\d+\.\d+\.\d+$/.test(version)
-}
-
-function semVerCompare(a, b) {
-  const aParts = a.version.split('.')
-  const bParts = b.version.split('.')
-  for (let i = 0; i < 3; i++) {
-    if (aParts[i] > bParts[i]) {
-      return 1
-    }
-    if (aParts[i] < bParts[i]) {
-      return -1
-    }
-  }
-  return 0
-}
-
 async function build() {
   await latestVersions()
   const tasks = []
@@ -183,6 +193,7 @@ async function build() {
             
           } else {
             console.log('adding managed version ',mv.version,'to module ',m.name)
+
             m.versions.push(mv)
           }
         }
@@ -192,9 +203,16 @@ async function build() {
   } else{
     console.log("No managed modules found. Clone module-manifests repo to add managed modules.")
   }
+  let tasks2 = []
   modules.forEach(m => {
     m.versions.sort(semVerCompare)
+    console.log("checking github releases for module", m.name)
+    m.versions.forEach(async v => {
+      console.log("  version", v.version)
+      tasks2.push(getGithubRelease(m,v))
+    })
   })
+  await Promise.allSettled(tasks2)
   let filtered = modules.filter(m => m.versions.length > 0) 
   let code = `export default ${JSON.stringify(filtered, null, 2)}`
   fs.writeFileSync(`model.js`, code)

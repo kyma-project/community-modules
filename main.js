@@ -429,6 +429,17 @@ function deploymentBadge(m) {
   }
 
 }
+function versionBadge(m) {
+  if (m.managerImage && m.channel) {
+    let channelVersion = m.versions.find(v => v.channels && v.channels.includes(m.channel))
+    if (channelVersion && channelVersion.managerImage!=m.managerImage) {
+      let image = channelVersion.managerImage ? channelVersion.managerImage.split('/')[channelVersion.managerImage.split('/').length - 1] : ''
+
+      return `<ui5-badge color-scheme="1" class="small-badge">expected version: ${image}</ui5-badge>`
+    }
+  } 
+  return ''
+}
 
 function managedModulesTable(modules) {
   const columns = `<ui5-table-column slot="columns">name</ui5-table-column>
@@ -444,7 +455,7 @@ function managedModulesTable(modules) {
     row.innerHTML = `<ui5-table-cell>${externalLinkHtml(m.documentation, m.name)}</ui5-table-cell>
     <ui5-table-cell>${m.channel}</ui5-table-cell>
     <ui5-table-cell>${m.actualVersion || '-'}</ui5-table-cell>
-    <ui5-table-cell>${deploymentBadge(m)} ${image}</ui5-table-cell>`
+    <ui5-table-cell>${deploymentBadge(m)} ${image} ${versionBadge(m)}</ui5-table-cell>`
 
     const actions = document.createElement('ui5-table-cell')
     actions.setAttribute('style', 'text-align: right')

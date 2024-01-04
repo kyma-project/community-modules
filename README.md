@@ -16,6 +16,7 @@ Install Kyma modules in your Kubernetes cluster
 
 ## Installation
 
+
 ```
 kubectl run ui --image=ghcr.io/kyma-project/community-modules:latest
 ```

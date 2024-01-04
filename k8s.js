@@ -1,7 +1,13 @@
-const url = new URL(window.location);
-const API_PREFIX = url.searchParams.get("api") || ''
+const API_PREFIX = getApiPrefix()
 var groupVersions = {}
 
+function getApiPrefix() {
+  if (typeof window !== 'undefined') {
+    return new URL(window.location).searchParams.get("api") || ''
+
+  }
+  return ''
+}
 
 async function apply(res) {
   let path = await resPath(res)
