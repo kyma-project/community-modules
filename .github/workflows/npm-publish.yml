@@ -5,6 +5,8 @@ name: Node.js Package
 
 on:
   workflow_dispatch:
+  push:
+    tags: [ '*.*.*' ]
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
