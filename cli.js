@@ -6,6 +6,7 @@ import { program, Option } from 'commander'
 import proxy from 'express-http-proxy';
 import express from 'express';
 import open from 'open';
+import path from 'path';
 
 
 
@@ -77,7 +78,7 @@ function ui(){
     console.log(`stdout: ${stdout}`);    
   })
   app.use('/backend', proxy('127.0.0.1:8001'));
-  app.use(express.static('dist'))
+  app.use(express.static(path.resolve("dist")))
   app.listen(this.opts().port);
   open('http://localhost:'+this.opts().port+'?api=backend');
   
