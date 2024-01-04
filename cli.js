@@ -50,7 +50,9 @@ program.command('deploy')
         }            
         if (this.opts().defaultConfig && v.crYaml) {
           await command('kubectl apply -f '+v.crYaml, this.opts())
-        } 
+        } else {
+          console.log("no default CR YAML found for module", module)
+        }
       }
     }
   })

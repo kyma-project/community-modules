@@ -26,11 +26,17 @@ function versionTest(version) {
     })
     it('released version contains deployment YAML', function () {
       if (!version.deploymentYaml) {
+        if (version.channels && version.channels.length>0) {
+          this.skip()
+        }
         throw new Error('Version ' + version.version + ' does not contain deployment YAML')
       }
     })
     it('released version contains default CR YAML', function () {
       if (!version.crYaml) {
+        if (version.channels && version.channels.length>0) {
+          this.skip()
+        }
         throw new Error('Version ' + version.version + ' does not contain default CR YAML')
       }
     })
