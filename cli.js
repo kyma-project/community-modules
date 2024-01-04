@@ -43,14 +43,13 @@ program.command('deploy')
         process.exit(1)
       }
       else {
-        console.log("deploying module", m.name+":"+v.version) 
         if (v.deploymentYaml) {          
-          await command('kubectl apply -f '+v.deploymentYaml)
+          await command('kubectl apply -f '+v.deploymentYaml, this.opts())
         } else {
           console.log("no deployment YAML found for module", module)
         }            
         if (this.opts().defaultConfig && v.crYaml) {
-          await command('kubectl apply -f '+v.crYaml)
+          await command('kubectl apply -f '+v.crYaml, this.opts())
         } 
       }
     }
@@ -128,10 +127,10 @@ function filterFunc(options) {
   }
 }
 
-function command(cmd) {
+function command(cmd, opts) {
   console.log(cmd)
   return new Promise((resolve, reject) => {
-    if (program.opts().dryRun) {
+    if (opts.dryRun) {
       resolve()
     } else {
       exec(cmd, (error, stdout, stderr) => {
