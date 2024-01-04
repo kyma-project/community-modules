@@ -140,7 +140,7 @@ function command(cmd, opts) {
         }
         if (stderr) {
           console.log(stderr);
-          reject(stderr)
+          resolve(stderr)
         }
         console.log(stdout);
         resolve()
