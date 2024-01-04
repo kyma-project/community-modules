@@ -16,7 +16,7 @@ Install Kyma modules in your Kubernetes cluster
 
 ## Installation
 
-
+### In-cluster
 ```
 kubectl run ui --image=ghcr.io/kyma-project/community-modules:latest
 ```
@@ -29,6 +29,51 @@ kubectl proxy
 
 Open Web UI with this link: [http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/](http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/)
 
+### With CLI
+You need node.js (version 20 or above)
+
+```
+npm install -g kyma
+```
+
+Now you can see available kyma modules and their versions:
+```
+kyma modules
+
+istio: 1.1.2 (experimental), 1.2.1 (fast, regular)
+api-gateway: 2.0.0 (experimental, fast, regular)
+serverless: 1.2.1 (fast, regular)
+btp-operator: 1.1.1 (fast, regular)
+telemetry: 1.5.1 (regular), 1.6.0 (fast), 1.6.0-dev (experimental)
+nats: v1.0.2 (experimental, fast, regular)
+eventing: 1.0.1 (experimental), 1.0.2 (fast, regular)
+application-connector: 1.0.5 (fast, regular)
+keda: 1.0.2 (fast, regular)
+transparent-proxy: 1.3.1 (fast, regular)
+cap-operator: v0.0.1 (experimental, fast, regular)
+cluster-ip: 0.0.28
+```
+
+You can deploy one or more modules (add option `--dry-run` to see kubectl commands without executing them):
+```
+kyma deploy -m serverless nats eventing --defaultConfig --dry-run
+
+kubectl apply -f https://github.com/kyma-project/serverless/releases/download/1.2.1/serverless-operator.yaml
+kubectl apply -f https://github.com/kyma-project/serverless/releases/download/1.2.1/default-serverless-cr.yaml
+kubectl apply -f https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats-manager.yaml
+kubectl apply -f https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats_default_cr.yaml
+kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing-manager.yaml
+kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing_default_cr.yaml
+```
+
+You can provide the module version by adding `:<version>` sufix to the module name. If not provided the version from the provided channel will be used, or the latest version if channel is not specified.
+
+You can also start the web interface locally:
+```
+kyma ui
+```
+
+### Killercoda
 
 If you don't have any cluster at hand you can use this playground:
 [https://killercoda.com/interactive-kyma/scenario/oss-modules](https://killercoda.com/interactive-kyma/scenario/oss-modules)

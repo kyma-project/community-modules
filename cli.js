@@ -31,7 +31,7 @@ program.command('version')
 program.command('deploy')
   .description('deploy modules')
   .option('-c, --channel <string>','use module version from channel')
-  .option('--defaultConfig','apply default configuration', true)
+  .option('--defaultConfig','apply default configuration')
   .option('-m, --modules <name:version...>'
     , 'install one or more modules; put :<version> after module name to specify version'
     , ["istio", "api-gateway"])
