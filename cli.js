@@ -7,8 +7,9 @@ import proxy from 'express-http-proxy';
 import express from 'express';
 import open from 'open';
 import path from 'path';
-
-
+import * as url from 'url';
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 program.command('modules')
   .description('list modules')
@@ -17,6 +18,16 @@ program.command('modules')
 
     console.log(modules.filter(filterFunc(options)).map(m => `${m.name}: ${moduleVersions(m)}`).join('\n'))
   })
+program.command('version')
+.description('show version')
+.action(async () => {
+  const { default: info } = await import("./package.json", {
+    assert: {
+      type: "json",
+    },
+  });
+  console.log(info.version)
+})
 program.command('deploy')
   .description('deploy modules')
   .option('-c, --channel <string>','use module version from channel')
@@ -78,7 +89,7 @@ function ui(){
     console.log(`stdout: ${stdout}`);    
   })
   app.use('/backend', proxy('127.0.0.1:8001'));
-  app.use(express.static(path.resolve("dist")))
+  app.use(express.static(path.resolve(__dirname,"dist")))
   app.listen(this.opts().port);
   open('http://localhost:'+this.opts().port+'?api=backend');
   
