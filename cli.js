@@ -8,14 +8,48 @@ import express from 'express';
 import open from 'open';
 import path from 'path';
 import * as url from 'url';
+import k8sClient from '@kubernetes/client-node'
+import { Agent } from 'undici';
+import { Client } from './k8s.js'
+import { installedManagers, managedModules } from './module-management.js'
+import { table } from 'table'
+
+
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+function defaultClient() {
+  let kc = new k8sClient.KubeConfig();
+  kc.loadFromDefault();
+  const opts = {};
+  kc.applyToRequest(opts);
+  opts.dispatcher = new Agent({
+    connect: {
+      rejectUnauthorized: false,
+    }
+  })
+  return new Client(kc.getCurrentCluster().server, opts)
+}
+
+program.command('ns')
+  .description('get namespaces')
+  .action(async () => {
+    let client=defaultClient()
+    client.get('/api/v1/namespaces')
+      .then((json) => {
+        console.log(json.items.map(ns => ns.metadata.name).join('\n'))
+      });
+
+  })
 
 program.command('modules')
   .description('list modules')
   .option('-c, --channel <string>')
-  .action((options) => {
-
-    console.log(modules.filter(filterFunc(options)).map(m => `${m.name}: ${moduleVersions(m)}`).join('\n'))
+  .action(async function () {
+    let client=defaultClient()
+    
+    await installedManagers(modules,client)
+    await managedModules(modules,client)
+    moduleTable(modules)
   })
 program.command('version')
   .description('show version')
@@ -27,6 +61,15 @@ program.command('version')
     });
     console.log(info.version)
   })
+
+function moduleTable(modules) {
+  let data = [['Module', 'Installed', 'Channel', 'Available versions']]
+  modules.forEach(m => {  
+    data.push([m.name,m.actualVersion || '' , m.managed ? m.channel:'', moduleVersions(m)])
+  })
+  console.log(table(data))
+  
+}
 program.command('deploy')
   .description('deploy modules')
   .option('-m, --modules <name:version...>'
@@ -43,23 +86,12 @@ program.command('deploy')
         process.exit(1)
       }
       else {
-        if (v.deploymentYaml) {
-          await command('kubectl apply -f ' + v.deploymentYaml, this.opts())
-        } else {
-          console.log("no deployment YAML found for module", module)
-        }
-        if (!this.opts().customConfig) {
-          if (v.crYaml) {
-            await command('kubectl apply -f ' + v.crYaml, this.opts())
-          } else {
-            console.log("no default CR YAML found for module", module)
-          }          
-        }
+        await applyModuleResource(m, v, this.opts())
       }
     }
   })
 
-  program.command('ui')
+program.command('ui')
   .description('start web interface')
   .option('-p, --port <number>', 'port to listen on', 3000)
   .action(ui)
@@ -76,21 +108,21 @@ function ui() {
   console.log("starting ui on port", this.opts().port)
 
   var app = express();
-  exec("kubectl proxy", (error, stdout, stderr) => {
-    if (error) {
-      console.log(`error: ${error.message}`);
-      return;
+
+  let kc = new k8sClient.KubeConfig();
+  kc.loadFromDefault();
+
+  app.use('/backend', proxy(kc.getCurrentCluster().server, {
+    proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
+      proxyReqOpts.rejectUnauthorized = false
+      kc.applyToRequest(proxyReqOpts)
+      return proxyReqOpts;
     }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-  })
-  app.use('/backend', proxy('127.0.0.1:8001'));
+  }));
+
   app.use(express.static(path.resolve(__dirname, "dist")))
   app.listen(this.opts().port);
-  open('http://localhost:' + this.opts().port + '?api=backend');
+  open('http://localhost:' + this.opts().port);
 
 }
 
@@ -127,24 +159,31 @@ function filterFunc(options) {
   }
 }
 
-function command(cmd, opts) {
-  console.log(cmd)
-  return new Promise((resolve, reject) => {
-    if (opts.dryRun) {
-      resolve()
-    } else {
-      exec(cmd, (error, stdout, stderr) => {
-        if (error) {
-          console.log(`${error.message}`);
-          reject(error)
-        }
-        if (stderr) {
-          console.log(stderr);
-          resolve(stderr)
-        }
-        console.log(stdout);
-        resolve()
-      });
+async function applyModuleResource(m, v, opts) {
+  let client
+  if (!opts.dryRun) {
+    client = defaultClient()
+  }
+  if (v.deploymentYaml) {
+    console.log('kubectl apply -f ' + v.deploymentYaml)
+    if (!opts.dryRun) {
+      for (let r of v.resources) {
+          await client.apply(r)
+      }
     }
-  })
+  } else {
+    console.log("no deployment YAML found for module", module)
+  }
+  if (!opts.customConfig) {
+    if (v.crYaml) {
+      console.log('kubectl apply -f ' + v.crYaml)
+      if (!opts.dryRun) {        
+        await client.apply(v.cr)        
+      }
+    } else {
+      console.log("no default CR YAML found for module", module)
+    }
+  }
+
 }
+

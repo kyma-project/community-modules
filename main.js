@@ -34,8 +34,9 @@ import "@ui5/webcomponents-fiori/dist/SideNavigationItem.js";
 import * as jsYaml from 'js-yaml';
 import { editor } from 'monaco-editor';
 import yamlWorker from 'monaco-yaml/yaml.worker?worker';
-import { apply, deleteResource, get, patchResource } from "./k8s.js";
+import { Client } from "./k8s.js";
 import modules from "./model.js";
+import { installedManagers, managedModules } from './module-management.js'
 
 self.MonacoEnvironment = {
   getWorker: function () {
@@ -43,53 +44,10 @@ self.MonacoEnvironment = {
   }
 };
 
+const client = new Client('/backend')
 
 const KYMA_PATH = '/apis/operator.kyma-project.io/v1beta2/namespaces/kyma-system/kymas/default'
 
-async function installedManagers(modules) {
-  let paths = {}
-  for (let m of modules) {
-    for (let v of m.versions) {
-      paths[v.managerPath] = get(v.managerPath)
-      paths[v.crPath] = get(v.crPath)
-    }
-  }
-  await Promise.allSettled(Object.values(paths))
-  for (let m of modules) {
-    m.available = false
-    m.managerImage = undefined
-    m.actualVersion = undefined
-    for (let v of m.versions) {
-      let cr = await paths[v.crPath]
-      if (cr) {
-        m.config = cr
-      }
-
-      let manager = await paths[v.managerPath]
-      if (manager && manager.kind == 'Deployment') {
-        if (manager.spec.template.spec.containers.length == 1) {
-          m.managerImage = manager.spec.template.spec.containers[0].image
-        } else {
-          for (let c of manager.spec.template.spec.containers) {
-            if (!c.image.indexOf('proxy') >= 0) {
-              m.managerImage = c.image
-            }
-          }
-        }
-        if (m.managerImage == v.managerImage) {
-          m.actualVersion = v.version
-        }
-        if (manager.status && manager.status.conditions) {
-          let av = manager.status.conditions.find(c => c.type == 'Available')
-          if (av && av.status == "True") {
-            m.available = true
-          }
-        }
-      }
-    }
-  }
-  return modules
-}
 
 function render(modules) {
   let app = document.querySelector('#app');
@@ -113,37 +71,13 @@ function render(modules) {
     'List of all modules available for installation'))
 }
 
-async function managedModules(modules) {
-  let kyma = await get(KYMA_PATH)
-  if (kyma) {
-    for (let m of modules) {
-      if (kyma.spec.modules) {
-        let mm = kyma.spec.modules.find((mod) => mod.name == m.name)
-        if (mm) {
-          m.managed = true
-          m.channel = mm.channel || kyma.spec.channel
-        } else {
-          m.managed = false
-          m.channel = undefined
-        }
-      }
-    }
-  } else {
-    for (let m of modules) {
-      m.manageable = false
-    }
-  }
-  return modules
-}
-
-
 async function managedResourcesList(m) {
   let list = []
   if (!m.managedResources) {
     return list
   }
   for (let mr of m.managedResources) {
-    let res = await get(mr)
+    let res = await client.get(mr)
     if (res && res.items) {
       for (let i of res.items) {
         list.push(i)
@@ -155,7 +89,7 @@ async function managedResourcesList(m) {
 async function applyModuleResources(m, version) {
   let res = await fetchModuleResources(m, version)
   for (let r of res) {
-    await apply(r)
+    await client.apply(r)
   }
 }
 async function deleteModuleResources(m) {
@@ -164,39 +98,45 @@ async function deleteModuleResources(m) {
     if (r.kind == 'Namespace' && r.metadata.name == 'kyma-system') {
       continue; // skip kyma-system deletion
     }
-    deleteResource(r)
+    client.deleteResource(r)
   }
 }
 
 async function addModuleToKymaCR(name, defaultConfig, channel) {
-  let kyma = await get(KYMA_PATH)
-  if (kyma && kyma.spec.modules) {
-    let index = kyma.spec.modules.findIndex((m) => m.name == name)
-
+  let kyma = await client.get(KYMA_PATH)
+  console.log('addModuleToKymaCR', kyma )
+  if (kyma) {
+    let index = -1
+    if (kyma.spec.modules) {
+      index = kyma.spec.modules.findIndex((m) => m.name == name)
+    } 
     let policy = (defaultConfig) ? 'CreateAndDelete' : 'Ignore'
     let body = `[{"op":"add","path":"/spec/modules/-","value":{"name":"${name}","customResourcePolicy":"${policy}","channel":"${channel}"}}]`
+    if (!kyma.spec.modules) {
+      body = `[{"op":"replace","path":"/spec/modules","value":[{"name":"${name}","customResourcePolicy":"${policy}","channel":"${channel}"}]}]`
+    }
     if (index >= 0) {
       body = `[{"op":"replace","path":"/spec/modules/${index}", "value":{"name":"${name}","customResourcePolicy":"${policy}","channel":"${channel}"}}]`
     }
-    patchResource(KYMA_PATH, body)
+    client.patchResource(KYMA_PATH, body)
     return
   }
 }
 
 async function removeModuleFromKymaCR(name) {
-  let kyma = await get(KYMA_PATH)
+  let kyma = await client.get(KYMA_PATH)
   if (kyma && kyma.spec.modules) {
     for (let i = 0; i < kyma.spec.modules.length; ++i) {
       if (kyma.spec.modules[i].name == name) {
         let body = `[{"op":"remove","path":"/spec/modules/${i}"}]`
-        patchResource(KYMA_PATH, body)
+        client.patchResource(KYMA_PATH, body)
         return
       }
     }
   }
 }
 
-async function fetchModuleResources(m, version) {
+function fetchModuleResources(m, version) {
   let v = version || m.actualVersion
   return m.versions.find(ver => ver.version == v).resources
 
@@ -214,7 +154,7 @@ async function deleteModule(m, btn) {
     popover('Remove Module', p, btn, "Remove", () => {
       for (let r of mr) {
         console.log('removing', r)
-        deleteResource(r)
+        client.deleteResource(r)
       }
       if (m.managed) {
         removeModuleFromKymaCR(m.name)
@@ -387,7 +327,7 @@ function installBtn(m) {
           await applyModuleResources(m, v.version)
           if (options.querySelector('#defaultConfigCheckbox').checked) {
             console.log('applying default config for', m.name, v.cr)
-            await apply(v.cr)
+            await client.apply(v.cr)
           }
         }
 
@@ -538,18 +478,23 @@ function popover(title, content, anchor, btnText, onClick) {
   setTimeout(() => popover.showAt(anchor), 0)
   return popover
 }
+
+async function checkStatus() {
+  return installedManagers(modules, client).then((modules) => {managedModules(modules,client)})
+}
+
 function registerListeners() {
   document.querySelector('#refreshBtn').addEventListener('click', () => {
-    installedManagers(modules).then(managedModules).then(render)
+    checkStatus().then(render)
   })
   const sidenav = document.querySelector("ui5-side-navigation");
   document.getElementById("toggle").addEventListener("click", () => {
     sidenav.toggleAttribute("collapsed");
   });
   document.querySelector('#navItemModules').addEventListener('click', () => {
-    installedManagers(modules).then(managedModules).then(render)
+    checkStatus().then(render)
   })
 }
 registerListeners()
 render(modules)
-installedManagers(modules).then(managedModules).then(render)
+checkStatus().then(render)
