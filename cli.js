@@ -24,6 +24,7 @@ function defaultClient() {
   kc.applyToRequest(opts);
   opts.dispatcher = new Agent({
     connect: {
+      ...opts,
       rejectUnauthorized: false,
     }
   })
