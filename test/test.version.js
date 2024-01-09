@@ -53,6 +53,7 @@ modules.forEach(m => {
       if (m.manageable) {
         let fast = m.versions.find(v => v.channels && v.channels.includes('fast'))
         let regular = m.versions.find(v => v.channels && v.channels.includes('regular'))
+        let experimental = m.versions.find(v => v.channels && v.channels.includes('experimental'))
         it('regular channel defined', function () {
           if (!regular) {
             throw new Error('regular channel is missing')
@@ -66,7 +67,14 @@ modules.forEach(m => {
         if (fast && regular) {
           it ("fast isn't older than regular", function () {
             if (semVerCompare(fast,regular) < 0) {
-              throw new Error('fast version '+fast.version+'is older than regular version '+regular.version)
+              throw new Error('fast version '+fast.version+' is older than regular version '+regular.version)
+            }
+          })  
+        }
+        if (experimental && regular) {
+          it ("experimental isn't older than regular", function () {
+            if (semVerCompare(experimental,regular) < 0) {
+              throw new Error('experimental version '+experimental.version+' is older than regular version '+regular.version)
             }
           })  
         }
