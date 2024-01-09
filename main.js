@@ -480,7 +480,7 @@ function popover(title, content, anchor, btnText, onClick) {
 }
 
 async function checkStatus() {
-  return installedManagers(modules, client).then((modules) => {managedModules(modules,client)})
+  return installedManagers(modules, client).then((modules) => managedModules(modules,client))
 }
 
 function registerListeners() {
