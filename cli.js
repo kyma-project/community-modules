@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { exec } from "child_process"
 import modules from './model.js'
 import { program, Option } from 'commander'
 import proxy from 'express-http-proxy';
@@ -13,7 +12,6 @@ import { Agent } from 'undici';
 import { Client } from './k8s.js'
 import { installedManagers, managedModules } from './module-management.js'
 import { table } from 'table'
-
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -47,10 +45,11 @@ program.command('modules')
   .option('-c, --channel <string>')
   .action(async function () {
     let client=defaultClient()
-    
     await installedManagers(modules,client)
     await managedModules(modules,client)
-    moduleTable(modules)
+    managedTable(modules)
+    userTable(modules)
+    availableTable(modules)  
   })
 program.command('version')
   .description('show version')
@@ -62,15 +61,44 @@ program.command('version')
     });
     console.log(info.version)
   })
-
-function moduleTable(modules) {
-  let data = [['Module', 'Installed', 'Channel', 'Available versions']]
-  modules.forEach(m => {  
-    data.push([m.name,m.actualVersion || '' , m.managed ? m.channel:'', moduleVersions(m)])
-  })
-  console.log(table(data))
+function configState(m) {
+  if (!m.config) {
+    return 'Not configured'    
+  }
+  if (!m.config.status || !m.config.status.state) {
+    return 'Applied'
+  }
+  return m.config.status.state
   
 }
+
+function managedTable(modules) {
+  console.log("Managed modules")
+  let data = [['name', 'channel', 'version', 'manager', 'ready', 'config']]
+  modules.filter(m=>m.managed).forEach(m => {  
+    let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
+    data.push([m.name,m.channel || '' ,m.actualVersion || '', image, m.available, configState(m) ])
+  })
+  console.log(table(data))  
+}
+function userTable(modules) {
+  console.log("User modules")
+  let data = [['name', 'version', 'manager', 'ready', 'config']]
+  modules.filter(m=> !m.managed && m.actualVersion).forEach(m => {  
+    let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
+    data.push([m.name,m.actualVersion || '', image, m.available, configState(m) ])
+  })
+  console.log(table(data))  
+}
+function availableTable(modules) {
+  console.log("Available modules")
+  let data = [['name', 'versions']]
+  modules.forEach(m => {  
+    data.push([m.name, moduleVersions(m) ])
+  })
+  console.log(table(data))  
+}
+
 program.command('deploy')
   .description('deploy modules')
   .option('-m, --modules <name:version...>'
