@@ -12,6 +12,8 @@ import { Agent } from 'undici';
 import { Client } from './k8s.js'
 import { installedManagers, managedModules } from './module-management.js'
 import { table } from 'table'
+import { BtpClient } from './btp.js';
+import { platform } from 'os';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -28,11 +30,175 @@ function defaultClient() {
   })
   return new Client(kc.getCurrentCluster().server, opts)
 }
+function platformInstances(gas) {
+  let platforms = []
+  let clusters = []
+  for (let ga of gas) {
+    for (let sa of ga.sAccounts) {
+      for (let si of sa.instances) {
+        let plan = sa.plans.find(p => p.id == si.service_plan_id)
+        if (plan) {
+          si.service_offering_name = plan.service_offering_name
+          si.catalog_name = plan.catalog_name
+        }
+        if (si.catalog_name == 'service-operator-access') {
+          si.clusters = []
+          platforms.push(si)
+        }
+        if (si.context && si.context.clusterid) {
+          clusters.push({ platform_id: si.platform_id, clusterid: si.context.clusterid })
+        }
+        si.bindings = []
+        for (let bi of sa.bindings) {
+          if (bi.service_instance_id == si.id) {
+            si.bindings.push(bi)
+            si.binding = bi
+          }
+        }
 
+      }
+    }
+  }
+  for (let cluster of clusters) {
+    let platform = platforms.find(p => p.id == cluster.platform_id)
+    if (platform) {
+      if (!platform.clusters.find(id => id == cluster.clusterid)) {
+        platform.clusters.push(cluster.clusterid)
+      }
+    }
+  }
+  return platforms
+}
+
+function btpDump(gas) {
+  let platforms = platformInstances(gas)
+  for (let ga of gas) {
+    console.group('global account:', ga.displayName)
+    for (let sa of ga.sAccounts) {
+      console.group('sub account:', sa.displayName)
+      for (let si of sa.instances) {
+        console.group('instance:', si.name, si.service_offering_name || '', si.catalog_name || '')
+        for (let bi of si.bindings) {
+          console.log('binding:', bi.name)
+        }
+        console.groupEnd()
+      }
+      console.groupEnd()
+    }
+    console.groupEnd()
+  }
+  logPlatforms(platforms)
+}
+function logPlatforms(platforms) {
+  console.group('platforms:')
+  for (let p of platforms) {
+    console.group(p.name, `id: ${p.id}`)
+    console.log('global account:', p.context.global_account_id)
+    console.log('subaccount:', p.subaccount_id)
+    console.log('clusterId:', p.clusters.join(', '))
+    console.log('credentials:', p.binding ? 'ok' : '')
+    console.groupEnd()
+  }
+  console.groupEnd()
+}
+let btp = program.command('btp')
+
+function createPlatformSecret(platform) {
+  let cred = platform.binding.credentials
+  let secret = {
+    apiVersion: 'v1',
+    kind: 'Secret',
+    metadata: {
+      name: 'sap-btp-manager',
+      namespace: 'kyma-system',
+      labels: {
+        'app.kubernetes.io/managed-by': 'kcp-kyma-environment-broker'
+      }
+    },
+    data: {
+      'clientid': Buffer.from(JSON.stringify(cred.clientid)).toString('base64'),
+      'clientsecret': Buffer.from(JSON.stringify(cred.clientsecret)).toString('base64'),
+      'sm_url': Buffer.from(JSON.stringify(cred.sm_url)).toString('base64'),
+      'tokenurl': Buffer.from(JSON.stringify(cred.url)).toString('base64'),
+      'cluster_id': Buffer.from(JSON.stringify(platform.clusters[0])).toString('base64')
+    }
+  }
+  return secret
+}
+btp.command('services')
+  .argument('<dump_filename>', 'json file with dump of BTP services (see btp dump)')
+  .action(async function () {
+    let fs = await import('fs')
+    let gas = JSON.parse(fs.readFileSync(this.args[0]).toString())
+    btpDump(gas)
+  })
+
+btp.command('attach')
+  .option('-ga, --global-account <string>', 'global account')
+  .option('-sa, --sub-account <string>', 'sub account')
+  .option('--from-file <filename>','json file with dump of BTP services (see btp dump)')
+  .option('--platform <string>', 'platform id, you can skip it if only one platform is available')
+  .action(async function () {
+    let gas
+    if (this.opts().fromFile) {
+      let fs = await import('fs')
+      gas = JSON.parse(fs.readFileSync(this.opts().fromFile).toString())
+    } else {
+      let client = new BtpClient()
+      let { id, url } = client.ssoUrl()
+      console.log("Please login to your BTP account using this URL:", url)
+      open(url)
+      let account = await client.sso(id)
+      console.log("Logged in as:", account.user)
+      gas = await client.dump(this.opts())  
+    }
+    let platforms = platformInstances(gas)
+    if (this.opts().platform) {
+      platforms = platforms.filter(p => p.id == this.opts().platform)
+    }
+    if (platforms.length == 0) {
+      console.error("no platforms found")
+      return
+    }
+    if (platforms.length > 1) {
+      console.error("multiple platforms found, please specify platform id")
+      logPlatforms(platforms)
+      return
+    }
+    if (!platforms[0].binding) {
+      console.error("no binding found for platform", platforms[0].name)
+      logPlatforms([platforms[0]])
+      return
+    }
+    console.log('connecting to platform ', platforms[0].name)
+    let btpPlatformSecret = createPlatformSecret(platforms[0])
+    let clientK8s = defaultClient()    
+    await clientK8s.apply(btpPlatformSecret)
+    console.log('secret:\n', JSON.stringify(createPlatformSecret(platforms[0]),null,2))
+  })
+
+
+
+btp.command('dump')
+  .argument('<filename>', 'filename to dump to')
+  .option('-ga, --global-account <string>', 'global account to dump')
+  .option('-sa, --sub-account <string>', 'sub account to dump')
+  .action(async function () {
+    let client = new BtpClient()
+    let { id, url } = client.ssoUrl()
+    console.log("Please login to your BTP account using this URL:", url)
+    open(url)
+    let account = await client.sso(id)
+    console.log("Logged in as:", account.user)
+    let gas = await client.dump(this.opts())
+    btpDump(gas)
+    let fs = await import('fs')
+    fs.writeFileSync(this.args[0], JSON.stringify(gas, null, 2))
+  })
 program.command('ns')
   .description('get namespaces')
   .action(async () => {
-    let client=defaultClient()
+    let client = defaultClient()
     client.get('/api/v1/namespaces')
       .then((json) => {
         console.log(json.items.map(ns => ns.metadata.name).join('\n'))
@@ -44,12 +210,13 @@ program.command('modules')
   .description('list modules')
   .option('-c, --channel <string>')
   .action(async function () {
-    let client=defaultClient()
-    await installedManagers(modules,client)
-    await managedModules(modules,client)
-    managedTable(modules)
-    userTable(modules)
-    availableTable(modules)  
+    let client = defaultClient()
+    let filtered = modules.filter(filterFunc(this.opts()))
+    await installedManagers(filtered, client)
+    await managedModules(filtered, client)
+    managedTable(filtered)
+    userTable(filtered)
+    availableTable(filtered)
   })
 program.command('version')
   .description('show version')
@@ -63,40 +230,47 @@ program.command('version')
   })
 function configState(m) {
   if (!m.config) {
-    return 'Not configured'    
+    return 'Not configured'
   }
   if (!m.config.status || !m.config.status.state) {
     return 'Applied'
   }
   return m.config.status.state
-  
+
 }
 
 function managedTable(modules) {
-  console.log("Managed modules")
-  let data = [['name', 'channel', 'version', 'manager', 'ready', 'config']]
-  modules.filter(m=>m.managed).forEach(m => {  
-    let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
-    data.push([m.name,m.channel || '' ,m.actualVersion || '', image, m.available, configState(m) ])
-  })
-  console.log(table(data))  
+  let list = modules.filter(m => m.managed)
+  if (list.length > 0) {
+    console.log("Managed modules")
+    let data = [['name', 'channel', 'version', 'manager', 'ready', 'config']]
+    list.forEach(m => {
+      let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
+      data.push([m.name, m.channel || '', m.actualVersion || '', image, m.available, configState(m)])
+    })
+    console.log(table(data))
+
+  }
 }
 function userTable(modules) {
-  console.log("User modules")
-  let data = [['name', 'version', 'manager', 'ready', 'config']]
-  modules.filter(m=> !m.managed && m.actualVersion).forEach(m => {  
-    let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
-    data.push([m.name,m.actualVersion || '', image, m.available, configState(m) ])
-  })
-  console.log(table(data))  
+  let list = modules.filter(m => !m.managed && m.actualVersion)
+  if (list.length > 0) {
+    console.log("User modules")
+    let data = [['name', 'version', 'manager', 'ready', 'config']]
+    list.forEach(m => {
+      let image = m.managerImage ? m.managerImage.split('/')[m.managerImage.split('/').length - 1] : ''
+      data.push([m.name, m.actualVersion || '', image, m.available, configState(m)])
+    })
+    console.log(table(data))
+  }
 }
 function availableTable(modules) {
   console.log("Available modules")
   let data = [['name', 'versions']]
-  modules.forEach(m => {  
-    data.push([m.name, moduleVersions(m) ])
+  modules.forEach(m => {
+    data.push([m.name, moduleVersions(m)])
   })
-  console.log(table(data))  
+  console.log(table(data))
 }
 
 program.command('deploy')
@@ -197,7 +371,7 @@ async function applyModuleResource(m, v, opts) {
     console.log('kubectl apply -f ' + v.deploymentYaml)
     if (!opts.dryRun) {
       for (let r of v.resources) {
-          await client.apply(r)
+        await client.apply(r)
       }
     }
   } else {
@@ -206,8 +380,8 @@ async function applyModuleResource(m, v, opts) {
   if (!opts.customConfig) {
     if (v.crYaml) {
       console.log('kubectl apply -f ' + v.crYaml)
-      if (!opts.dryRun) {        
-        await client.apply(v.cr)        
+      if (!opts.dryRun) {
+        await client.apply(v.cr)
       }
     } else {
       console.log("no default CR YAML found for module", module)
