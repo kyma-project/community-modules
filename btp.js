@@ -61,7 +61,6 @@ function BtpClient(opts) {
         sa.bindings = []
         tasks.push(this.serviceInstances(ga.subdomain, sa).then((si) => { sa.instances = si || [] }))
         tasks.push(this.serviceBindings(ga.subdomain, sa).then((bi) => { sa.bindings = bi || []}))
-        tasks.push(this.serviceOfferings(ga.subdomain, sa).then((so) => { sa.offerings = so || [] }))
         tasks.push(this.servicePlans(ga.subdomain, sa).then((sp) => { sa.plans = sp || []}))
         
       }

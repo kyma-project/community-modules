@@ -13,7 +13,7 @@ import { Client } from './k8s.js'
 import { installedManagers, managedModules } from './module-management.js'
 import { table } from 'table'
 import { BtpClient } from './btp.js';
-import { platform } from 'os';
+import {ServiceManager} from './service-manager.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -103,7 +103,6 @@ function logPlatforms(platforms) {
   }
   console.groupEnd()
 }
-let btp = program.command('btp')
 
 function createPlatformSecret(platform) {
   let cred = platform.binding.credentials
@@ -127,34 +126,113 @@ function createPlatformSecret(platform) {
   }
   return secret
 }
-btp.command('services')
-  .argument('<dump_filename>', 'json file with dump of BTP services (see btp dump)')
-  .action(async function () {
+async function globalAccounts(opts) {
+  if (opts.fromFile) {
     let fs = await import('fs')
-    let gas = JSON.parse(fs.readFileSync(this.args[0]).toString())
-    btpDump(gas)
-  })
+    return JSON.parse(fs.readFileSync(opts.fromFile).toString())
+  } else {
+    let client = new BtpClient(opts)
+    let { id, url } = client.ssoUrl()
+    console.log("Please login to your BTP account using this URL:", url)
+    open(url)
+    let account = await client.sso(id)
+    console.log("Logged in as:", account.user)
+    return await client.dump(opts)
+  }
 
-btp.command('attach')
+}
+function smToK8s(instances) {
+  let resources = []
+  for (let si of instances) {
+    let res = {
+      apiVersion: 'services.cloud.sap.com/v1',
+      kind: 'ServiceInstance',
+      metadata: {
+        name: si.name,
+        namespace: si.context.namespace
+      },
+      spec: {
+        serviceOfferingName: si.offering_name,
+        servicePlanName: si.plan_name,
+      }
+    }
+    resources.push(res)
+    for (let bi of si.bindings) {
+      res = {
+        apiVersion: 'services.cloud.sap.com/v1',
+        kind: 'ServiceBinding',
+        metadata: {
+          name: bi.name,
+          namespace: si.context.namespace
+        },
+        spec: {
+          serviceInstanceName: si.context.instance_name,
+        }
+      }
+      resources.push(res)
+    }
+  }
+  return resources
+}
+function missingNamespaces(resources, namespaces) {
+  let missing = {}
+  for (let r of resources) {
+    if (!namespaces.find(ns => ns.metadata.name == r.metadata.namespace)) {
+      missing[r.metadata.namespace] = true
+    }
+  }
+  return Object.keys(missing).map(ns => { return { apiVersion: 'v1', kind: 'Namespace', metadata: { name: ns } } })
+
+}
+
+program.command('restore-services')
+  .description('restore BTP services instances and binding from the attached btp platform')
   .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
   .option('-ga, --global-account <string>', 'global account')
   .option('-sa, --sub-account <string>', 'sub account')
-  .option('--from-file <filename>', 'json file with dump of BTP services (see btp dump)')
+  .option('--from-file <filename>', 'json file with dump of BTP services (see btp-dump command)')
+  .action(async function () {
+    let clientK8s = defaultClient()
+    let btpPlatformSecret = await clientK8s.get('/api/v1/namespaces/kyma-system/secrets/sap-btp-manager')
+    if (!btpPlatformSecret) {
+      console.error("Platform secret not found. Please attach your cluster to the BTP platform first using the 'attach' command")
+      return
+    }
+    let btpCR = await clientK8s.get('/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator')
+    if (!btpCR) {
+      console.error("BTP operator CR not found. Please install BTP operator first using the 'deploy' command")
+      return
+    }
+    if (!btpCR.status || !btpCR.status.state || btpCR.status.state != 'Ready') {
+      console.error("BTP operator not ready. Please wait until BTP operator is ready")
+      return
+    }
+    let sm = new ServiceManager(btpPlatformSecret)
+    let user = await sm.authenticate()
+    console.log("Logged in as:", user)
+    let si = await sm.serviceInstances()
+    console.log("Service instances:\n",JSON.stringify(si, null, 2))
+    let resources = smToK8s(si)
+    let namespaces = await clientK8s.get('/api/v1/namespaces')
+    console.log(resources)
+    let missing = missingNamespaces(resources, namespaces.items)
+    for (let r of missing) {
+      await clientK8s.apply(r)
+    }
+    for (let r of resources) {
+      await clientK8s.apply(r)
+    }
+  })
+
+program.command('attach')
+  .description('attach your cluster to the BTP platform. It requires BTP subaccount with "service-manager" service instance and binding with plan "service-operator-access"')
+  .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
+  .option('-ga, --global-account <string>', 'global account')
+  .option('-sa, --sub-account <string>', 'sub account')
+  .option('--from-file <filename>', 'json file with dump of BTP services (see btp-dump command)')
   .option('--platform <string>', 'platform id, you can skip it if only one platform is available')
   .action(async function () {
-    let gas
-    if (this.opts().fromFile) {
-      let fs = await import('fs')
-      gas = JSON.parse(fs.readFileSync(this.opts().fromFile).toString())
-    } else {
-      let client = new BtpClient(this.opts())
-      let { id, url } = client.ssoUrl()
-      console.log("Please login to your BTP account using this URL:", url)
-      open(url)
-      let account = await client.sso(id)
-      console.log("Logged in as:", account.user)
-      gas = await client.dump(this.opts())
-    }
+    let gas = await globalAccounts(this.opts())
     let platforms = platformInstances(gas)
     if (this.opts().platform) {
       platforms = platforms.filter(p => p.id == this.opts().platform)
@@ -177,12 +255,13 @@ btp.command('attach')
     let btpPlatformSecret = createPlatformSecret(platforms[0])
     let clientK8s = defaultClient()
     await clientK8s.apply(btpPlatformSecret)
-    console.log('secret:\n', JSON.stringify(createPlatformSecret(platforms[0]), null, 2))
+    console.log(`platform secret ${btpPlatformSecret.metadata.name} created in the namespace ${btpPlatformSecret.metadata.namespace}`)
   })
 
 
 
-btp.command('dump')
+program.command('btp-dump')
+  .description('dump BTP services from your accounts to the json file')
   .argument('<filename>', 'filename to dump to')
   .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
   .option('-ga, --global-account <string>', 'global account to dump')
