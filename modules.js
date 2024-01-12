@@ -120,9 +120,15 @@ export default
     "latestGithubRelease" : {
       "repository": "kyma-project/nats-manager",
       "deploymentYaml": "nats-manager.yaml",
-      "crYaml": "nats_default_cr.yaml"
+      "crYaml": "nats-default-cr.yaml"
     },
-    "versions": []
+    "versions": [
+      {
+        "version": "v1.0.2",
+        "deploymentYaml": "https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats_default_cr.yaml"
+      }
+    ]
   },
   {
     "name": "eventing",
