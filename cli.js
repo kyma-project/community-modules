@@ -43,6 +43,8 @@ function platformInstances(gas) {
         }
         if (si.catalog_name == 'service-operator-access') {
           si.clusters = []
+          si.global_account_name = ga.displayName
+          si.subaccount_name = sa.displayName
           platforms.push(si)
         }
         if (si.context && si.context.clusterid) {
@@ -93,8 +95,8 @@ function logPlatforms(platforms) {
   console.group('platforms:')
   for (let p of platforms) {
     console.group(p.name, `id: ${p.id}`)
-    console.log('global account:', p.context.global_account_id)
-    console.log('subaccount:', p.subaccount_id)
+    console.log('global account:', p.global_account_name, '(', p.context.global_account_id, ')')
+    console.log('subaccount:', p.subaccount_name, '(', p.subaccount_id, ')')
     console.log('clusterId:', p.clusters.join(', '))
     console.log('credentials:', p.binding ? 'ok' : '')
     console.groupEnd()
@@ -134,9 +136,10 @@ btp.command('services')
   })
 
 btp.command('attach')
+  .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
   .option('-ga, --global-account <string>', 'global account')
   .option('-sa, --sub-account <string>', 'sub account')
-  .option('--from-file <filename>','json file with dump of BTP services (see btp dump)')
+  .option('--from-file <filename>', 'json file with dump of BTP services (see btp dump)')
   .option('--platform <string>', 'platform id, you can skip it if only one platform is available')
   .action(async function () {
     let gas
@@ -144,13 +147,13 @@ btp.command('attach')
       let fs = await import('fs')
       gas = JSON.parse(fs.readFileSync(this.opts().fromFile).toString())
     } else {
-      let client = new BtpClient()
+      let client = new BtpClient(this.opts())
       let { id, url } = client.ssoUrl()
       console.log("Please login to your BTP account using this URL:", url)
       open(url)
       let account = await client.sso(id)
       console.log("Logged in as:", account.user)
-      gas = await client.dump(this.opts())  
+      gas = await client.dump(this.opts())
     }
     let platforms = platformInstances(gas)
     if (this.opts().platform) {
@@ -172,19 +175,20 @@ btp.command('attach')
     }
     console.log('connecting to platform ', platforms[0].name)
     let btpPlatformSecret = createPlatformSecret(platforms[0])
-    let clientK8s = defaultClient()    
+    let clientK8s = defaultClient()
     await clientK8s.apply(btpPlatformSecret)
-    console.log('secret:\n', JSON.stringify(createPlatformSecret(platforms[0]),null,2))
+    console.log('secret:\n', JSON.stringify(createPlatformSecret(platforms[0]), null, 2))
   })
 
 
 
 btp.command('dump')
   .argument('<filename>', 'filename to dump to')
+  .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
   .option('-ga, --global-account <string>', 'global account to dump')
   .option('-sa, --sub-account <string>', 'sub account to dump')
   .action(async function () {
-    let client = new BtpClient()
+    let client = new BtpClient(this.opts())
     let { id, url } = client.ssoUrl()
     console.log("Please login to your BTP account using this URL:", url)
     open(url)
