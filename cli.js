@@ -118,11 +118,11 @@ function createPlatformSecret(platform) {
       }
     },
     data: {
-      'clientid': Buffer.from(JSON.stringify(cred.clientid)).toString('base64'),
-      'clientsecret': Buffer.from(JSON.stringify(cred.clientsecret)).toString('base64'),
-      'sm_url': Buffer.from(JSON.stringify(cred.sm_url)).toString('base64'),
-      'tokenurl': Buffer.from(JSON.stringify(cred.url)).toString('base64'),
-      'cluster_id': Buffer.from(JSON.stringify(platform.clusters[0])).toString('base64')
+      'clientid': Buffer.from(cred.clientid).toString('base64'),
+      'clientsecret': Buffer.from(cred.clientsecret).toString('base64'),
+      'sm_url': Buffer.from(cred.sm_url).toString('base64'),
+      'tokenurl': Buffer.from(cred.url).toString('base64'),
+      'cluster_id': Buffer.from(platform.clusters[0]).toString('base64')
     }
   }
   return secret
