@@ -208,19 +208,22 @@ program.command('restore-services')
       return
     }
     let sm = new ServiceManager(btpPlatformSecret)
-    let user = await sm.authenticate()
-    console.log("Logged in as:", user)
+    await sm.authenticate()
     let si = await sm.serviceInstances()
-    console.log("Service instances:\n",JSON.stringify(si, null, 2))
     let resources = smToK8s(si)
     let namespaces = await clientK8s.get('/api/v1/namespaces')
-    console.log(resources)
     let missing = missingNamespaces(resources, namespaces.items)
     for (let r of missing) {
       await clientK8s.apply(r)
     }
     for (let r of resources) {
-      await clientK8s.apply(r)
+      let path = await clientK8s.resPath(r)
+      let exists = await clientK8s.get(path)
+      if (exists) {
+        console.log(r.kind, r.metadata.name, 'already exists')
+      } else {
+        await clientK8s.apply(r)
+      }
     }
   })
 
