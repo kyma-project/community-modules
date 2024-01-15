@@ -14,6 +14,7 @@ import { installedManagers, managedModules } from './module-management.js'
 import { table } from 'table'
 import { BtpClient } from './btp.js';
 import {ServiceManager} from './service-manager.js'
+import {defaultConfig, defaultKubeconfig } from './busola.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -382,7 +383,7 @@ program.command('deploy')
 
 program.command('ui')
   .description('start web interface')
-  .option('-p, --port <number>', 'port to listen on', 3000)
+  .option('-p, --port <number>', 'port to listen on', 3001)
   .action(ui)
 
 program.parse()
@@ -393,14 +394,23 @@ function moduleVersions(m) {
   }).join(', ')
 }
 
+
 function ui() {
   console.log("starting ui on port", this.opts().port)
-
   var app = express();
 
   let kc = new k8sClient.KubeConfig();
   kc.loadFromDefault();
+  
+  let defKc = defaultKubeconfig(this.opts().port)
+  app.get('/kubeconfig/kyma.yaml', (_, res) => {
+    res.send(defKc)
+  })
 
+  let defCfg = defaultConfig(this.opts().port)
+  app.get('/config/config.yaml', (_, res) => {
+    res.send(defCfg)
+  }) 
   app.use('/backend', proxy(kc.getCurrentCluster().server, {
     proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
       proxyReqOpts.rejectUnauthorized = false
@@ -409,9 +419,13 @@ function ui() {
     }
   }));
 
-  app.use(express.static(path.resolve(__dirname, "dist")))
+  app.use('/modules',express.static(path.resolve(__dirname, "dist/modules")))
+  app.use(express.static(path.resolve(__dirname, "dist/core-ui")))
+  app.get('/*', (_, res) =>
+    res.sendFile(path.join(__dirname + 'dist/core-ui/index.html')),
+  );
   app.listen(this.opts().port);
-  open('http://localhost:' + this.opts().port);
+  open('http://127.0.0.1:' + this.opts().port+'/?kubeconfigID=kyma.yaml');
 
 }
 

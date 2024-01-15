@@ -19,9 +19,14 @@ jobs:
         with:
           node-version: 21.5
           registry-url: https://registry.npmjs.org/
-      - run: |
+      - name: Install & build 
+        run: |
           npm ci
-          npm run build-docker
+          npm run build-busola
+      - name: Include latest kyma dashboard
+        run: |
+          container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/kyma-dashboard-local-dev:latest)
+          docker cp $container_id:/app/core-ui ./dist/
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

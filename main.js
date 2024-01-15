@@ -482,6 +482,9 @@ function popover(title, content, anchor, btnText, onClick) {
 async function checkStatus() {
   return installedManagers(modules, client).then((modules) => managedModules(modules,client))
 }
+function openDashboard() {  
+  window.open('/?kubeconfigID=kyma.yaml','_self')
+}
 
 function registerListeners() {
   document.querySelector('#refreshBtn').addEventListener('click', () => {
@@ -493,6 +496,9 @@ function registerListeners() {
   });
   document.querySelector('#navItemModules').addEventListener('click', () => {
     checkStatus().then(render)
+  })
+  document.querySelector('#navItemDashboard').addEventListener('click', () => {
+    openDashboard()
   })
 }
 registerListeners()
