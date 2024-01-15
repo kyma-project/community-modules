@@ -1,17 +1,9 @@
-const credentials = {
-  data: {
-    "clientid": "sb-98de75b9-6c5e-43d1-8413-a5f18f50b0d8!b232352|service-manager!b3",
-    "clientsecret": "8672fbed-ad2d-43cb-b0b6-fb5de49127ee$eYkcvyytJHpZfvgIHgO_l3y_EwadFWCZiOHaZlbLGbI=",
-    "sm_url": "https://service-manager.cfapps.eu12.hana.ondemand.com",
-    "tokenurl": "https://aws-ipxdm8ab.authentication.eu12.hana.ondemand.com"
-  }
-}
-
 function ServiceManager(opts = credentials) {
   this.clientid = atob(opts.data.clientid)
   this.clientsecret = atob(opts.data.clientsecret)
   this.sm_url = atob(opts.data.sm_url)
   this.tokenurl = atob(opts.data.tokenurl)
+  this.cluster_id = atob(opts.data.cluster_id)
 
   this.authenticate = async function () {
     let res = await fetch(this.tokenurl+'/oauth/token', {
@@ -56,7 +48,8 @@ function ServiceManager(opts = credentials) {
     let plans = await this.get('/v1/service_plans')
     let bindings = await this.get('/v1/service_bindings')
     let offerings = await this.get('/v1/service_offerings')
-    for (let i of instances.items) {
+    let si = instances.items.filter(i => i.context.clusterid == this.cluster_id)
+    for (let i of si) {
       let plan = plans.items.find(p => p.id == i.service_plan_id)
       let offering = offerings.items.find(o => o.id == plan.service_offering_id)
       if (plan) {
@@ -67,7 +60,7 @@ function ServiceManager(opts = credentials) {
       }
       i.bindings = bindings.items.filter(b => b.service_instance_id == i.id)
     }
-    return instances.items
+    return si
   }
 }
 

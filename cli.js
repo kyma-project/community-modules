@@ -13,8 +13,8 @@ import { Client } from './k8s.js'
 import { installedManagers, managedModules } from './module-management.js'
 import { table } from 'table'
 import { BtpClient } from './btp.js';
-import {ServiceManager} from './service-manager.js'
-import {defaultConfig, defaultKubeconfig } from './busola.js'
+import { ServiceManager } from './service-manager.js'
+import { defaultConfig, defaultKubeconfig } from './busola.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -95,7 +95,8 @@ function btpDump(gas) {
 function logPlatforms(platforms) {
   console.group('platforms:')
   for (let p of platforms) {
-    console.group(p.name, `id: ${p.id}`)
+    console.group(p.name)
+    console.log('id:', p.id)
     console.log('global account:', p.global_account_name, '(', p.context.global_account_id, ')')
     console.log('subaccount:', p.subaccount_name, '(', p.subaccount_id, ')')
     console.log('clusterId:', p.clusters.join(', '))
@@ -211,6 +212,9 @@ program.command('restore-services')
     let sm = new ServiceManager(btpPlatformSecret)
     await sm.authenticate()
     let si = await sm.serviceInstances()
+    if (si.length == 0) {
+      console.log("no BTP services found for this cluster")
+    }
     let resources = smToK8s(si)
     let namespaces = await clientK8s.get('/api/v1/namespaces')
     let missing = missingNamespaces(resources, namespaces.items)
@@ -223,6 +227,7 @@ program.command('restore-services')
       if (exists) {
         console.log(r.kind, r.metadata.name, 'already exists')
       } else {
+        // console.log('creating', r.kind, r.metadata.name, 'in namespace', r.metadata.namespace || '-')
         await clientK8s.apply(r)
       }
     }
@@ -235,6 +240,7 @@ program.command('attach')
   .option('-sa, --sub-account <string>', 'sub account')
   .option('--from-file <filename>', 'json file with dump of BTP services (see btp-dump command)')
   .option('--platform <string>', 'platform id, you can skip it if only one platform is available')
+  .option('--cluster-id <string>', 'cluster id, you can skip it if the platform has only one cluster connected')
   .action(async function () {
     let gas = await globalAccounts(this.opts())
     let platforms = platformInstances(gas)
@@ -255,7 +261,15 @@ program.command('attach')
       logPlatforms([platforms[0]])
       return
     }
-    console.log('connecting to platform ', platforms[0].name)
+    if (platforms[0].clusters.length != 1 && !this.opts().clusterId) {
+      console.error("Cluster id cannot be determined, provide --cluster-id <string> parameter")
+      logPlatforms([platforms[0]])
+      return
+    }
+    if (this.opts().clusterId) {
+      platforms[0].clusters = [this.opts().clusterId]
+    }
+    console.log('connecting to platform ', platforms[0].name, 'with cluster id', platforms[0].clusters[0])
     let btpPlatformSecret = createPlatformSecret(platforms[0])
     let clientK8s = defaultClient()
     await clientK8s.apply(btpPlatformSecret)
@@ -401,7 +415,7 @@ function ui() {
 
   let kc = new k8sClient.KubeConfig();
   kc.loadFromDefault();
-  
+
   let defKc = defaultKubeconfig(this.opts().port)
   app.get('/kubeconfig/kyma.yaml', (_, res) => {
     res.send(defKc)
@@ -410,7 +424,7 @@ function ui() {
   let defCfg = defaultConfig(this.opts().port)
   app.get('/config/config.yaml', (_, res) => {
     res.send(defCfg)
-  }) 
+  })
   app.use('/backend', proxy(kc.getCurrentCluster().server, {
     proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
       proxyReqOpts.rejectUnauthorized = false
@@ -419,13 +433,13 @@ function ui() {
     }
   }));
 
-  app.use('/modules',express.static(path.resolve(__dirname, "dist/modules")))
+  app.use('/modules', express.static(path.resolve(__dirname, "dist/modules")))
   app.use(express.static(path.resolve(__dirname, "dist/core-ui")))
   app.get('/*', (_, res) =>
     res.sendFile(path.join(__dirname + 'dist/core-ui/index.html')),
   );
   app.listen(this.opts().port);
-  open('http://127.0.0.1:' + this.opts().port+'/?kubeconfigID=kyma.yaml');
+  open('http://127.0.0.1:' + this.opts().port + '/?kubeconfigID=kyma.yaml');
 
 }
 
