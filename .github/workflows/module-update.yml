@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Realease patch version on module manifests change
+name: Realease patch
 
 on:
   repository_dispatch:
@@ -11,7 +11,9 @@ permissions:
   contents: write
   pages: write
   id-token: write
-
+concurrency:
+  group: "release"
+  cancel-in-progress: false
 jobs:
   # Single deploy job since we're just deploying
   bump-version-and-commit:
@@ -34,19 +36,17 @@ jobs:
         run: |
           mkdir -p public
           npm ci
-          npm run build-busola
-      - name: Include latest kyma dashboard
+          npm run build-modules
+          npm run build-cli
+      - name: Commit model.json and model.js files
         run: |
-          container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/kyma-dashboard-local-dev:latest)
-          docker cp $container_id:/app/core-ui ./dist/
+          git add .
+          git commit -m "Update modules"
       - name: Bump version and commit
         run: |
-          git config --global user.name 'kyma-website-bot'
-          git config --global user.email '49988522+kyma-website-bot@users.noreply.github.com'
+          # git config --global user.name 'kyma-website-bot'
+          # git config --global user.email '49988522+kyma-website-bot@users.noreply.github.com'
           npm version patch
           git tag $(npm version --json | jq -r '.["kyma"]')
           git push --follow-tags
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
   

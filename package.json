@@ -5,9 +5,10 @@
   "bin": "./cli.js",
   "scripts": {
     "dev": "vite",
-    "build": "node build-modules.js && vite build --base https://kyma-project.github.io/community-modules/",
-    "build-docker": "node build-modules.js && vite build",
-    "build-busola": "node build-modules.js && vite build --base /modules/ --outDir dist/modules",
+    "build-modules": "node ./build-modules.js",
+    "build-pages": "vite build --base /community-modules/",
+    "build-docker": "vite build",
+    "build-cli": "vite build --base /modules/ --outDir dist/modules",
     "preview": "vite preview"
   },
   "devDependencies": {

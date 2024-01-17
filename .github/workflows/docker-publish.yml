@@ -7,7 +7,6 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ '*.*.*' ]
 
@@ -32,9 +31,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Clone tools repo
-        run: |
-          git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:

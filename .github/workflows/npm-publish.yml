@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Clone tools repo
-        run: |
-          git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
@@ -22,7 +19,7 @@ jobs:
       - name: Install & build 
         run: |
           npm ci
-          npm run build-busola
+          npm run build-cli
       - name: Include latest kyma dashboard
         run: |
           container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/kyma-dashboard-local-dev:latest)

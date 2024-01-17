@@ -32,9 +32,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Clone tools repo
-        run: |
-          git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Use Node.js
@@ -45,7 +42,7 @@ jobs:
         run: |
           mkdir -p public
           npm install
-          npm run build
+          npm run build-pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

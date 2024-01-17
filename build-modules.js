@@ -216,7 +216,8 @@ async function build() {
   let filtered = modules.filter(m => m.versions.length > 0) 
   let code = `export default ${JSON.stringify(filtered, null, 2)}`
   fs.writeFileSync(`model.js`, code)
-  console.log("modules written:", `model.js`)
+  fs.writeFileSync(`model.json`, JSON.stringify(filtered, null, 2))
+  console.log("modules written:", `model.js and model.json`)
 }
 
 function getFolders(parentFolder) {
