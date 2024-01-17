@@ -6,7 +6,9 @@
 
 ## Overview
 
-Install Kyma modules in your Kubernetes cluster
+Install Kyma modules in your Kubernetes cluster. You can select modules from the list and deploy them in your cluster. You can also choose the release channel (experimental, fast, or regular) and the version of the module.
+
+
 
 ## Prerequisites
 

@@ -483,7 +483,7 @@ async function checkStatus() {
   return installedManagers(modules, client).then((modules) => managedModules(modules,client))
 }
 function openDashboard() {  
-  window.open('/?kubeconfigID=kyma.yaml','_self')
+  window.open('/?kubeconfigID=kyma.yaml','_blank')
 }
 
 function registerListeners() {
