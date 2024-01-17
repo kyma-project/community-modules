@@ -8894,7 +8894,9 @@ export default [
             }
           }
         },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
+        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.2.1/serverless-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.2.1/default-serverless-cr.yaml"
       },
       {
         "version": "1.3.0",
@@ -23948,7 +23950,9 @@ export default [
             }
           }
         },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing",
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.1/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.1/eventing_default_cr.yaml"
       },
       {
         "version": "1.0.2",
