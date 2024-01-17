@@ -24,3 +24,4 @@ module-manifests
 *.sw?
 .env
 public
+model.json
