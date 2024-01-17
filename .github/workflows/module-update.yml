@@ -38,9 +38,9 @@ jobs:
           docker cp $container_id:/app/core-ui ./dist/
       - name: Bump version and commit
         run: |
-          npm version patch
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@users.noreply.github.com'
+          npm version patch
           git tag $(npm version --json | jq -r '.["kyma"]')
           git push --follow-tags
       - run: npm publish
