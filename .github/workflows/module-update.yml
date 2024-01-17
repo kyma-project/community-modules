@@ -1,0 +1,47 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Realease patch version on module manifests change
+
+on:
+  repository_dispatch:
+  
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  # Single deploy job since we're just deploying
+  bump-version-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Clone tools repo
+        run: |
+          git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: https://registry.npmjs.org/
+      - name: Build app
+        run: |
+          mkdir -p public
+          npm ci
+          npm run build-busola
+      - name: Include latest kyma dashboard
+        run: |
+          container_id=$(docker create europe-docker.pkg.dev/kyma-project/prod/kyma-dashboard-local-dev:latest)
+          docker cp $container_id:/app/core-ui ./dist/
+      - name: Bump version and commit
+        run: |
+          npm version patch
+          git tag $(npm version --json | jq -r '.["kyma"]')
+          git push pb --follow-tags
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  
