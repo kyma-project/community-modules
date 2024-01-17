@@ -19,6 +19,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.BOT_PAT }}
       - name: Clone tools repo
         run: |
           git clone https://${{ secrets.TOOLS_TOKEN }}@github.tools.sap/kyma/module-manifests
@@ -38,8 +41,8 @@ jobs:
           docker cp $container_id:/app/core-ui ./dist/
       - name: Bump version and commit
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@users.noreply.github.com'
+          git config --global user.name 'kyma-website-bot'
+          git config --global user.email '49988522+kyma-website-bot@users.noreply.github.com'
           npm version patch
           git tag $(npm version --json | jq -r '.["kyma"]')
           git push --follow-tags
