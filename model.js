@@ -8022,7 +8022,6 @@ export default [
       {
         "version": "1.2.1",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
@@ -9769,7 +9768,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
+        "repository": "https://github.com/kyma-project/serverless-manager.git"
       }
     ]
   },
