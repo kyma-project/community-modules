@@ -8898,9 +8898,9 @@ export default [
         "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.2.1/default-serverless-cr.yaml"
       },
       {
-        "version": "1.3.0",
-        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.0/serverless-operator.yaml",
-        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.0/default-serverless-cr.yaml",
+        "version": "1.3.1",
+        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/serverless-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/default-serverless-cr.yaml",
         "cr": {
           "apiVersion": "operator.kyma-project.io/v1alpha1",
           "kind": "Serverless",
@@ -9718,7 +9718,7 @@ export default [
                           }
                         }
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.0",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -9767,7 +9767,7 @@ export default [
           }
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.0",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
         "channels": [
           "fast"
@@ -23960,50 +23960,14 @@ export default [
       },
       {
         "version": "1.0.2",
-        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing_default_cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Eventing",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/name": "eventing",
-              "app.kubernetes.io/instance": "eventing",
-              "app.kubernetes.io/part-of": "eventing-manager",
-              "app.kubernetes.io/created-by": "eventing-manager"
-            },
-            "name": "eventing",
-            "namespace": "kyma-system"
-          },
-          "spec": {
-            "backend": {
-              "type": "NATS",
-              "config": {
-                "eventTypePrefix": "sap.kyma.custom",
-                "natsStreamStorageType": "File",
-                "natsStreamReplicas": 3,
-                "natsStreamMaxSize": "700M",
-                "natsMaxMsgsPerTopic": 1000000
-              }
-            },
-            "publisher": {
-              "replicas": {
-                "min": 2,
-                "max": 2
-              },
-              "resources": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "512Mi"
-                },
-                "requests": {
-                  "cpu": "40m",
-                  "memory": "64Mi"
-                }
-              }
-            }
-          }
-        },
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
+        "repository": "https://github.com/kyma-project/eventing-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/eventing-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.0.2",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -26225,15 +26189,2311 @@ export default [
             ]
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/eventing-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.0.2",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Eventing",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "eventing",
+              "app.kubernetes.io/instance": "eventing",
+              "app.kubernetes.io/part-of": "eventing-manager",
+              "app.kubernetes.io/created-by": "eventing-manager"
+            },
+            "name": "eventing",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "backend": {
+              "type": "NATS",
+              "config": {
+                "eventTypePrefix": "sap.kyma.custom",
+                "natsStreamStorageType": "File",
+                "natsStreamReplicas": 3,
+                "natsStreamMaxSize": "700M",
+                "natsMaxMsgsPerTopic": 1000000
+              }
+            },
+            "publisher": {
+              "replicas": {
+                "min": 2,
+                "max": 2
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "40m",
+                  "memory": "64Mi"
+                }
+              }
+            }
+          }
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing",
-        "channels": [
-          "fast",
-          "regular"
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing_default_cr.yaml"
+      },
+      {
+        "version": "1.1.0",
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.1.0/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.1.0/eventing_default_cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Eventing",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "eventing",
+              "app.kubernetes.io/instance": "eventing",
+              "app.kubernetes.io/part-of": "eventing-manager",
+              "app.kubernetes.io/created-by": "eventing-manager"
+            },
+            "name": "eventing",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "backend": {
+              "type": "NATS",
+              "config": {
+                "eventTypePrefix": "sap.kyma.custom",
+                "natsStreamStorageType": "File",
+                "natsStreamReplicas": 3,
+                "natsStreamMaxSize": "700M",
+                "natsMaxMsgsPerTopic": 1000000
+              }
+            },
+            "publisher": {
+              "replicas": {
+                "min": 2,
+                "max": 2
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "40m",
+                  "memory": "64Mi"
+                }
+              }
+            }
+          }
+        },
+        "resources": [
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.11.3"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventings.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "Eventing",
+                "listKind": "EventingList",
+                "plural": "eventings",
+                "singular": "eventing"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "description": "State of Eventing",
+                      "jsonPath": ".status.state",
+                      "name": "State",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Type of Eventing backend, either NATS or EventMesh",
+                      "jsonPath": ".spec.backend.type",
+                      "name": "Backend",
+                      "type": "string"
+                    },
+                    {
+                      "description": "Age of the resource",
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "Eventing is the Schema for the eventing API.",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "default": {
+                            "logging": {
+                              "logLevel": "Info"
+                            },
+                            "publisher": {
+                              "replicas": {
+                                "max": 2,
+                                "min": 2
+                              },
+                              "resources": {
+                                "limits": {
+                                  "cpu": "500m",
+                                  "memory": "512Mi"
+                                },
+                                "requests": {
+                                  "cpu": "40m",
+                                  "memory": "256Mi"
+                                }
+                              }
+                            }
+                          },
+                          "description": "EventingSpec defines the desired state of Eventing.",
+                          "properties": {
+                            "annotations": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Annotations allows to add annotations to resources.",
+                              "type": "object"
+                            },
+                            "backend": {
+                              "description": "Backend defines the active backend used by Eventing.",
+                              "properties": {
+                                "config": {
+                                  "default": {
+                                    "natsMaxMsgsPerTopic": 1000000,
+                                    "natsStreamMaxSize": "700Mi",
+                                    "natsStreamReplicas": 3,
+                                    "natsStreamStorageType": "File"
+                                  },
+                                  "description": "Config defines configuration for eventing backend.",
+                                  "properties": {
+                                    "domain": {
+                                      "description": "Domain defines the cluster public domain used to configure the EventMesh Subscriptions and their corresponding ApiRules.",
+                                      "pattern": "^(?:([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])(\\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9]))*)?$",
+                                      "type": "string"
+                                    },
+                                    "eventMeshSecret": {
+                                      "description": "EventMeshSecret defines the namespaced name of K8s Secret containing EventMesh credentials. The format of name is \"namespace/name\".",
+                                      "pattern": "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$",
+                                      "type": "string"
+                                    },
+                                    "eventTypePrefix": {
+                                      "default": "sap.kyma.custom",
+                                      "type": "string",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "eventTypePrefix cannot be empty",
+                                          "rule": "self!=''"
+                                        }
+                                      ]
+                                    },
+                                    "natsMaxMsgsPerTopic": {
+                                      "default": 1000000,
+                                      "description": "NATSMaxMsgsPerTopic limits how many messages in the NATS stream to retain per subject.",
+                                      "type": "integer"
+                                    },
+                                    "natsStreamMaxSize": {
+                                      "anyOf": [
+                                        {
+                                          "type": "integer"
+                                        },
+                                        {
+                                          "type": "string"
+                                        }
+                                      ],
+                                      "default": "700Mi",
+                                      "description": "NATSStreamMaxSize defines the maximum storage size for stream data.",
+                                      "pattern": "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$",
+                                      "x-kubernetes-int-or-string": true
+                                    },
+                                    "natsStreamReplicas": {
+                                      "default": 3,
+                                      "description": "NATSStreamReplicas defines the number of replicas for stream.",
+                                      "type": "integer"
+                                    },
+                                    "natsStreamStorageType": {
+                                      "default": "File",
+                                      "description": "NATSStreamStorageType defines the storage type for stream data.",
+                                      "type": "string",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "storage type can only be set to File or Memory",
+                                          "rule": "self=='File' || self=='Memory'"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "type": {
+                                  "default": "NATS",
+                                  "description": "Type defines which backend to use. The value is either `EventMesh`, or `NATS`.",
+                                  "type": "string",
+                                  "x-kubernetes-validations": [
+                                    {
+                                      "message": "backend type can only be set to NATS or EventMesh",
+                                      "rule": "self=='NATS' || self=='EventMesh' || self==''"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "type"
+                              ],
+                              "type": "object",
+                              "x-kubernetes-validations": [
+                                {
+                                  "message": "secret cannot be empty if EventMesh backend is used",
+                                  "rule": " (self.type != 'EventMesh') || ((self.type == 'EventMesh') && (self.config.eventMeshSecret != ''))"
+                                }
+                              ]
+                            },
+                            "labels": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Labels allows to add Labels to resources.",
+                              "type": "object"
+                            },
+                            "logging": {
+                              "default": {
+                                "logLevel": "Info"
+                              },
+                              "description": "Logging defines the log level for eventing-manager.",
+                              "properties": {
+                                "logLevel": {
+                                  "default": "Info",
+                                  "description": "LogLevel defines the log level.",
+                                  "type": "string",
+                                  "x-kubernetes-validations": [
+                                    {
+                                      "message": "logLevel can only be set to Debug, Info, Warn or Error",
+                                      "rule": "self=='Info' || self=='Warn' || self=='Error' || self=='Debug'"
+                                    }
+                                  ]
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "publisher": {
+                              "default": {
+                                "replicas": {
+                                  "max": 2,
+                                  "min": 2
+                                },
+                                "resources": {
+                                  "limits": {
+                                    "cpu": "500m",
+                                    "memory": "512Mi"
+                                  },
+                                  "requests": {
+                                    "cpu": "40m",
+                                    "memory": "256Mi"
+                                  }
+                                }
+                              },
+                              "description": "Publisher defines the configurations for eventing-publisher-proxy.",
+                              "properties": {
+                                "replicas": {
+                                  "default": {
+                                    "max": 2,
+                                    "min": 2
+                                  },
+                                  "description": "Replicas defines the scaling min/max for eventing-publisher-proxy.",
+                                  "properties": {
+                                    "max": {
+                                      "default": 2,
+                                      "description": "Max defines maximum number of replicas.",
+                                      "type": "integer"
+                                    },
+                                    "min": {
+                                      "default": 2,
+                                      "description": "Min defines minimum number of replicas.",
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "type": "object",
+                                  "x-kubernetes-validations": [
+                                    {
+                                      "message": "min value must be smaller than the max value",
+                                      "rule": "self.min <= self.max"
+                                    }
+                                  ]
+                                },
+                                "resources": {
+                                  "default": {
+                                    "limits": {
+                                      "cpu": "500m",
+                                      "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                      "cpu": "40m",
+                                      "memory": "256Mi"
+                                    }
+                                  },
+                                  "description": "Resources defines resources for eventing-publisher-proxy.",
+                                  "properties": {
+                                    "claims": {
+                                      "description": "Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. \n This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. \n This field is immutable. It can only be set for containers.",
+                                      "items": {
+                                        "description": "ResourceClaim references one entry in PodSpec.ResourceClaims.",
+                                        "properties": {
+                                          "name": {
+                                            "description": "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "name"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      "type": "array",
+                                      "x-kubernetes-list-map-keys": [
+                                        "name"
+                                      ],
+                                      "x-kubernetes-list-type": "map"
+                                    },
+                                    "limits": {
+                                      "additionalProperties": {
+                                        "anyOf": [
+                                          {
+                                            "type": "integer"
+                                          },
+                                          {
+                                            "type": "string"
+                                          }
+                                        ],
+                                        "pattern": "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$",
+                                        "x-kubernetes-int-or-string": true
+                                      },
+                                      "description": "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                      "type": "object"
+                                    },
+                                    "requests": {
+                                      "additionalProperties": {
+                                        "anyOf": [
+                                          {
+                                            "type": "integer"
+                                          },
+                                          {
+                                            "type": "string"
+                                          }
+                                        ],
+                                        "pattern": "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$",
+                                        "x-kubernetes-int-or-string": true
+                                      },
+                                      "description": "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          },
+                          "type": "object",
+                          "x-kubernetes-validations": [
+                            {
+                              "message": "backend config cannot be deleted",
+                              "rule": "!(oldSelf!=null && has(oldSelf.backend)) || has(self.backend)"
+                            }
+                          ]
+                        },
+                        "status": {
+                          "description": "EventingStatus defines the observed state of Eventing.",
+                          "properties": {
+                            "activeBackend": {
+                              "type": "string"
+                            },
+                            "conditions": {
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, \n type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` \n // other fields }",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition. This may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "publisherService": {
+                              "type": "string"
+                            },
+                            "specHash": {
+                              "format": "int64",
+                              "type": "integer"
+                            },
+                            "state": {
+                              "description": "Can have one of the following values: Ready, Error, Processing, Warning. Ready state is set when all the resources are deployed successfully and backend is connected. It gets Warning state in case backend is not specified and NATS module is not installed or EventMesh secret is missing in the cluster. Error state is set when there is an error. Processing state is set if recources are being created or changed.",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "activeBackend",
+                            "specHash",
+                            "state"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.11.3"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "subscriptions.eventing.kyma-project.io"
+            },
+            "spec": {
+              "conversion": {
+                "strategy": "Webhook",
+                "webhook": {
+                  "clientConfig": {
+                    "service": {
+                      "name": "eventing-manager-webhook-service",
+                      "namespace": "kyma-system",
+                      "path": "/convert"
+                    }
+                  },
+                  "conversionReviewVersions": [
+                    "v1"
+                  ]
+                }
+              },
+              "group": "eventing.kyma-project.io",
+              "names": {
+                "kind": "Subscription",
+                "listKind": "SubscriptionList",
+                "plural": "subscriptions",
+                "singular": "subscription"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.ready",
+                      "name": "Ready",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    },
+                    {
+                      "jsonPath": ".status.cleanEventTypes",
+                      "name": "Clean Event Types",
+                      "type": "string"
+                    }
+                  ],
+                  "deprecated": true,
+                  "deprecationWarning": "The v1alpha1 API version is deprecated as of Kyma 2.14.X.",
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "Subscription is the Schema for the subscriptions API.",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "SubscriptionSpec defines the desired state of Subscription.",
+                          "properties": {
+                            "config": {
+                              "description": "Defines additional configuration for the active backend.",
+                              "properties": {
+                                "maxInFlightMessages": {
+                                  "description": "Defines how many not-ACKed messages can be in flight simultaneously.",
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "filter": {
+                              "description": "Defines which events will be sent to the sink.",
+                              "properties": {
+                                "dialect": {
+                                  "description": "Contains a `URI-reference` to the CloudEvent filter dialect. See [here](https://github.com/cloudevents/spec/blob/main/subscriptions/spec.md#3241-filter-dialects) for more details.",
+                                  "type": "string"
+                                },
+                                "filters": {
+                                  "items": {
+                                    "description": "Defines the BEB filter element as a combination of two CE filter elements.",
+                                    "properties": {
+                                      "eventSource": {
+                                        "description": "Defines the source of the CE filter.",
+                                        "properties": {
+                                          "property": {
+                                            "description": "Defines the property of the filter.",
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "description": "Defines the type of the filter.",
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "description": "Defines the value of the filter.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "property",
+                                          "value"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      "eventType": {
+                                        "description": "Defines the type of the CE filter.",
+                                        "properties": {
+                                          "property": {
+                                            "description": "Defines the property of the filter.",
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "description": "Defines the type of the filter.",
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "description": "Defines the value of the filter.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "property",
+                                          "value"
+                                        ],
+                                        "type": "object"
+                                      }
+                                    },
+                                    "required": [
+                                      "eventSource",
+                                      "eventType"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "filters"
+                              ],
+                              "type": "object"
+                            },
+                            "id": {
+                              "description": "Unique identifier of the Subscription, read-only.",
+                              "type": "string"
+                            },
+                            "protocol": {
+                              "description": "Defines the CE protocol specification implementation.",
+                              "type": "string"
+                            },
+                            "protocolsettings": {
+                              "description": "Defines the CE protocol settings specification implementation.",
+                              "properties": {
+                                "contentMode": {
+                                  "description": "Defines the content mode for eventing based on BEB. The value is either `BINARY`, or `STRUCTURED`.",
+                                  "type": "string"
+                                },
+                                "exemptHandshake": {
+                                  "description": "Defines if the exempt handshake for eventing is based on BEB.",
+                                  "type": "boolean"
+                                },
+                                "qos": {
+                                  "description": "Defines the quality of service for eventing based on BEB.",
+                                  "type": "string"
+                                },
+                                "webhookAuth": {
+                                  "description": "Defines the Webhook called by an active subscription on BEB.",
+                                  "properties": {
+                                    "clientId": {
+                                      "description": "Defines the clientID for OAuth2.",
+                                      "type": "string"
+                                    },
+                                    "clientSecret": {
+                                      "description": "Defines the Client Secret for OAuth2.",
+                                      "type": "string"
+                                    },
+                                    "grantType": {
+                                      "description": "Defines the grant type for OAuth2.",
+                                      "type": "string"
+                                    },
+                                    "scope": {
+                                      "description": "Defines the scope for OAuth2.",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "tokenUrl": {
+                                      "description": "Defines the token URL for OAuth2.",
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "description": "Defines the authentication type.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "clientId",
+                                    "clientSecret",
+                                    "grantType",
+                                    "tokenUrl"
+                                  ],
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "sink": {
+                              "description": "Kubernetes Service that should be used as a target for the events that match the Subscription. Must exist in the same Namespace as the Subscription.",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "filter",
+                            "sink"
+                          ],
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "SubscriptionStatus defines the observed state of the Subscription.",
+                          "properties": {
+                            "apiRuleName": {
+                              "description": "Defines the name of the APIRule which is used by the Subscription.",
+                              "type": "string"
+                            },
+                            "cleanEventTypes": {
+                              "description": "CleanEventTypes defines the filter's event types after cleanup to use it with the configured backend.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "conditions": {
+                              "description": "Current state of the Subscription.",
+                              "items": {
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "Defines the date of the last condition status change.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "Provides more details about the condition status change.",
+                                    "type": "string"
+                                  },
+                                  "reason": {
+                                    "description": "Defines the reason for the condition status change.",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "Status of the condition. The value is either `True`, `False`, or `Unknown`.",
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "Short description of the condition.",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "config": {
+                              "description": "Defines the configurations that have been applied to the eventing backend when creating this Subscription.",
+                              "properties": {
+                                "maxInFlightMessages": {
+                                  "description": "Defines how many not-ACKed messages can be in flight simultaneously.",
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "emsSubscriptionStatus": {
+                              "description": "Defines the status of the Subscription in EventMesh.",
+                              "properties": {
+                                "lastFailedDelivery": {
+                                  "description": "Timestamp of the last failed delivery.",
+                                  "type": "string"
+                                },
+                                "lastFailedDeliveryReason": {
+                                  "description": "Reason for the last failed delivery.",
+                                  "type": "string"
+                                },
+                                "lastSuccessfulDelivery": {
+                                  "description": "Timestamp of the last successful delivery.",
+                                  "type": "string"
+                                },
+                                "subscriptionStatus": {
+                                  "description": "Status of the Subscription as reported by EventMesh.",
+                                  "type": "string"
+                                },
+                                "subscriptionStatusReason": {
+                                  "description": "Reason for the current status.",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "emshash": {
+                              "description": "Defines the checksum for the Subscription in EventMesh.",
+                              "format": "int64",
+                              "type": "integer"
+                            },
+                            "ev2hash": {
+                              "description": "Defines the checksum for the Subscription custom resource.",
+                              "format": "int64",
+                              "type": "integer"
+                            },
+                            "externalSink": {
+                              "description": "Defines the webhook URL which is used by EventMesh to trigger subscribers.",
+                              "type": "string"
+                            },
+                            "failedActivation": {
+                              "description": "Defines the reason if a Subscription failed activation in EventMesh.",
+                              "type": "string"
+                            },
+                            "ready": {
+                              "description": "Overall readiness of the Subscription.",
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "cleanEventTypes",
+                            "ready"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": false,
+                  "subresources": {
+                    "status": {}
+                  }
+                },
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.ready",
+                      "name": "Ready",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1alpha2",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "Subscription is the Schema for the subscriptions API.",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired state of the Subscription.",
+                          "properties": {
+                            "config": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Map of configuration options that will be applied on the backend.",
+                              "type": "object"
+                            },
+                            "id": {
+                              "description": "Unique identifier of the Subscription, read-only.",
+                              "type": "string"
+                            },
+                            "sink": {
+                              "description": "Kubernetes Service that should be used as a target for the events that match the Subscription. Must exist in the same Namespace as the Subscription.",
+                              "type": "string"
+                            },
+                            "source": {
+                              "description": "Defines the origin of the event.",
+                              "type": "string"
+                            },
+                            "typeMatching": {
+                              "description": "Defines how types should be handled.<br /> - `standard`: backend-specific logic will be applied to the configured source and types.<br /> - `exact`: no further processing will be applied to the configured source and types.",
+                              "type": "string"
+                            },
+                            "types": {
+                              "description": "List of event types that will be used for subscribing on the backend.",
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "sink",
+                            "source",
+                            "types"
+                          ],
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "SubscriptionStatus defines the observed state of Subscription.",
+                          "properties": {
+                            "backend": {
+                              "description": "Backend-specific status which is applicable to the active backend only.",
+                              "properties": {
+                                "apiRuleName": {
+                                  "description": "Name of the APIRule which is used by the Subscription.",
+                                  "type": "string"
+                                },
+                                "emsSubscriptionStatus": {
+                                  "description": "Status of the Subscription as reported by EventMesh.",
+                                  "properties": {
+                                    "lastFailedDelivery": {
+                                      "description": "Timestamp of the last failed delivery.",
+                                      "type": "string"
+                                    },
+                                    "lastFailedDeliveryReason": {
+                                      "description": "Reason for the last failed delivery.",
+                                      "type": "string"
+                                    },
+                                    "lastSuccessfulDelivery": {
+                                      "description": "Timestamp of the last successful delivery.",
+                                      "type": "string"
+                                    },
+                                    "status": {
+                                      "description": "Status of the Subscription as reported by the backend.",
+                                      "type": "string"
+                                    },
+                                    "statusReason": {
+                                      "description": "Reason for the current status.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "emsTypes": {
+                                  "description": "List of mappings from event type to EventMesh compatible types. Used only with EventMesh as the backend.",
+                                  "items": {
+                                    "properties": {
+                                      "eventMeshType": {
+                                        "description": "Event type that is used on the EventMesh backend.",
+                                        "type": "string"
+                                      },
+                                      "originalType": {
+                                        "description": "Event type that was originally used to subscribe.",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "eventMeshType",
+                                      "originalType"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "emshash": {
+                                  "description": "Hash used to identify an EventMesh Subscription retrieved from the server without the WebhookAuth config.",
+                                  "format": "int64",
+                                  "type": "integer"
+                                },
+                                "ev2hash": {
+                                  "description": "Checksum for the Subscription custom resource.",
+                                  "format": "int64",
+                                  "type": "integer"
+                                },
+                                "eventMeshLocalHash": {
+                                  "description": "Hash used to identify an EventMesh Subscription posted to the server without the WebhookAuth config.",
+                                  "format": "int64",
+                                  "type": "integer"
+                                },
+                                "externalSink": {
+                                  "description": "Webhook URL used by EventMesh to trigger subscribers.",
+                                  "type": "string"
+                                },
+                                "failedActivation": {
+                                  "description": "Provides the reason if a Subscription failed activation in EventMesh.",
+                                  "type": "string"
+                                },
+                                "types": {
+                                  "description": "List of event type to consumer name mappings for the NATS backend.",
+                                  "items": {
+                                    "properties": {
+                                      "consumerName": {
+                                        "description": "Name of the JetStream consumer created for the event type.",
+                                        "type": "string"
+                                      },
+                                      "originalType": {
+                                        "description": "Event type that was originally used to subscribe.",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "originalType"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "webhookAuthHash": {
+                                  "description": "Hash used to identify the WebhookAuth of an EventMesh Subscription existing on the server.",
+                                  "format": "int64",
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "conditions": {
+                              "description": "Current state of the Subscription.",
+                              "items": {
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "Defines the date of the last condition status change.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "Provides more details about the condition status change.",
+                                    "type": "string"
+                                  },
+                                  "reason": {
+                                    "description": "Defines the reason for the condition status change.",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "Status of the condition. The value is either `True`, `False`, or `Unknown`.",
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "Short description of the condition.",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "ready": {
+                              "description": "Overall readiness of the Subscription.",
+                              "type": "boolean"
+                            },
+                            "types": {
+                              "description": "List of event types after cleanup for use with the configured backend.",
+                              "items": {
+                                "properties": {
+                                  "cleanType": {
+                                    "description": "Event type after it was cleaned up from backend compatible characters.",
+                                    "type": "string"
+                                  },
+                                  "originalType": {
+                                    "description": "Event type as specified in the Subscription spec.",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "cleanType",
+                                  "originalType"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "ready",
+                            "types"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app": "eventing-manager-cert-handler",
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-cert-handler",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "creationTimestamp": null,
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "serviceaccounts"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "services"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "admissionregistration.k8s.io"
+                ],
+                "resources": [
+                  "mutatingwebhookconfigurations"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "admissionregistration.k8s.io"
+                ],
+                "resources": [
+                  "validatingwebhookconfigurations"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "applicationconnector.kyma-project.io"
+                ],
+                "resources": [
+                  "applications"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "eventing.kyma-project.io"
+                ],
+                "resources": [
+                  "subscriptions"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "eventing.kyma-project.io"
+                ],
+                "resources": [
+                  "subscriptions/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "gateway.kyma-project.io"
+                ],
+                "resources": [
+                  "apirules"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "eventings"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "eventings/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "eventings/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "nats"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterroles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "security.istio.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "security.istio.io"
+                ],
+                "resources": [
+                  "peerauthentications"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-cert-handler"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "list",
+                  "watch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "create",
+                  "get",
+                  "patch",
+                  "list",
+                  "watch",
+                  "update"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "eventing-manager"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "eventing-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-cert-handler"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "eventing-manager-cert-handler"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "eventing-manager-cert-handler",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: State\n    source: status.state\n    widget: Badge\n\nbody:\n  - name: Conditions\n    source: status.conditions\n    widget: Table\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          negative:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n  - source: \"'NATS unavailable: If you chose the NATS backend, you must enable the NATS module.'\"\n    widget: Alert\n    severity: warning\n    visibility: \"$exists(status.conditions[reason = 'NATSUnavailable'])\"\n  - source: \"'No backend: If you enable the Eventing module, you must configure a backend.'\"\n    widget: Alert\n    severity: warning\n    visibility: \"$exists(status.conditions[reason = 'BackendNotSpecified'])\"\n  - name: Events\n    widget: EventList\n    filter: '$matchEvents($$, $root.kind, $root.metadata.name)'\n    defaultType: information\n",
+              "form": "- path: spec.backend.type\n  name: Backend Type\n  widget: FormGroup\n  defaultExpanded: true\n  enum:\n    - NATS\n    - EventMesh\n  description: Choose a backend type from the dropdown.\n\n- simple: true\n  widget: Alert\n  severity: info\n  alert: \"'If you choose the NATS backend, you must enable the NATS module.'\"\n  visibility: \"spec.backend.type = 'NATS'\"\n\n- path: spec.backend.config.eventMeshSecret\n  visibility: \"spec.backend.type = 'EventMesh'\"\n  widget: ResourceRef\n  defaultExpanded: false\n  resource:\n    kind: Secret\n    version: v1\n  toInternal: |\n    (\n      $values := $split($, '/');\n      { 'namespace': $values[0], 'name': $values[1] }\n    )\n  toExternal: namespace & '/' & name\n\n- path: spec.publisher.replicas\n  name: Publisher Replicas\n  widget: FormGroup\n  defaultExpanded: false\n  children:\n    - path: max\n    - path: min\n",
+              "general": "resource:\n  kind: Eventing\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: eventings\ncategory: Kyma\nname: Eventing\nscope: namespace\nfeatures:\n  actions:\n    disableCreate: false\n    disableDelete: false\ndescription: >-\n  {{[Eventing CR](https://github.com/kyma-project/eventing-manager/blob/main/config/samples/default.yaml)}}\n  specifies eventing module.\n",
+              "list": "- name: State\n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventings.operator.kyma-project.io",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: status.conditions.status\n    source: 'status.ready = false ? \"error\" : \"ready\"'\n    widget: Badge\n    description: status.conditions.message\n  - name: spec.typeMatching\n    source: spec.typeMatching\n  - name: spec.source\n    source: spec.source\n  - name: spec.sink\n    source: spec.sink\n    widget: ResourceLink\n    resource:\n      name: '$substringBefore($substringAfter(spec.sink, \"http://\"), \".\")'\n      namespace: $root.metadata.namespace\n      kind: \"'Service'\"\nbody:\n  - source: status.conditions\n    widget: Table\n    name: status.conditions\n    children:\n      - source: '$item.type'\n        name: status.conditions.type\n      - source: '$item.status'\n        widget: Badge\n        name: status.conditions.status\n      - source: '$item.reason'\n        name: status.conditions.reason\n      - source: '$item.message'\n        name: status.conditions.message\n      - source: '$readableTimestamp($item.lastTransitionTime)'\n        name: status.conditions.lastTransitionTime\n  - name: spec.types\n    source: spec.types\n    widget: Table\n    children:\n      - name: Type\n        search: true\n        source: '$item'\n        sort: false\n  - widget: EventList\n    filter: \"$matchEvents($$, $root.kind, $root.metadata.name)\"\n    name: events\n    defaultType: NORMAL\n    hideInvolvedObjects: true",
+              "form": "- path: spec.config\n  widget: KeyValuePair\n  defaultExpanded: false\n- path: spec.types\n  simple: true\n  widget: SimpleList\n  defaultExpanded: true\n  children:\n    - path: '[]'\n      simple: true\n- simple: true\n  type: string\n  var: service\n  name: Service\n  widget: Resource\n  resource:\n    kind: Service\n    version: v1\n    scope: namespace\n  trigger: [sink]\n- path: spec.sink\n  name: spec.sink\n  simple: true\n  inputInfo: inputInfo.sink\n  placeholder: placeholder.sink\n  subscribe:\n    sink: '\"http://\" & $service & \".\" & $root.metadata.namespace & \".svc.cluster.local\"'\n- path: spec.typeMatching\n  simple: true\n  enum:\n    - standard\n    - exact\n  required: true\n- path: spec.source\n  name: spec.source\n  simple: true\n  required: true\n  visibility: \"spec.typeMatching = 'standard'\"\n  widget: Resource\n  resource:\n    kind: Application\n    group: applicationconnector.kyma-project.io\n    version: v1alpha1",
+              "general": "resource:\n  kind: Subscription\n  group: eventing.kyma-project.io\n  version: v1alpha2\nname: Subscriptions\ncategory: Configuration\nscope: namespace\ndescription: >-\n  {{\"{{[Subscription](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/evnt-01-subscription#documentation-content)}}\"}} is used to subscribe to events.\nurlPath: subscriptions",
+              "list": "- name: status.conditions.status\n  source: 'status.ready = false ? \"error\" : \"ready\"'\n  widget: Badge\n  description: status.conditions.message",
+              "presets": "- name: Default Type Matching\n  default: true\n  value:\n    spec:\n      typeMatching: standard",
+              "translations": "en:\n  inputInfo.sink: Sink structure, 'http://{SERVICE}.{NAMESPACE}.svc.cluster.local'\n  inputInfo.eventType: Event Type structure, 'sap.kyma.custom.{APP}.{EVENT.NAME}.{VERSION}'\n  events: Events\n  placeholder.eventType: Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1\n  placeholder.sink: Enter the sink, for example, http://service.default.svc.cluster.local\n  spec.filters: Filters\n  spec.filter.eventType: Event Type\n  spec.filter.eventSource: Event Source\n  spec.filter.event.property: Property\n  spec.filter.event.type: Type\n  spec.filter.event.value: Value\n  spec.types: Types\n  spec.source: Source\n  spec.typeMatching: Type Matching\n  spec.sink: Sink\n  spec.service: Service\n  spec.sink.controlledBy: Controlled By\n  status.cleanEventTypes: Event Types\n  status.conditions: Conditions\n  status.conditions.lastTransitionTime: Last Transition\n  status.conditions.reason: Reason\n  status.conditions.status: Status\n  status.conditions.type: Type\n  status.conditions.message: Message\n  status.type: Type"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "eventing-manager"
+              },
+              "name": "subscriptions",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Secret",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-webhook-server-cert",
+              "namespace": "kyma-system"
+            },
+            "type": "Opaque"
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-health",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "name": "http-status",
+                  "port": 15020,
+                  "protocol": "TCP",
+                  "targetPort": 15020
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/name": "eventing-manager",
+                "control-plane": "eventing-manager"
+              },
+              "type": "ClusterIP"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "annotations": {
+                "prometheus.io/port": "8080",
+                "prometheus.io/scheme": "http",
+                "prometheus.io/scrape": "true"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-metrics",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "name": "http-metrics",
+                  "port": 80,
+                  "protocol": "TCP",
+                  "targetPort": 8080
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/name": "eventing-manager",
+                "control-plane": "eventing-manager"
+              },
+              "type": "ClusterIP"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-webhook-service",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "name": "http-convert",
+                  "port": 443,
+                  "protocol": "TCP",
+                  "targetPort": 9443
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/name": "eventing-manager",
+                "control-plane": "eventing-manager"
+              }
+            }
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Scheduling priority of the Eventing-Manager module. Must not be blocked by unschedulable user workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-priority-class"
+            },
+            "value": 2000000
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "app.kubernetes.io/component": "eventing-manager",
+                  "app.kubernetes.io/instance": "eventing-manager",
+                  "app.kubernetes.io/name": "eventing-manager",
+                  "control-plane": "eventing-manager"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager",
+                    "traffic.sidecar.istio.io/excludeInboundPorts": "9443"
+                  },
+                  "labels": {
+                    "app.kubernetes.io/component": "eventing-manager",
+                    "app.kubernetes.io/instance": "eventing-manager",
+                    "app.kubernetes.io/name": "eventing-manager",
+                    "control-plane": "eventing-manager"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "command": [
+                        "/manager"
+                      ],
+                      "env": [
+                        {
+                          "name": "NAMESPACE",
+                          "valueFrom": {
+                            "fieldRef": {
+                              "fieldPath": "metadata.namespace"
+                            }
+                          }
+                        },
+                        {
+                          "name": "EVENTING_CR_NAME",
+                          "value": "eventing"
+                        },
+                        {
+                          "name": "EVENTING_CR_NAMESPACE",
+                          "value": "kyma-system"
+                        },
+                        {
+                          "name": "NATS_URL",
+                          "value": "eventing-nats.kyma-system.svc.cluster.local"
+                        },
+                        {
+                          "name": "PUBLISHER_REQUESTS_CPU",
+                          "value": "10m"
+                        },
+                        {
+                          "name": "PUBLISHER_REQUESTS_MEMORY",
+                          "value": "64Mi"
+                        },
+                        {
+                          "name": "PUBLISHER_LIMITS_CPU",
+                          "value": "100m"
+                        },
+                        {
+                          "name": "PUBLISHER_LIMITS_MEMORY",
+                          "value": "128Mi"
+                        },
+                        {
+                          "name": "PUBLISHER_IMAGE",
+                          "value": "europe-docker.pkg.dev/kyma-project/prod/eventing-publisher-proxy:1.0.1"
+                        },
+                        {
+                          "name": "PUBLISHER_IMAGE_PULL_POLICY",
+                          "value": "IfNotPresent"
+                        },
+                        {
+                          "name": "PUBLISHER_REPLICAS",
+                          "value": "1"
+                        },
+                        {
+                          "name": "PUBLISHER_REQUEST_TIMEOUT",
+                          "value": "10s"
+                        },
+                        {
+                          "name": "DEFAULT_MAX_IN_FLIGHT_MESSAGES",
+                          "value": "10"
+                        },
+                        {
+                          "name": "DEFAULT_DISPATCHER_RETRY_PERIOD",
+                          "value": "5m"
+                        },
+                        {
+                          "name": "DEFAULT_DISPATCHER_MAX_RETRIES",
+                          "value": "10"
+                        },
+                        {
+                          "name": "APP_LOG_FORMAT",
+                          "value": "json"
+                        },
+                        {
+                          "name": "APP_LOG_LEVEL",
+                          "value": "info"
+                        },
+                        {
+                          "name": "JS_STREAM_NAME",
+                          "value": "sap"
+                        },
+                        {
+                          "name": "JS_STREAM_SUBJECT_PREFIX",
+                          "value": "kyma"
+                        },
+                        {
+                          "name": "JS_STREAM_STORAGE_TYPE",
+                          "value": "file"
+                        },
+                        {
+                          "name": "JS_STREAM_REPLICAS",
+                          "value": "1"
+                        },
+                        {
+                          "name": "JS_STREAM_DISCARD_POLICY",
+                          "value": "new"
+                        },
+                        {
+                          "name": "JS_STREAM_RETENTION_POLICY",
+                          "value": "interest"
+                        },
+                        {
+                          "name": "JS_CONSUMER_DELIVER_POLICY",
+                          "value": "new"
+                        },
+                        {
+                          "name": "JS_STREAM_MAX_MSGS",
+                          "value": "-1"
+                        },
+                        {
+                          "name": "JS_STREAM_MAX_BYTES",
+                          "value": "700Mi"
+                        },
+                        {
+                          "name": "WEBHOOK_SECRET_NAME",
+                          "value": "eventing-manager-webhook-server-cert"
+                        },
+                        {
+                          "name": "MUTATING_WEBHOOK_NAME",
+                          "value": "subscription-mutating-webhook-configuration"
+                        },
+                        {
+                          "name": "VALIDATING_WEBHOOK_NAME",
+                          "value": "subscription-validating-webhook-configuration"
+                        },
+                        {
+                          "name": "EVENTING_WEBHOOK_AUTH_SECRET_NAME",
+                          "value": "eventing-webhook-auth"
+                        },
+                        {
+                          "name": "EVENTING_WEBHOOK_AUTH_SECRET_NAMESPACE",
+                          "value": "kyma-system"
+                        }
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.1.0",
+                      "imagePullPolicy": "Always",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "500m",
+                          "memory": "512Mi"
+                        },
+                        "requests": {
+                          "cpu": "10m",
+                          "memory": "128Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        }
+                      },
+                      "volumeMounts": [
+                        {
+                          "mountPath": "/tmp/k8s-webhook-server/serving-certs",
+                          "name": "cert",
+                          "readOnly": true
+                        }
+                      ]
+                    }
+                  ],
+                  "priorityClassName": "eventing-manager-priority-class",
+                  "securityContext": {
+                    "fsGroup": 10001,
+                    "runAsGroup": 10001,
+                    "runAsNonRoot": true,
+                    "runAsUser": 10001,
+                    "seccompProfile": {
+                      "type": "RuntimeDefault"
+                    }
+                  },
+                  "serviceAccountName": "eventing-manager",
+                  "terminationGracePeriodSeconds": 10,
+                  "volumes": [
+                    {
+                      "name": "cert",
+                      "secret": {
+                        "defaultMode": 420,
+                        "secretName": "eventing-manager-webhook-server-cert"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "apiVersion": "batch/v1",
+            "kind": "CronJob",
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "labels": {
+                "app": "eventing-manager-cert-handler",
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-cert-handler",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "jobTemplate": {
+                "spec": {
+                  "template": {
+                    "metadata": {
+                      "annotations": {
+                        "sidecar.istio.io/inject": "false"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "env": [
+                            {
+                              "name": "CRD_NAME",
+                              "value": "subscriptions.eventing.kyma-project.io"
+                            },
+                            {
+                              "name": "SECRET_NAME",
+                              "value": "eventing-manager-webhook-server-cert"
+                            }
+                          ],
+                          "image": "europe-docker.pkg.dev/kyma-project/prod/eventing-webhook-certificates:1.7.0",
+                          "imagePullPolicy": "IfNotPresent",
+                          "name": "api-gateway"
+                        }
+                      ],
+                      "priorityClassName": "eventing-manager-priority-class",
+                      "restartPolicy": "Never",
+                      "serviceAccountName": "eventing-manager-cert-handler"
+                    }
+                  }
+                }
+              },
+              "schedule": "0 0 * * 0,4"
+            }
+          },
+          {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "labels": {
+                "app": "eventing-manager-cert-handler",
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "eventing-manager-cert-handler",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "sidecar.istio.io/inject": "false"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "env": [
+                        {
+                          "name": "CRD_NAME",
+                          "value": "subscriptions.eventing.kyma-project.io"
+                        },
+                        {
+                          "name": "SECRET_NAME",
+                          "value": "eventing-manager-webhook-server-cert"
+                        }
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/eventing-webhook-certificates:1.7.0",
+                      "imagePullPolicy": "IfNotPresent",
+                      "name": "api-gateway"
+                    }
+                  ],
+                  "priorityClassName": "eventing-manager-priority-class",
+                  "restartPolicy": "Never",
+                  "serviceAccountName": "eventing-manager-cert-handler"
+                }
+              }
+            }
+          },
+          {
+            "apiVersion": "admissionregistration.k8s.io/v1",
+            "kind": "MutatingWebhookConfiguration",
+            "metadata": {
+              "creationTimestamp": null,
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "subscription-mutating-webhook-configuration"
+            },
+            "webhooks": [
+              {
+                "admissionReviewVersions": [
+                  "v1"
+                ],
+                "clientConfig": {
+                  "service": {
+                    "name": "eventing-manager-webhook-service",
+                    "namespace": "kyma-system",
+                    "path": "/mutate-eventing-kyma-project-io-v1alpha2-subscription"
+                  }
+                },
+                "failurePolicy": "Fail",
+                "name": "msubscription.kb.io",
+                "rules": [
+                  {
+                    "apiGroups": [
+                      "eventing.kyma-project.io"
+                    ],
+                    "apiVersions": [
+                      "v1alpha2"
+                    ],
+                    "operations": [
+                      "CREATE",
+                      "UPDATE"
+                    ],
+                    "resources": [
+                      "subscriptions"
+                    ]
+                  }
+                ],
+                "sideEffects": "None"
+              }
+            ]
+          },
+          {
+            "apiVersion": "admissionregistration.k8s.io/v1",
+            "kind": "ValidatingWebhookConfiguration",
+            "metadata": {
+              "creationTimestamp": null,
+              "labels": {
+                "app.kubernetes.io/component": "eventing-manager",
+                "app.kubernetes.io/created-by": "eventing-manager",
+                "app.kubernetes.io/instance": "eventing-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "eventing-manager",
+                "app.kubernetes.io/part-of": "Kyma",
+                "control-plane": "eventing-manager"
+              },
+              "name": "subscription-validating-webhook-configuration"
+            },
+            "webhooks": [
+              {
+                "admissionReviewVersions": [
+                  "v1"
+                ],
+                "clientConfig": {
+                  "service": {
+                    "name": "eventing-manager-webhook-service",
+                    "namespace": "kyma-system",
+                    "path": "/validate-eventing-kyma-project-io-v1alpha2-subscription"
+                  }
+                },
+                "failurePolicy": "Fail",
+                "name": "vsubscription.kb.io",
+                "rules": [
+                  {
+                    "apiGroups": [
+                      "eventing.kyma-project.io"
+                    ],
+                    "apiVersions": [
+                      "v1alpha2"
+                    ],
+                    "operations": [
+                      "CREATE",
+                      "UPDATE"
+                    ],
+                    "resources": [
+                      "subscriptions"
+                    ]
+                  }
+                ],
+                "sideEffects": "None"
+              }
+            ]
+          }
         ],
-        "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
-        "repository": "https://github.com/kyma-project/eventing-manager.git"
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/eventing-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.1.0",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing"
       }
     ]
   },
