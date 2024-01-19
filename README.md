@@ -8,31 +8,13 @@
 
 Install Kyma modules in your Kubernetes cluster. You can select modules from the list and deploy them in your cluster. You can also choose the release channel (experimental, fast, or regular) and the version of the module.
 
-
-
 ## Prerequisites
 
-- kubectl
 - kubernetes cluster (KUBECONFIG configured)
 - kyma-system namespace created (some modules installation can fail without it)
+- nodejs with npm
 
 ## Installation
-
-### In-cluster
-```
-kubectl run ui --image=ghcr.io/kyma-project/community-modules:latest
-```
-
-When the pod is ready, start kubectl proxy:
-```
-kubectl wait --for=condition=ready pod ui
-kubectl proxy
-```
-
-Open Web UI with this link: [http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/](http://127.0.0.1:8001/api/v1/namespaces/default/pods/ui/proxy/)
-
-### With CLI
-You need node.js (version 20 or above)
 
 ```
 npm install -g kyma
@@ -41,31 +23,11 @@ npm install -g kyma
 Now you can see available kyma modules and their versions:
 ```
 kyma modules
-
-istio: 1.1.2 (experimental), 1.2.1 (fast, regular)
-api-gateway: 2.0.0 (experimental, fast, regular)
-serverless: 1.2.1 (fast, regular)
-btp-operator: 1.1.1 (fast, regular)
-telemetry: 1.5.1 (regular), 1.6.0 (fast), 1.6.0-dev (experimental)
-nats: v1.0.2 (experimental, fast, regular)
-eventing: 1.0.1 (experimental), 1.0.2 (fast, regular)
-application-connector: 1.0.5 (fast, regular)
-keda: 1.0.2 (fast, regular)
-transparent-proxy: 1.3.1 (fast, regular)
-cap-operator: v0.0.1 (experimental, fast, regular)
-cluster-ip: 0.0.28
 ```
 
 You can deploy one or more modules (add option `--dry-run` to see kubectl commands without executing them):
 ```
 kyma deploy -m serverless nats eventing --defaultConfig --dry-run
-
-kubectl apply -f https://github.com/kyma-project/serverless/releases/download/1.2.1/serverless-operator.yaml
-kubectl apply -f https://github.com/kyma-project/serverless/releases/download/1.2.1/default-serverless-cr.yaml
-kubectl apply -f https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats-manager.yaml
-kubectl apply -f https://github.com/kyma-project/nats-manager/releases/download/v1.0.2/nats_default_cr.yaml
-kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing-manager.yaml
-kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing_default_cr.yaml
 ```
 
 You can provide the module version by adding `:<version>` sufix to the module name. If not provided the version from the provided channel will be used, or the latest version if channel is not specified.
@@ -84,77 +46,86 @@ Sample view for managed Kyma Runtime:
 
 ![](modules-ui.png)
 
-## Clean up
-
-Just stop the proxy (Ctrl+C) and delete the UI pod:
-```
-kubectl delete pod ui
-```
 
 ## Run (develop) locally
 
-Prepare your development cluster and configure kubectl (KUBECONFIG). Start the proxy:
-```
-kubectl proxy
-```
-Now open new terminal window and execute:
+Prepare your development cluster and configure kubectl (KUBECONFIG). Then execute:
 ```
 npm install
-npm run build
+npm run build-modules
 npm run dev
 ```
-Now open the provided URL with the query parameter `api=backend`, e.g.: [http://localhost:5173/?api=backend](http://localhost:5173/?api=backend)
+Now open the provided URL, e.g.: `http://localhost:5173`
 
 
+## Module contribution guideline
 
-## Contribute your module
+The module defines a single Kubernetes custom resource (CR) and a controller that manages it. The controller is responsible for the lifecycle of the module. It creates and deletes the module's resources based on the custom resource state. 
 
-Add your own module by adding an entry in the [modules.js](./modules.js) file. Example:
-```
+### Dependencies
+The module is self-contained and should not depend on any other Kyma components directly. The only exception is the dependency to the APIs provided by other modules. Such dependencies should be handled by the controller in the transparent way, by reporting missing APIs and suggesting the installation of the required modules.
+
+### Releases
+
+The module release should be versioned and follow the [semantic versioning](https://semver.org/) rules. Two artifacts are released for each module version:
+- kubernetes manifest that deploys the module operator (CRD, RBAC, Deployment, Service, etc.)
+- default configuration for the module (custom resource)
+The new release should handle the previous version of the module configuration. The module should be able to upgrade the configuration from the previous version to the current one. The upgrade process should be handled by the controller. The module provider should test upgrade scenarios to ensure that no additional manual steps are required to upgrade the module.
+
+### Configuration
+The default configuration for the module should be provided as a Kubernetes custom resource and should be applied only once during module installation. Once the configuration is applied it is owned by the user (admin) and should not be modified by the module. The module should not modify the configuration except for the cases when the configuration is migrated to the new version. The module should not delete the configuration. The configuration should be deleted by the user (admin) before the module is uninstalled.
+
+## Adding a new module
+
+Edit the `modules.js` file and add a new entry to the `modules` list. The entry should contain the following fields:
+- `name` - the name of the module
+- `documentation` - the link to the module documentation
+- `repository` - the link to the module repository
+- `managedResources` - the list of the Kubernetes resources managed by the module
+- `manageable` - the flag that indicates if the module is manageable by the Kyma Lifecycle Manager
+- `latestGithubRelease` - the information about the latest GitHub release of the module
+- `versions` - the list of the module versions. Each version can override the `latestGithubRelease` information by providing the `deploymentYaml` and `crYaml` fields with urls to the deployment and CR manifests.
+
+
+Sample entry:
+```js
   {
-    "name": "api-gateway",
-    "documentation": "https://kyma-project.io/#/api-gateway/user/README",
-    "repository": "https://github.com/kyma-project/api-gateway.git",
+    "name": "btp-operator",
+    "documentation": "https://kyma-project.io/#/btp-manager/user/README",
+    "repository": "https://github.com/kyma-project/btp-manager.git",
     "managedResources": [
-      "/apis/operator.kyma-project.io/v1alpha1/apigateways",
-      "/apis/gateway.kyma-project.io/v1beta1/apirules"
+      "/apis/services.cloud.sap.com/v1/serviceinstances",
+      "/apis/services.cloud.sap.com/v1/servicebindings",
+      "/apis/services.cloud.sap.com/v1alpha1/servicebindings",
+      "/apis/services.cloud.sap.com/v1alpha1/serviceinstances",
+      "/apis/operator.kyma-project.io/v1alpha1/btpoperators"
     ],
     "manageable": true,
     "latestGithubRelease" : {
-      "repository": "kyma-project/api-gateway",
-      "deploymentYaml": "api-gateway-manager.yaml",
-      "crYaml": "apigateway-default-cr.yaml"
+      "repository": "kyma-project/btp-manager",
+      "deploymentYaml": "btp-manager.yaml",
+      "crYaml": "btp-operator-default-cr.yaml"
     },
     "versions": [
       {
-        "version": "2.0.0",
-        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.0.0/api-gateway-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.0.0/apigateway-default-cr.yaml"
+        "version": "1.1.2",
+        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.2/btp-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.2/btp-operator-default-cr.yaml",
       }
     ]
-  },
+  }
 ```
-Fields description:
-- **name** - name of your module (keep it short)
-- **latestGithubRelease** - information how to fetch the latest github release
-  - **repository** - repository owner / repository name
-  - **deploymentYaml** - release artifact name of deployment YAML
-  - **crYaml** - release artifact name of your module default configuration
-- **documentation** - documentation URL
-- **repository** - main source code repository
-- **managedResources** - list of api server resources (paths) that are managed by your module (including the configuration resource)
-- **versions** - list of module versions that can be included in release channels. In version entry you can override some module properties (usually deploymentYaml and crYaml)
-  - **deploymentYaml** - URL of your module version deployment YAML (usually the artifact of your module release)
-  - **crYaml** - URL of your module version default configuration (custom resource)
+
 
 If you want to test your module, you can have to regenerate modules:
 ```
-npm run build
+npm run build-modules
+npm run dev
 ```
-
+## Contributing
 
 For standard contribution rules see [CONTRIBUTING.md](CONTRIBUTING.md).
-x
+
 ## Code of Conduct
 <!--- mandatory section - do not change this! --->
 
