@@ -216,13 +216,7 @@ export default
       "deploymentYaml": "manager_manifest.yaml",
       "crYaml": "manager_default_CR.yaml"
     },
-    "versions": [
-      {
-        "version": "v0.0.1",
-        "deploymentYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager/v0.0.1/manager_manifest.yaml",
-        "crYaml": "https://github.com/SAP/cap-operator-lifecycle/releases/download/manager/v0.0.1/manager_default_CR.yaml"
-      }
-    ]    
+    "versions": []    
   },
   {
     "name": "cluster-ip",
