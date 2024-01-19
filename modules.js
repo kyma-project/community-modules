@@ -143,9 +143,20 @@ export default
     "latestGithubRelease" : {
       "repository": "kyma-project/eventing-manager",
       "deploymentYaml": "eventing-manager.yaml",
-      "crYaml": "eventing_default_cr.yaml"
+      "crYaml": "eventing-default-cr.yaml"
     },
-    "versions": []
+    "versions": [
+      {
+        "version": "1.0.2",
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.2/eventing_default_cr.yaml"
+      },
+      {
+        "version": "1.0.1",
+        "deploymentYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.1/eventing-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/eventing-manager/releases/download/1.0.1/eventing_default_cr.yaml"
+      }
+    ]
   },
   {
     "name": "application-connector",
