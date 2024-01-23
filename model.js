@@ -2893,7 +2893,6 @@ export default [
       {
         "version": "2.0.0",
         "channels": [
-          "experimental",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/api-gateway/user/README",
