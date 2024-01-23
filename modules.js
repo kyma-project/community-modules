@@ -209,8 +209,7 @@ export default
     "managedResources": [
       "/apis/operator.sme.sap.com/v1alpha1/capoperators"
     ],
-    "community": true,
-    "manageable": false,
+    "manageable": true,
     "latestGithubRelease" : {
       "repository": "SAP/cap-operator-lifecycle",
       "deploymentYaml": "manager_manifest.yaml",
