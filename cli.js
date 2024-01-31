@@ -15,10 +15,21 @@ import { table } from 'table'
 import { BtpClient } from './btp.js';
 import { ServiceManager } from './service-manager.js'
 import { defaultConfig, defaultKubeconfig } from './busola.js'
+import { spawn } from 'child_process'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-function defaultClient() {
+async function defaultClient(proxyPort) {
+  if (proxyPort) {
+    console.log("checking if kubectl proxy is running on port", proxyPort)
+    try{
+      await fetch('http://127.0.0.1:' + proxyPort + '/api/v1/namespaces', { timeout: 5000 })
+    } catch(error) {
+      console.log("proxy not found, please start kubectl proxy on port", proxyPort, "in another terminal")
+      process.exit(1)
+    }
+    return new Client(`http://127.0.0.1:${proxyPort}`)
+  }
   let kc = new k8sClient.KubeConfig();
   kc.loadFromDefault();
   const opts = {};
@@ -192,9 +203,10 @@ program.command('restore-services')
   .addOption(new Option('-l, --landscape <landscape>', 'live or canary').choices(['live', 'canary']))
   .option('-ga, --global-account <string>', 'global account')
   .option('-sa, --sub-account <string>', 'sub account')
+  .option('--proxy-port <proxy-port>', 'connect through kubectl proxy running on this port')
   .option('--from-file <filename>', 'json file with dump of BTP services (see btp-dump command)')
   .action(async function () {
-    let clientK8s = defaultClient()
+    let clientK8s = await defaultClient(this.opts().proxyPort)
     let btpPlatformSecret = await clientK8s.get('/api/v1/namespaces/kyma-system/secrets/sap-btp-manager')
     if (!btpPlatformSecret) {
       console.error("Platform secret not found. Please attach your cluster to the BTP platform first using the 'attach' command")
@@ -241,6 +253,7 @@ program.command('attach')
   .option('--from-file <filename>', 'json file with dump of BTP services (see btp-dump command)')
   .option('--platform <string>', 'platform id, you can skip it if only one platform is available')
   .option('--cluster-id <string>', 'cluster id, you can skip it if the platform has only one cluster connected')
+  .option('--proxy-port <proxy-port>', 'connect through kubectl proxy running on this port')
   .action(async function () {
     let gas = await globalAccounts(this.opts())
     let platforms = platformInstances(gas)
@@ -271,7 +284,7 @@ program.command('attach')
     }
     console.log('connecting to platform ', platforms[0].name, 'with cluster id', platforms[0].clusters[0])
     let btpPlatformSecret = createPlatformSecret(platforms[0])
-    let clientK8s = defaultClient()
+    let clientK8s = await defaultClient(this.opts().proxyPort)
     await clientK8s.apply(btpPlatformSecret)
     console.log(`platform secret ${btpPlatformSecret.metadata.name} created in the namespace ${btpPlatformSecret.metadata.namespace}`)
   })
@@ -296,28 +309,20 @@ program.command('btp-dump')
     let fs = await import('fs')
     fs.writeFileSync(this.args[0], JSON.stringify(gas, null, 2))
   })
-program.command('ns')
-  .description('get namespaces')
-  .action(async () => {
-    let client = defaultClient()
-    client.get('/api/v1/namespaces')
-      .then((json) => {
-        console.log(json.items.map(ns => ns.metadata.name).join('\n'))
-      });
-
-  })
 
 program.command('modules')
   .description('list modules')
   .option('-c, --channel <string>')
+  .option('--proxy-port <proxy-port>', 'connect through kubectl proxy running on this port')
   .action(async function () {
-    let client = defaultClient()
+    let client = await defaultClient(this.opts().proxyPort)
     let filtered = modules.filter(filterFunc(this.opts()))
     await installedManagers(filtered, client)
     await managedModules(filtered, client)
     managedTable(filtered)
     userTable(filtered)
     availableTable(filtered)
+
   })
 program.command('version')
   .description('show version')
@@ -380,6 +385,7 @@ program.command('deploy')
     , 'install one or more modules; put :<version> after module name to specify version'
     , ["istio", "api-gateway", "btp-operator"])
   .option('-c, --channel <string>', 'use module version from channel')
+  .option('--proxy-port <proxy-port>', 'connect through kubectl proxy running on this port')
   .option('--customConfig', 'do not apply default module configuration (CR)')
   .option('--dry-run', 'do not actually deploy')
   .action(async function () {
@@ -398,9 +404,11 @@ program.command('deploy')
 program.command('ui')
   .description('start web interface')
   .option('-p, --port <number>', 'port to listen on', 3001)
+  .option('--proxy-port <proxy-port>', 'connect through kubectl proxy running on this port')
   .action(ui)
 
 program.parse()
+
 
 function moduleVersions(m) {
   return m.versions.map(v => {
@@ -409,12 +417,9 @@ function moduleVersions(m) {
 }
 
 
-function ui() {
+async function ui() {
   console.log("starting ui on port", this.opts().port)
   var app = express();
-
-  let kc = new k8sClient.KubeConfig();
-  kc.loadFromDefault();
 
   let defKc = defaultKubeconfig(this.opts().port)
   app.get('/kubeconfig/kyma.yaml', (_, res) => {
@@ -425,13 +430,33 @@ function ui() {
   app.get('/config/config.yaml', (_, res) => {
     res.send(defCfg)
   })
-  app.use('/backend', proxy(kc.getCurrentCluster().server, {
-    proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
-      proxyReqOpts.rejectUnauthorized = false
-      kc.applyToRequest(proxyReqOpts)
-      return proxyReqOpts;
+  if (this.opts().proxyPort) {
+    //check if proxy is running with timeout 5 seconds
+    console.log("checking if kubectl proxy is running on port", this.opts().proxyPort)
+    try{
+      await fetch('http://127.0.0.1:' + this.opts().proxyPort + '/api/v1/namespaces', { timeout: 5000 })
+    } catch(error) {
+      console.log("starting kubectl proxy on port", this.opts().proxyPort)
+      spawn('kubectl', ['proxy', '--port', this.opts().proxyPort])
     }
-  }));
+    app.use('/backend', proxy('http://127.0.0.1:' + this.opts().proxyPort, {
+      proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
+        proxyReqOpts.rejectUnauthorized = false
+        return proxyReqOpts;
+      }
+    }));
+  } else {
+    let kc = new k8sClient.KubeConfig();
+    kc.loadFromDefault();
+  
+    app.use('/backend', proxy(kc.getCurrentCluster().server, {
+      proxyReqOptDecorator: function (proxyReqOpts, originalReq) {
+        proxyReqOpts.rejectUnauthorized = false
+        kc.applyToRequest(proxyReqOpts)
+        return proxyReqOpts;
+      }
+    }));
+  }
 
   app.use('/modules', express.static(path.resolve(__dirname, "dist/modules")))
   app.use(express.static(path.resolve(__dirname, "dist/core-ui")))
@@ -479,7 +504,7 @@ function filterFunc(options) {
 async function applyModuleResource(m, v, opts) {
   let client
   if (!opts.dryRun) {
-    client = defaultClient()
+    client = await defaultClient(opts.proxyPort)
   }
   if (v.deploymentYaml) {
     console.log('kubectl apply -f ' + v.deploymentYaml)
