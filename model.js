@@ -7046,14 +7046,21 @@ export default [
     "versions": [
       {
         "version": "1.3.1",
-        "channels": [
-          "fast",
-          "regular"
-        ],
-        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
-        "repository": "https://github.com/kyma-project/serverless-manager.git",
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
+        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/serverless-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/default-serverless-cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Serverless",
+          "metadata": {
+            "name": "default",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "dockerRegistry": {
+              "enableInternal": true
+            }
+          }
+        },
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -7906,20 +7913,15 @@ export default [
             }
           }
         ],
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Serverless",
-          "metadata": {
-            "name": "default",
-            "namespace": "kyma-system"
-          },
-          "spec": {
-            "dockerRegistry": {
-              "enableInternal": true
-            }
-          }
-        },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default"
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
+        "repository": "https://github.com/kyma-project/serverless-manager.git"
       }
     ]
   },
