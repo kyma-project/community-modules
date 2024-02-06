@@ -2868,9 +2868,7 @@
             }
           }
         },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha2/namespaces/kyma-system/istios/default",
-        "deploymentYaml": "https://github.com/kyma-project/istio/releases/download/1.2.1/istio-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/istio/releases/download/1.2.1/istio-default-cr.yaml"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha2/namespaces/kyma-system/istios/default"
       },
       {
         "version": "1.3.0",
@@ -7046,21 +7044,14 @@
     "versions": [
       {
         "version": "1.3.1",
-        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/serverless-operator.yaml",
-        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.3.1/default-serverless-cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Serverless",
-          "metadata": {
-            "name": "default",
-            "namespace": "kyma-system"
-          },
-          "spec": {
-            "dockerRegistry": {
-              "enableInternal": true
-            }
-          }
-        },
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
+        "repository": "https://github.com/kyma-project/serverless-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -7913,15 +7904,20 @@
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.3.1",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
-        "channels": [
-          "fast",
-          "regular"
-        ],
-        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
-        "repository": "https://github.com/kyma-project/serverless-manager.git"
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Serverless",
+          "metadata": {
+            "name": "default",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "dockerRegistry": {
+              "enableInternal": true
+            }
+          }
+        },
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default"
       }
     ]
   },
@@ -11722,9 +11718,7 @@
             "namespace": "kyma-system"
           }
         },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.7.0/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.7.0/telemetry-default-cr.yaml"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default"
       },
       {
         "version": "1.8.0",
@@ -19080,9 +19074,7 @@
             }
           }
         },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/nats/eventing-nats",
-        "deploymentYaml": "https://github.com/kyma-project/nats-manager/releases/download/1.0.3/nats-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/nats-manager/releases/download/1.0.3/nats-default-cr.yaml"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/nats/eventing-nats"
       },
       {
         "version": "1.1.0",
@@ -27697,24 +27689,14 @@
     "versions": [
       {
         "version": "1.0.5",
-        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.5/application-connector-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.5/default_application_connector_cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "ApplicationConnector",
-          "metadata": {
-            "namespace": "kyma-system",
-            "labels": {
-              "app.kubernetes.io/name": "applicationconnector",
-              "app.kubernetes.io/instance": "applicationconnector-sample",
-              "app.kubernetes.io/part-of": "application-connector-manager",
-              "app.kuberentes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "application-connector-manager"
-            },
-            "name": "applicationconnector-sample"
-          },
-          "spec": {}
-        },
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
+        "repository": "https://github.com/kyma-project/application-connector-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20231218-d6717ba0",
         "resources": [
           {
             "apiVersion": "v1",
@@ -28563,15 +28545,23 @@
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20231218-d6717ba0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample",
-        "channels": [
-          "fast",
-          "regular"
-        ],
-        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
-        "repository": "https://github.com/kyma-project/application-connector-manager.git"
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "ApplicationConnector",
+          "metadata": {
+            "namespace": "kyma-system",
+            "labels": {
+              "app.kubernetes.io/name": "applicationconnector",
+              "app.kubernetes.io/instance": "applicationconnector-sample",
+              "app.kubernetes.io/part-of": "application-connector-manager",
+              "app.kuberentes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "application-connector-manager"
+            },
+            "name": "applicationconnector-sample"
+          },
+          "spec": {}
+        },
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
       }
     ]
   },
@@ -29597,46 +29587,10 @@
     "manageable": true,
     "versions": [
       {
-        "version": "1.4.2",
-        "channels": [
-          "regular"
-        ],
-        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
-        "repository": "https://github.wdf.sap.corp/transparent-proxy/sap-transp-proxy-operator.git",
-        "managerPath": "/apis/apps/v1/namespaces/sap-transp-proxy-system/deployments/sap-transp-proxy-operator",
-        "managerImage": "sapse/sap-transp-proxy-operator:1.4.1",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "TransparentProxy",
-          "metadata": {
-            "name": "transparent-proxy",
-            "namespace": "sap-transp-proxy-system"
-          },
-          "spec": {
-            "config": {
-              "security": {
-                "communication": {
-                  "internal": {
-                    "encryptionEnabled": true
-                  }
-                }
-              },
-              "integration": {
-                "serviceMesh": {
-                  "istio": {
-                    "istio-injection": "enabled"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/sap-transp-proxy-system/transparentproxies/transparent-proxy"
-      },
-      {
         "version": "1.4.3",
         "channels": [
-          "fast"
+          "fast",
+          "regular"
         ],
         "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
         "repository": "https://github.wdf.sap.corp/transparent-proxy/sap-transp-proxy-operator.git",
