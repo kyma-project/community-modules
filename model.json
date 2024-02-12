@@ -18131,7 +18131,6 @@
       {
         "version": "1.0.3",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/nats-manager/user/README",
@@ -20032,7 +20031,12 @@
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/nats-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/nats-manager:1.1.0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/nats/eventing-nats"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/nats/eventing-nats",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/nats-manager/user/README",
+        "repository": "https://github.com/kyma-project/nats-manager.git"
       },
       {
         "version": "v1.0.2",
