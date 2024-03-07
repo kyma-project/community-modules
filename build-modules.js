@@ -277,22 +277,24 @@ function loadModuleFromFolder(folder,name) {
     jsYaml.loadAll(manifest, (doc) => {
       resources.push(doc)
     });
-
-    v.documentation = module.annotations["operator.kyma-project.io/doc-url"]
+    if (module.annotations) {
+      v.documentation = module.annotations["operator.kyma-project.io/doc-url"]
+    }
     v.repository = module.moduleRepo
     v.managerPath = managerPath(resources)
     v.managerImage = managerImage(resources)
     if (!v.repository.includes('wdf.sap.corp')) {
       v.resources = resources
     }
-
-    let crYaml = fs.readFileSync(`${folder}/${name}/${channel}/${module.defaultCR}`, 'utf8')
-    v.cr = jsYaml.load(crYaml)
-    if (!v.cr.metadata.namespace && isNamespaced(v.cr, resources)) {
-      v.cr.metadata.namespace = 'kyma-system'
-    }
-    if (!v.crPath) {
-      v.crPath = resPath(v.cr, resources)
+    if (module.defaultCR) {
+      let crYaml = fs.readFileSync(`${folder}/${name}/${channel}/${module.defaultCR}`, 'utf8')
+      v.cr = jsYaml.load(crYaml)
+      if (!v.cr.metadata.namespace && isNamespaced(v.cr, resources)) {
+        v.cr.metadata.namespace = 'kyma-system'
+      }
+      if (!v.crPath) {
+        v.crPath = resPath(v.cr, resources)
+      }  
     }
 
   })
@@ -304,7 +306,7 @@ function loadModulesFromManifests(folder) {
   let modules = []
   for (let name of names) {
     let m = loadModuleFromFolder(folder,name)
-    if (m.versions.length > 0) {
+    if (m && m.versions.length > 0) {
       modules.push(m)
     } else {
       console.log("skipping module", name, "- no versions found")
