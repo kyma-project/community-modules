@@ -30586,8 +30586,7 @@ export default [
       {
         "version": "0.1.1",
         "channels": [
-          "experimental",
-          "regular"
+          "experimental"
         ],
         "documentation": "https://sap.github.io/cap-operator/",
         "repository": "https://github.com/SAP/cap-operator-lifecycle.git",
@@ -32307,7 +32306,8 @@ export default [
         "managerImage": "ghcr.io/sap/cap-operator-lifecycle/cap-operator-manager:0.3.0",
         "crPath": "/apis/operator.sme.sap.com/v1alpha1/namespaces/kyma-system/capoperators/cap-operator",
         "channels": [
-          "fast"
+          "fast",
+          "regular"
         ],
         "documentation": "https://sap.github.io/cap-operator/",
         "repository": "https://github.com/SAP/cap-operator-lifecycle.git"
