@@ -6369,7 +6369,6 @@ export default [
       {
         "version": "2.2.1",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/api-gateway/user/README",
@@ -8899,7 +8898,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/api-gateway-controller-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/apigateways/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/apigateways/default",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/api-gateway/user/README",
+        "repository": "https://github.com/kyma-project/api-gateway.git"
       }
     ]
   },
