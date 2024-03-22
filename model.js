@@ -39,14 +39,14 @@ export default [
     },
     "versions": [
       {
-        "version": "1.3.2",
+        "version": "1.3.3",
         "channels": [
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/istio/user/README",
         "repository": "https://github.com/kyma-project/istio.git",
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/istio-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/istio-manager:1.3.2",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/istio-manager:1.3.3",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -2959,12 +2959,12 @@ export default [
                       "args": [
                         "--leader-elect",
                         "--health-probe-bind-address=:8081",
-                        "--metrics-bind-address=127.0.0.1:8080"
+                        "--metrics-bind-address=:8080"
                       ],
                       "command": [
                         "/manager"
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/istio-manager:1.3.2",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/istio-manager:1.3.3",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -3024,8 +3024,8 @@ export default [
           }
         },
         "crPath": "/apis/operator.kyma-project.io/v1alpha2/namespaces/kyma-system/istios/default",
-        "deploymentYaml": "https://github.com/kyma-project/istio/releases/download/1.3.2/istio-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/istio/releases/download/1.3.2/istio-default-cr.yaml"
+        "deploymentYaml": "https://github.com/kyma-project/istio/releases/download/1.3.3/istio-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/istio/releases/download/1.3.3/istio-default-cr.yaml"
       },
       {
         "version": "1.4.1",
