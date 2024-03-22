@@ -7609,9 +7609,9 @@ export default [
         "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.2.1/apigateway-default-cr.yaml"
       },
       {
-        "version": "2.3.0",
-        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.3.0/api-gateway-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.3.0/apigateway-default-cr.yaml",
+        "version": "2.3.1",
+        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.3.1/api-gateway-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.3.1/apigateway-default-cr.yaml",
         "cr": {
           "apiVersion": "operator.kyma-project.io/v1alpha1",
           "kind": "APIGateway",
@@ -7636,7 +7636,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "apigateways.operator.kyma-project.io"
@@ -7789,7 +7789,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "apirules.gateway.kyma-project.io"
@@ -8171,7 +8171,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-controller-manager",
@@ -8187,7 +8187,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-leader-election-role",
@@ -8252,7 +8252,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-manager-role"
@@ -8652,7 +8652,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-leader-election-rolebinding",
@@ -8680,7 +8680,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-manager-rolebinding"
@@ -8716,7 +8716,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "busola.io/extension": "resource",
                 "busola.io/extension-version": "0.5",
                 "kyma-project.io/module": "api-gateway"
@@ -8741,7 +8741,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "busola.io/extension": "resource",
                 "busola.io/extension-version": "0.5",
                 "kyma-project.io/module": "api-gateway"
@@ -8759,7 +8759,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-operator-metrics",
@@ -8790,7 +8790,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "kyma-project.io/module": "api-gateway"
               },
               "name": "api-gateway-priority-class"
@@ -8806,7 +8806,7 @@ export default [
                 "app.kubernetes.io/instance": "api-gateway-operator-default",
                 "app.kubernetes.io/name": "api-gateway-operator",
                 "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.3.0",
+                "app.kubernetes.io/version": "2.3.1",
                 "control-plane": "controller-manager",
                 "kyma-project.io/module": "api-gateway"
               },
@@ -8831,7 +8831,7 @@ export default [
                     "app.kubernetes.io/instance": "api-gateway-operator-default",
                     "app.kubernetes.io/name": "api-gateway-operator",
                     "app.kubernetes.io/part-of": "api-gateway",
-                    "app.kubernetes.io/version": "2.3.0",
+                    "app.kubernetes.io/version": "2.3.1",
                     "control-plane": "controller-manager",
                     "kyma-project.io/module": "api-gateway",
                     "sidecar.istio.io/inject": "false"
@@ -8843,12 +8843,12 @@ export default [
                       "args": [
                         "--leader-elect",
                         "--health-probe-bind-address=:8081",
-                        "--metrics-bind-address=127.0.0.1:8080"
+                        "--metrics-bind-address=:8080"
                       ],
                       "command": [
                         "/manager"
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.0",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.1",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -8897,7 +8897,7 @@ export default [
           }
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/api-gateway-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.0",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.1",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/apigateways/default",
         "channels": [
           "fast"
