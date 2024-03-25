@@ -29612,24 +29612,14 @@ export default [
     "versions": [
       {
         "version": "1.0.6",
-        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.6/application-connector-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.6/default_application_connector_cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "ApplicationConnector",
-          "metadata": {
-            "namespace": "kyma-system",
-            "labels": {
-              "app.kubernetes.io/name": "applicationconnector",
-              "app.kubernetes.io/instance": "applicationconnector-sample",
-              "app.kubernetes.io/part-of": "application-connector-manager",
-              "app.kuberentes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "application-connector-manager"
-            },
-            "name": "applicationconnector-sample"
-          },
-          "spec": {}
-        },
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
+        "repository": "https://github.com/kyma-project/application-connector-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240212-61947b88",
         "resources": [
           {
             "apiVersion": "v1",
@@ -30478,15 +30468,897 @@ export default [
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240212-61947b88",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "ApplicationConnector",
+          "metadata": {
+            "namespace": "kyma-system",
+            "labels": {
+              "app.kubernetes.io/name": "applicationconnector",
+              "app.kubernetes.io/instance": "applicationconnector-sample",
+              "app.kubernetes.io/part-of": "application-connector-manager",
+              "app.kuberentes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "application-connector-manager"
+            },
+            "name": "applicationconnector-sample"
+          },
+          "spec": {}
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample",
-        "channels": [
-          "fast",
-          "regular"
+        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.6/application-connector-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.6/default_application_connector_cr.yaml"
+      },
+      {
+        "version": "1.1.0",
+        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.0/application-connector-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.0/default_application_connector_cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "ApplicationConnector",
+          "metadata": {
+            "namespace": "kyma-system",
+            "labels": {
+              "app.kubernetes.io/name": "applicationconnector",
+              "app.kubernetes.io/instance": "applicationconnector-sample",
+              "app.kubernetes.io/part-of": "application-connector-manager",
+              "app.kuberentes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "application-connector-manager"
+            },
+            "name": "applicationconnector-sample"
+          },
+          "spec": {}
+        },
+        "resources": [
+          {
+            "apiVersion": "v1",
+            "kind": "Namespace",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "manager",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "system",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "namespace",
+                "app.kubernetes.io/part-of": "application-connector-manager",
+                "control-plane": "controller-manager"
+              },
+              "name": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.10.0"
+              },
+              "creationTimestamp": null,
+              "name": "applicationconnectors.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "ApplicationConnector",
+                "listKind": "ApplicationConnectorList",
+                "plural": "applicationconnectors",
+                "singular": "applicationconnector"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "ApplicationConnector is the Schema for the applicationconnectors API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "properties": {
+                            "appConnValidator": {
+                              "default": {
+                                "logFormat": "json",
+                                "logLevel": "info"
+                              },
+                              "properties": {
+                                "logFormat": {
+                                  "enum": [
+                                    "json",
+                                    "text"
+                                  ],
+                                  "type": "string"
+                                },
+                                "logLevel": {
+                                  "enum": [
+                                    "debug",
+                                    "panic",
+                                    "fatal",
+                                    "error",
+                                    "warn",
+                                    "info",
+                                    "debug"
+                                  ],
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "logFormat",
+                                "logLevel"
+                              ],
+                              "type": "object"
+                            },
+                            "appGateway": {
+                              "default": {
+                                "logLevel": "info",
+                                "proxyTimeout": "10s",
+                                "requestTimeout": "10s"
+                              },
+                              "properties": {
+                                "logLevel": {
+                                  "enum": [
+                                    "debug",
+                                    "panic",
+                                    "fatal",
+                                    "error",
+                                    "warn",
+                                    "info",
+                                    "debug"
+                                  ],
+                                  "type": "string"
+                                },
+                                "proxyTimeout": {
+                                  "type": "string"
+                                },
+                                "requestTimeout": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "logLevel",
+                                "proxyTimeout",
+                                "requestTimeout"
+                              ],
+                              "type": "object"
+                            },
+                            "domainName": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "properties": {
+                            "conditions": {
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, \n type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` \n // other fields }",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition. This may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "served": {
+                              "type": "string"
+                            },
+                            "state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "served",
+                            "state"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "controller-manager-sa",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "serviceaccount",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-controller-manager",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "leader-election-role",
+                "app.kubernetes.io/name": "role",
+                "app.kubernetes.io/part-of": "application-connector-manager",
+                "app.kubernets.io/managed-by": "kustomize"
+              },
+              "name": "application-connector-leader-election-role",
+              "namespace": "kyma-system"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "coordination.k8s.io"
+                ],
+                "resources": [
+                  "leases"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "creationTimestamp": null,
+              "name": "application-connector-manager-role"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "limitranges"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "namespaces"
+                ],
+                "verbs": [
+                  "create",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "persistentvolumes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resourceNames": [
+                  "cluster-client-certificates",
+                  "compass-agent-configuration"
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "delete",
+                  "get"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "serviceaccounts"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "services"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "*"
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "applicationconnector.kyma-project.io"
+                ],
+                "resources": [
+                  "applications"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "replicasets"
+                ],
+                "verbs": [
+                  "delete",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "compass.kyma-project.io"
+                ],
+                "resources": [
+                  "compassconnections"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.istio.io"
+                ],
+                "resources": [
+                  "gateways"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.istio.io"
+                ],
+                "resources": [
+                  "virtualservices"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "rolebindings",
+                  "roles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "scheduling.k8s.io"
+                ],
+                "resources": [
+                  "priorityclasses"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "leader-election-rolebinding",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "rolebinding",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-leader-election-rolebinding",
+              "namespace": "kyma-system"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "Role",
+              "name": "application-connector-leader-election-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "application-connector-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "manager-rolebinding",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "clusterrolebinding",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-manager-rolebinding"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "application-connector-manager-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "application-connector-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: Ready  \n    source: status.state\n    widget: Badge\n    highlights:\n      positive:\n        - 'Ready'\nbody:\n  - name: Configuration\n    widget: Panel\n    children:\n      - name: Domain name\n        source: spec.domainName\n        placeholder: Detected automatically\n  - widget: Columns\n    children:\n      - name: Application Connector Validator\n        widget: Panel\n        children: \n          - source: spec.appConnValidator.logLevel\n            name: Validator log level\n          - source: spec.appConnValidator.logFormat\n            name: Validator log format\n      - name: Application Connector Gateway\n        widget: Panel\n        children:\n          - source: spec.appGateway.proxyTimeout\n            name: Proxy timeout duration\n          - source: spec.appGateway.requestTimeout\n            name: Request timeout duration\n          - source: spec.appGateway.logLevel\n            name: Gateway log level\n\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          negative:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n\n  - widget: EventList\n    filter: '$matchEvents($$, $root.kind, $root.metadata.name)'\n    name: events\n    defaultType: information\n",
+              "form": "- path: spec.domainName\n  name: Domain name\n\n- path: spec.appConnValidator\n  widget: FormGroup\n  name: Application Connector Validator Configuration\n  children:\n   - widget: KeyValuePair\n     path: \n     keyEnum: ['logLevel', 'logFormat']\n\n- path: spec.appGateway\n  widget: FormGroup\n  name: Application Connector Gateway Configuration\n  children:\n   - widget: KeyValuePair\n     path: requests\n     keyEnum: ['proxyTimeout', 'requestTimeout','logLevel']\n\n",
+              "general": "resource:\n  kind: ApplicationConnector\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: applicationconnectors\ncategory: Kyma\nname: ApplicationConnector\nscope: namespace\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\ndescription: >-\n  {{[ApplicationConnector CR](https://github.com/kyma-project/application-connector-manager/blob/main/config/samples/operator_v1alpha1_applicationconnector.yaml)}}\n  configures application connector installation.\n",
+              "list": "- name: Ready  \n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/name": "applicationconnectors.operator.kyma-project.io",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5"
+              },
+              "name": "application-connector-applicationconnectors.operator.kyma-project.io",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Scheduling priority of application-connector-manager component. Must not be blocked by unschedulable user workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "name": "application-connector-priority-class"
+            },
+            "value": 2100000
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "manager",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "controller-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "deployment",
+                "app.kubernetes.io/part-of": "application-connector-manager",
+                "control-plane": "controller-manager"
+              },
+              "name": "application-connector-controller-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "control-plane": "controller-manager"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager"
+                  },
+                  "labels": {
+                    "control-plane": "controller-manager"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "args": [
+                        "--leader-elect"
+                      ],
+                      "command": [
+                        "/manager"
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240325-e268151b",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "500m",
+                          "memory": "512Mi"
+                        },
+                        "requests": {
+                          "cpu": "10m",
+                          "memory": "128Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "priorityClassName": "application-connector-priority-class",
+                  "securityContext": {
+                    "runAsNonRoot": true
+                  },
+                  "serviceAccountName": "application-connector-controller-manager",
+                  "terminationGracePeriodSeconds": 10
+                }
+              }
+            }
+          }
         ],
-        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
-        "repository": "https://github.com/kyma-project/application-connector-manager.git"
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240325-e268151b",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
       }
     ]
   },
