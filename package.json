@@ -1,6 +1,6 @@
 {
   "name": "kyma",
-  "version": "0.0.125",
+  "version": "0.0.126",
   "type": "module",
   "bin": "./cli.js",
   "scripts": {
