@@ -32115,9 +32115,9 @@ export default [
         "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.0.6/default_application_connector_cr.yaml"
       },
       {
-        "version": "1.1.0",
-        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.0/application-connector-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.0/default_application_connector_cr.yaml",
+        "version": "1.1.1",
+        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.1/application-connector-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.1/default_application_connector_cr.yaml",
         "cr": {
           "apiVersion": "operator.kyma-project.io/v1alpha1",
           "kind": "ApplicationConnector",
@@ -32933,7 +32933,7 @@ export default [
                       "command": [
                         "/manager"
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240325-e268151b",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240409-20fccd2a",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -32983,7 +32983,7 @@ export default [
           }
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240325-e268151b",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240409-20fccd2a",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
       }
     ]
