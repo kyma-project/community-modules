@@ -32394,7 +32394,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:v20240409-20fccd2a",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample",
+        "channels": [
+          "experimental"
+        ],
+        "documentation": "https://kyma-project.io/#/application-connector-manager/user/README",
+        "repository": "https://github.com/kyma-project/application-connector-manager.git"
       }
     ]
   },
