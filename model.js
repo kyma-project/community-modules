@@ -38076,13 +38076,49 @@ export default [
       {
         "version": "1.5.0",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
         "repository": "https://github.wdf.sap.corp/transparent-proxy/sap-transp-proxy-operator.git",
         "managerPath": "/apis/apps/v1/namespaces/sap-transp-proxy-system/deployments/sap-transp-proxy-operator",
         "managerImage": "sapse/sap-transp-proxy-operator:1.5.0",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "TransparentProxy",
+          "metadata": {
+            "name": "transparent-proxy",
+            "namespace": "sap-transp-proxy-system"
+          },
+          "spec": {
+            "config": {
+              "security": {
+                "communication": {
+                  "internal": {
+                    "encryptionEnabled": true
+                  }
+                }
+              },
+              "integration": {
+                "serviceMesh": {
+                  "istio": {
+                    "istio-injection": "enabled"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/sap-transp-proxy-system/transparentproxies/transparent-proxy"
+      },
+      {
+        "version": "1.5.1",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+        "repository": "https://github.wdf.sap.corp/transparent-proxy/sap-transp-proxy-operator.git",
+        "managerPath": "/apis/apps/v1/namespaces/sap-transp-proxy-system/deployments/sap-transp-proxy-operator",
+        "managerImage": "sapse/sap-transp-proxy-operator:1.5.1",
         "cr": {
           "apiVersion": "operator.kyma-project.io/v1alpha1",
           "kind": "TransparentProxy",
