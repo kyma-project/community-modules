@@ -9891,14 +9891,24 @@ export default [
     },
     "versions": [
       {
-        "version": "1.15.0",
-        "channels": [
-          "regular"
-        ],
-        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
-        "repository": "https://github.com/kyma-project/telemetry-manager.git",
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.15.0",
+        "version": "1.15.1",
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.15.1/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.15.1/telemetry-default-cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Telemetry",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "telemetry",
+              "app.kubernetes.io/instance": "default",
+              "app.kubernetes.io/part-of": "telemetry-manager",
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "telemetry-manager"
+            },
+            "name": "default",
+            "namespace": "kyma-system"
+          }
+        },
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -13073,7 +13083,7 @@ export default [
                           }
                         }
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.15.0",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.15.1",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -13203,44 +13213,24 @@ export default [
             }
           }
         ],
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Telemetry",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/name": "telemetry",
-              "app.kubernetes.io/instance": "default",
-              "app.kubernetes.io/part-of": "telemetry-manager",
-              "app.kubernetes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "telemetry-manager"
-            },
-            "name": "default",
-            "namespace": "kyma-system"
-          }
-        },
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.15.1",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.15.0/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.15.0/telemetry-default-cr.yaml"
+        "channels": [
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git"
       },
       {
         "version": "1.16.1",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-default-cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Telemetry",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/name": "telemetry",
-              "app.kubernetes.io/instance": "default",
-              "app.kubernetes.io/part-of": "telemetry-manager",
-              "app.kubernetes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "telemetry-manager"
-            },
-            "name": "default",
-            "namespace": "kyma-system"
-          }
-        },
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.1",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -16545,14 +16535,24 @@ export default [
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.1",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Telemetry",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "telemetry",
+              "app.kubernetes.io/instance": "default",
+              "app.kubernetes.io/part-of": "telemetry-manager",
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "telemetry-manager"
+            },
+            "name": "default",
+            "namespace": "kyma-system"
+          }
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "channels": [
-          "fast"
-        ],
-        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
-        "repository": "https://github.com/kyma-project/telemetry-manager.git"
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-default-cr.yaml"
       },
       {
         "version": "1.16.1-dev",
