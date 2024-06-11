@@ -11346,14 +11346,14 @@ export default [
     },
     "versions": [
       {
-        "version": "1.16.1",
+        "version": "1.16.2",
         "channels": [
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
         "repository": "https://github.com/kyma-project/telemetry-manager.git",
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.1",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.2",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -14314,7 +14314,7 @@ export default [
             "data": {
               "details": "header:\n  - name: State\n    source: status.state\n    widget: Badge\n\nbody:\n  - name: Traces\n    widget: Panel\n    visibility: $exists(spec.trace.gateway.scaling.static.replicas)\n    children:\n    - name: Gateway Replicas\n      source: spec.trace.gateway.scaling.static.replicas\n    - name: Scaling Type\n      source: spec.trace.gateway.scaling.type\n  - name: Metrics\n    widget: Panel\n    visibility: $exists(spec.metric.gateway.scaling.static.replicas)\n    children:\n    - name: Gateway Replicas\n      source: spec.metric.gateway.scaling.static.replicas\n    - name: Scaling Type\n      source: spec.metric.gateway.scaling.type\n  - name: Status\n    widget: Panel\n    children:\n    - source: status.endpoints.traces.grpc\n      name: OTLP GRPC Trace Endpoint\n    - source: status.endpoints.traces.http\n      name: OTLP HTTP Trace Endpoint\n    - source: status.endpoints.metrics.grpc\n      name: OTLP GRPC Metric Endpoint\n    - source: status.endpoints.metrics.http\n      name: OTLP HTTP Metric Endpoint\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          success:\n            - 'True'\n          error:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n",
               "form": "- advanced: true\n  defaultExpanded: false\n  readOnly: false\n  decodable: false\n  path: spec.trace\n  name: Traces\n  widget: FormGroup\n  children:\n    - advanced: true\n      defaultExpanded: false\n      readOnly: false\n      decodable: false\n      path: gateway\n      name: Gateway\n      widget: FormGroup\n      children:\n        - advanced: true\n          defaultExpanded: false\n          readOnly: false\n          decodable: false\n          path: scaling\n          name: Scaling\n          widget: FormGroup\n          children:\n            - path: type\n              override: false\n              enum:\n                - None\n            - advanced: true\n              defaultExpanded: false\n              readOnly: false\n              decodable: false\n              visibility: \"$item.spec.trace.gateway.scaling.type = 'Static'\"\n              path: static\n              name: Static\n              widget: FormGroup\n              children:\n                - advanced: true\n                  defaultExpanded: false\n                  readOnly: false\n                  decodable: false\n                  path: replicas\n                  name: Replicas\n                  simple: false\n                  widget: Text\n- advanced: true\n  defaultExpanded: false\n  readOnly: false\n  decodable: false\n  path: spec.metric\n  name: Metrics\n  widget: FormGroup\n  children:\n    - advanced: true\n      defaultExpanded: false\n      readOnly: false\n      decodable: false\n      path: gateway\n      name: Gateway\n      widget: FormGroup\n      children:\n        - advanced: true\n          defaultExpanded: false\n          readOnly: false\n          decodable: false\n          path: scaling\n          name: Scaling\n          widget: FormGroup\n          children:\n            - path: type\n              override: false\n              enum:\n                - None\n            - advanced: true\n              defaultExpanded: false\n              readOnly: false\n              decodable: false\n              visibility: \"$item.spec.metric.gateway.scaling.type = 'Static'\"\n              path: static\n              name: Static\n              widget: FormGroup\n              children:\n                - advanced: true\n                  defaultExpanded: false\n                  readOnly: false\n                  decodable: false\n                  path: replicas\n                  name: Replicas\n                  simple: false\n                  widget: Text\n",
-              "general": "resource:\n  kind: Telemetry\n  group: operator.kyma-project.io\n  version: v1alpha1\nname: Telemetry\ncategory: Kyma\nurlPath: kymatelemetries\nscope: namespace\ndescription: >-\n  The {{[Telemetry](https://kyma-project.io/#/telemetry-manager/user/resources/01-telemetry)}} resource configures the telemetry module.\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\n",
+              "general": "resource:\n  kind: Telemetry\n  group: operator.kyma-project.io\n  version: v1alpha1\nname: Telemetry\ncategory: Kyma\nurlPath: telemetries\nscope: namespace\ndescription: >-\n  The {{[Telemetry](https://kyma-project.io/#/telemetry-manager/user/resources/01-telemetry)}} resource configures the telemetry module.\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\n",
               "list": "- name: State\n  source: status.state\n  widget: Badge\n"
             },
             "kind": "ConfigMap",
@@ -14528,7 +14528,7 @@ export default [
                           }
                         }
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.1",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.16.2",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -14674,8 +14674,8 @@ export default [
           }
         },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.1/telemetry-default-cr.yaml"
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.2/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.16.2/telemetry-default-cr.yaml"
       },
       {
         "version": "1.17.1",
