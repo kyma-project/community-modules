@@ -14256,12 +14256,16 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/btp-manager-controller-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.10",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/btp-manager/user/README",
+        "repository": "https://github.com/kyma-project/btp-manager.git"
       },
       {
         "version": "1.1.9",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/btp-manager/user/README",
