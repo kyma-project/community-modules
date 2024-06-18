@@ -12821,21 +12821,13 @@ export default [
       },
       {
         "version": "1.5.0",
-        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.0/serverless-operator.yaml",
-        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.0/default-serverless-cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Serverless",
-          "metadata": {
-            "name": "default",
-            "namespace": "kyma-system"
-          },
-          "spec": {
-            "dockerRegistry": {
-              "enableInternal": true
-            }
-          }
-        },
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
+        "repository": "https://github.com/kyma-project/serverless-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.5.0",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -13678,14 +13670,885 @@ export default [
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.5.0",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Serverless",
+          "metadata": {
+            "name": "default",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "dockerRegistry": {
+              "enableInternal": true
+            }
+          }
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default",
-        "channels": [
-          "fast"
+        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.0/serverless-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.0/default-serverless-cr.yaml"
+      },
+      {
+        "version": "1.5.1",
+        "deploymentYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.1/serverless-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/serverless/releases/download/1.5.1/default-serverless-cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Serverless",
+          "metadata": {
+            "name": "default",
+            "namespace": "kyma-system"
+          },
+          "spec": {
+            "dockerRegistry": {
+              "enableInternal": true
+            }
+          }
+        },
+        "resources": [
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.14.0"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io"
+              },
+              "name": "serverlesses.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "Serverless",
+                "listKind": "ServerlessList",
+                "plural": "serverlesses",
+                "singular": "serverless"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type=='Configured')].status",
+                      "name": "Configured",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type=='Installed')].status",
+                      "name": "Installed",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.generation",
+                      "name": "generation",
+                      "type": "integer"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "age",
+                      "type": "date"
+                    },
+                    {
+                      "jsonPath": ".status.state",
+                      "name": "state",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "Serverless is the Schema for the serverlesses API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "ServerlessSpec defines the desired state of Serverless",
+                          "properties": {
+                            "defaultBuildJobPreset": {
+                              "description": "Configures the default build Job preset to be used",
+                              "type": "string"
+                            },
+                            "defaultRuntimePodPreset": {
+                              "description": "Configures the default runtime Pod preset to be used",
+                              "type": "string"
+                            },
+                            "dockerRegistry": {
+                              "properties": {
+                                "enableInternal": {
+                                  "description": "When set to true, the internal Docker registry is enabled",
+                                  "type": "boolean"
+                                },
+                                "secretName": {
+                                  "description": "Secret used for configuration of the Docker registry",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "eventing": {
+                              "description": "Used Eventing endpoint",
+                              "properties": {
+                                "endpoint": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "endpoint"
+                              ],
+                              "type": "object"
+                            },
+                            "functionBuildExecutorArgs": {
+                              "description": "Specifies the arguments passed to the Function build executor",
+                              "type": "string"
+                            },
+                            "functionBuildMaxSimultaneousJobs": {
+                              "description": "A number of simultaneous jobs that can run at the same time. The default value is `5`",
+                              "type": "string"
+                            },
+                            "functionRequeueDuration": {
+                              "description": "Sets the requeue duration for Function. By default, the Function associated with the default configuration is requeued every 5 minutes",
+                              "type": "string"
+                            },
+                            "healthzLivenessTimeout": {
+                              "description": "Sets the timeout for the Function health check. The default value in seconds is `10`",
+                              "type": "string"
+                            },
+                            "targetCPUUtilizationPercentage": {
+                              "description": "Sets a custom CPU utilization threshold for scaling Function Pods",
+                              "type": "string"
+                            },
+                            "tracing": {
+                              "description": "Used Tracing endpoint",
+                              "properties": {
+                                "endpoint": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "endpoint"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "properties": {
+                            "conditions": {
+                              "description": "Conditions associated with CustomStatus.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "defaultBuildJobPreset": {
+                              "type": "string"
+                            },
+                            "defaultRuntimePodPreset": {
+                              "type": "string"
+                            },
+                            "dockerRegistry": {
+                              "description": "Used registry configuration.\nContains registry URL or \"internal\"",
+                              "type": "string"
+                            },
+                            "eventingEndpoint": {
+                              "description": "Used the Eventing endpoint and the Tracing endpoint.",
+                              "type": "string"
+                            },
+                            "functionBuildExecutorArgs": {
+                              "type": "string"
+                            },
+                            "functionBuildMaxSimultaneousJobs": {
+                              "type": "string"
+                            },
+                            "functionRequeueDuration": {
+                              "type": "string"
+                            },
+                            "healthzLivenessTimeout": {
+                              "type": "string"
+                            },
+                            "served": {
+                              "description": "Served signifies that current Serverless is managed.\nValue can be one of (\"True\", \"False\").",
+                              "enum": [
+                                "True",
+                                "False"
+                              ],
+                              "type": "string"
+                            },
+                            "state": {
+                              "description": "State signifies current state of Serverless.\nValue can be one of (\"Ready\", \"Processing\", \"Error\", \"Deleting\").",
+                              "enum": [
+                                "Processing",
+                                "Deleting",
+                                "Ready",
+                                "Error",
+                                "Warning"
+                              ],
+                              "type": "string"
+                            },
+                            "targetCPUUtilizationPercentage": {
+                              "type": "string"
+                            },
+                            "tracingEndpoint": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "served"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                "app.kubernetes.io/created-by": "serverless-operator",
+                "app.kubernetes.io/instance": "serverless-operator-sa",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "serviceaccount",
+                "app.kubernetes.io/part-of": "serverless-operator"
+              },
+              "name": "serverless-operator",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io"
+              },
+              "name": "serverless-operator-role"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps",
+                  "secrets",
+                  "serviceaccounts",
+                  "services"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "get",
+                  "list",
+                  "patch",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "namespaces"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "persistentvolumeclaims"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "admissionregistration.k8s.io"
+                ],
+                "resources": [
+                  "mutatingwebhookconfigurations",
+                  "validatingwebhookconfigurations"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "daemonsets"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments/status"
+                ],
+                "verbs": [
+                  "get"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "replicasets"
+                ],
+                "verbs": [
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "jobs"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "jobs/status"
+                ],
+                "verbs": [
+                  "get"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "coordination.k8s.io"
+                ],
+                "resources": [
+                  "leases"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "serverlesses"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "serverlesses/finalizers"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "serverlesses/status"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "policy"
+                ],
+                "resources": [
+                  "podsecuritypolicies"
+                ],
+                "verbs": [
+                  "use"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "rolebindings",
+                  "roles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "scheduling.k8s.io"
+                ],
+                "resources": [
+                  "priorityclasses"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "serverless.kyma-project.io"
+                ],
+                "resources": [
+                  "functions"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "serverless.kyma-project.io"
+                ],
+                "resources": [
+                  "functions/status"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "deletecollection",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                "app.kubernetes.io/created-by": "serverless-operator",
+                "app.kubernetes.io/instance": "serverless-operator-rolebinding",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "clusterrolebinding",
+                "app.kubernetes.io/part-of": "serverless-operator"
+              },
+              "name": "serverless-operator-rolebinding"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "serverless-operator-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "serverless-operator",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: Ready  \n    source: status.state\n    widget: Badge\n    highlights:\n      positive:\n        - 'Ready'\nbody:\n  - widget: Alert\n    severity: warning\n    source: '\"alert.internalregistry\"'\n    visibility: $root.spec.dockerRegistry.enableInternal = true\n  - name: Desired Specification\n    widget: Panel\n    children:\n      - name: Docker Registry\n        visibility: $root.spec.dockerRegistry.enableInternal = true\n        source: spec.dockerRegistry.enableInternal?\"INTERNAL\":\"\"\n      - name: Docker Registry\n        visibility: '$exists($value)'\n        source: spec.dockerRegistry.secretName\n        widget: ResourceLink\n        resource:\n          name: spec.dockerRegistry.secretName\n          namespace: $root.metadata.namespace\n          kind: \"'Secret'\"\n      - name: Eventing Endpoint\n        source: spec.eventing.endpoint\n        visibility: '$exists($value)'\n      - name: OTLP Trace Endpoint\n        source: spec.tracing.endpoint\n        visibility: '$exists($value)'\n      - name: Default Resources Preset (Build-time)\n        source: spec.defaultBuildJobPreset\n        visibility: '$exists($value)'\n      - name: Default Resources Preset (Runtime)\n        source: spec.defaultRuntimePodPreset\n        visibility: '$exists($value)'\n      - name: Custom Build Execution Args\n        source: spec.functionBuildExecutorArgs\n        visibility: '$exists($value)'\n      - name: Max Simultaneous Builds \n        source: spec.functionBuildMaxSimultaneousJobs\n        visibility: '$exists($value)'\n      - name: Function Requeue Duration\n        source: spec.functionRequeueDuration\n        visibility: '$exists($value)'\n      - name: Controller Liveness Timeout\n        source: spec.healthzLivenessTimeout\n        visibility: '$exists($value)'\n      - name: Target CPU utilisation for HPA\n        source: spec.targetCPUUtilizationPercentage\n        visibility: '$exists($value)'\n  - name: Status\n    widget: Panel\n    children:\n    - name: Docker Registry\n      source: status.dockerRegistry\n    - name: Eventing Endpoint\n      source: status.eventingEndpoint\n    - name: OTLP Trace Endpoint\n      source: status.tracingEndpoint\n    - name: Simultanous Builds Limit\n      source: status.functionBuildMaxSimultaneousJobs\n    - name: Default Job Preset\n      source: status.defaultBuildJobPreset\n    - name: Default Function Preset\n      source: status.defaultRuntimePodPreset\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          negative:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n\n  - widget: EventList\n    filter: '$matchEvents($$, $root.kind, $root.metadata.name)'\n    name: events\n    defaultType: information\n",
+              "form": "- path: spec.dockerRegistry.enableInternal\n  simple: true\n  name: Enable Internal Docker Registry\n- simple: true\n  widget: Alert\n  severity: warning\n  alert: '\"alert.internalregistry\"'\n  visibility: $root.spec.dockerRegistry.enableInternal = true\n- path: spec.dockerRegistry.secretName\n  visibility: $root.spec.dockerRegistry.enableInternal != true\n  simple: true\n  widget: Resource\n  name: External Docker Registry Configuration\n  resource:\n    kind: Secret\n    version: v1\n    scope: namespace\n- path: spec.tracing.endpoint\n  name: OTLP Trace Endpoint\n  simple: true\n  required: false\n- path: spec.eventing.endpoint\n  name: Eventing Endpoint\n  simple: true\n  required: false\n- path: spec.functionBuildMaxSimultaneousJobs\n  name: Simultanous Builds Limit\n  simple: true\n  required: false\n- path: spec.defaultBuildJobPreset\n  name: Default Job Preset\n  simple: true\n  required: false\n  enum:\n   - fast\n   - normal\n   - slow\n   - local-dev\n- name: Default Function Preset\n  path: spec.defaultRuntimePodPreset\n  simple: true\n  required: false\n  enum:\n   - XS\n   - S\n   - M\n   - L\n   - XL",
+              "general": "resource:\n  kind: Serverless\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: serverlesses\ncategory: Kyma\nname: Serverless\nscope: namespace\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\ndescription: >-\n  {{[Serverless custom resource](https://kyma-project.io/#/serverless-manager/user/resources/06-20-serverless-cr)}}\n  configures the Serverless module.\n",
+              "list": "- name: Ready  \n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'",
+              "translations": "en:\n  alert.internalregistry: Internal Docker Registry is not a highly available registry and should be used for development purpose only"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                "app.kubernetes.io/name": "serverlesses.operator.kyma-project.io",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5"
+              },
+              "name": "serverless-operator.kyma-project.io",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                "app.kubernetes.io/created-by": "serverless-operator",
+                "app.kubernetes.io/instance": "serverless-operator",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "deployment",
+                "app.kubernetes.io/part-of": "serverless-operator",
+                "control-plane": "operator"
+              },
+              "name": "serverless-operator",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                  "control-plane": "operator"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager"
+                  },
+                  "labels": {
+                    "app.kubernetes.io/component": "serverless-operator.kyma-project.io",
+                    "control-plane": "operator",
+                    "sidecar.istio.io/inject": "false"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "command": [
+                        "/operator"
+                      ],
+                      "env": [
+                        {
+                          "name": "SERVERLESS_MANAGER_UID",
+                          "valueFrom": {
+                            "fieldRef": {
+                              "fieldPath": "metadata.uid"
+                            }
+                          }
+                        }
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.5.1",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "1000m",
+                          "memory": "512Mi"
+                        },
+                        "requests": {
+                          "cpu": "10m",
+                          "memory": "64Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "securityContext": {
+                    "runAsNonRoot": true
+                  },
+                  "serviceAccountName": "serverless-operator",
+                  "terminationGracePeriodSeconds": 10
+                }
+              }
+            }
+          }
         ],
-        "documentation": "https://kyma-project.io/#/serverless-manager/user/README",
-        "repository": "https://github.com/kyma-project/serverless-manager.git"
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/serverless-operator",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/serverless-operator:1.5.1",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/serverlesses/default"
       }
     ]
   },

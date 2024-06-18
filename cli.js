@@ -501,29 +501,27 @@ function filterFunc(options) {
   }
 }
 
-async function applyModuleResource(m, v, opts) {
+async function applyModuleResource(module, v, opts) {
   let client
   if (!opts.dryRun) {
     client = await defaultClient(opts.proxyPort)
   }
-  if (v.deploymentYaml) {
-    console.log('kubectl apply -f ' + v.deploymentYaml)
-    if (!opts.dryRun) {
-      for (let r of v.resources) {
-        await client.apply(r)
-      }
+  if (!opts.dryRun) {
+    for (let r of v.resources) {
+      await client.apply(r)
     }
   } else {
-    console.log("no deployment YAML found for module", module)
+    if (v.deploymentYaml) {
+      console.log('kubectl apply -f ' + v.deploymentYaml)
+    }  
   }
   if (!opts.customConfig) {
-    if (v.crYaml) {
-      console.log('kubectl apply -f ' + v.crYaml)
-      if (!opts.dryRun) {
-        await client.apply(v.cr)
-      }
+    if (!opts.dryRun) {
+      await client.apply(v.cr)
     } else {
-      console.log("no default CR YAML found for module", module)
+      if (v.crYaml) {
+        console.log('kubectl apply -f ' + v.crYaml)
+      } 
     }
   }
 
