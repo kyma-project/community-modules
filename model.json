@@ -17013,9 +17013,9 @@
         "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.11/btp-operator-default-cr.yaml"
       },
       {
-        "version": "1.1.12",
-        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.12/btp-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.12/btp-operator-default-cr.yaml",
+        "version": "1.1.13",
+        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.13/btp-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.13/btp-operator-default-cr.yaml",
         "cr": {
           "apiVersion": "operator.kyma-project.io/v1alpha1",
           "kind": "BtpOperator",
@@ -17538,7 +17538,7 @@
                       "command": [
                         "/manager"
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.12",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.13",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -17593,7 +17593,7 @@
           }
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/btp-manager-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.12",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.13",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator",
         "channels": [
           "fast"
