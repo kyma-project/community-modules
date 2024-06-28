@@ -38991,7 +38991,6 @@
       {
         "version": "1.1.0",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/keda-manager/user/README",
@@ -40059,7 +40058,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "kedas.operator.kyma-project.io"
@@ -40495,7 +40494,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-manager",
@@ -40511,7 +40510,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-leader-election-role"
@@ -40575,7 +40574,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-manager-role"
@@ -40908,7 +40907,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-leader-election-rolebinding",
@@ -40936,7 +40935,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-manager-rolebinding"
@@ -40969,7 +40968,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "busola.io/extension": "resource",
                 "busola.io/extension-version": "0.5",
                 "kyma-project.io/module": "keda-manager"
@@ -40994,7 +40993,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "busola.io/extension": "resource",
                 "busola.io/extension-version": "0.5",
                 "kyma-project.io/module": "keda-manager"
@@ -41014,7 +41013,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "kyma-project.io/module": "keda-manager"
               },
               "name": "keda-priority-class"
@@ -41030,7 +41029,7 @@
                 "app.kubernetes.io/managed-by": "kustomize",
                 "app.kubernetes.io/name": "keda-manager",
                 "app.kubernetes.io/part-of": "keda-manager",
-                "app.kubernetes.io/version": "1.1.0",
+                "app.kubernetes.io/version": "1.2.0",
                 "control-plane": "manager",
                 "kyma-project.io/module": "keda-manager"
               },
@@ -41116,7 +41115,12 @@
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/keda-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/keda-manager:1.2.0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/kedas/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/kedas/default",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/keda-manager/user/README",
+        "repository": "https://github.com/kyma-project/keda-manager.git"
       }
     ]
   },
