@@ -232,5 +232,26 @@ export default
       "crYaml": "cluster-ip-nodes.yaml",
     },
     "versions": []
+  },
+  {
+    "name": "docker-registry",
+    "documentation": "https://github.com/kyma-project/docker-registry/tree/main/docs/user",
+    "repository": "https://github.com/kyma-project/docker-registry.git",
+    "managedResources": [
+      "/apis/operator.kyma-project.io/v1alpha1/dockerregistries"
+    ],
+    "manageable": false,
+    "latestGithubRelease" : {
+      "repository": "kyma-project/docker-registry",
+      "deploymentYaml": "dockerregistry-operator.yaml",
+      "crYaml": "default-dockerregistry-cr.yaml"
+    },
+    "versions": [
+      {
+        "version": "0.0.0",
+        "deploymentYaml": "https://github.com/kyma-project/docker-registry/releases/download/0.0.0/dockerregistry-operator.yaml",
+        "crYaml": "https://github.com/kyma-project/docker-registry/releases/download/0.0.0/default-dockerregistry-cr.yaml",
+      }
+    ]
   }
 ]
