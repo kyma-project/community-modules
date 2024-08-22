@@ -7257,1709 +7257,6 @@
     },
     "versions": [
       {
-        "version": "2.4.2",
-        "channels": [
-          "regular"
-        ],
-        "documentation": "https://kyma-project.io/#/api-gateway/user/README",
-        "repository": "https://github.com/kyma-project/api-gateway.git",
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/api-gateway-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.4.2",
-        "resources": [
-          {
-            "apiVersion": "apiextensions.k8s.io/v1",
-            "kind": "CustomResourceDefinition",
-            "metadata": {
-              "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.14.0"
-              },
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "apigateways.operator.kyma-project.io"
-            },
-            "spec": {
-              "group": "operator.kyma-project.io",
-              "names": {
-                "kind": "APIGateway",
-                "listKind": "APIGatewayList",
-                "plural": "apigateways",
-                "singular": "apigateway"
-              },
-              "scope": "Cluster",
-              "versions": [
-                {
-                  "additionalPrinterColumns": [
-                    {
-                      "jsonPath": ".status.state",
-                      "name": "State",
-                      "type": "string"
-                    }
-                  ],
-                  "name": "v1alpha1",
-                  "schema": {
-                    "openAPIV3Schema": {
-                      "description": "APIGateway is the Schema for the apigateways API",
-                      "properties": {
-                        "apiVersion": {
-                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-                          "type": "string"
-                        },
-                        "kind": {
-                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-                          "type": "string"
-                        },
-                        "metadata": {
-                          "type": "object"
-                        },
-                        "spec": {
-                          "description": "APIGatewaySpec defines the desired state of APIGateway",
-                          "properties": {
-                            "enableKymaGateway": {
-                              "description": "Specifies whether the default Kyma Gateway kyma-gateway in kyma-system Namespace is created.",
-                              "type": "boolean"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "status": {
-                          "description": "APIGatewayStatus defines the observed state of APIGateway",
-                          "properties": {
-                            "conditions": {
-                              "description": "Conditions of APIGateway",
-                              "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
-                                "properties": {
-                                  "lastTransitionTime": {
-                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
-                                    "format": "date-time",
-                                    "type": "string"
-                                  },
-                                  "message": {
-                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
-                                    "maxLength": 32768,
-                                    "type": "string"
-                                  },
-                                  "observedGeneration": {
-                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
-                                    "format": "int64",
-                                    "minimum": 0,
-                                    "type": "integer"
-                                  },
-                                  "reason": {
-                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
-                                    "maxLength": 1024,
-                                    "minLength": 1,
-                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
-                                    "type": "string"
-                                  },
-                                  "status": {
-                                    "description": "status of the condition, one of True, False, Unknown.",
-                                    "enum": [
-                                      "True",
-                                      "False",
-                                      "Unknown"
-                                    ],
-                                    "type": "string"
-                                  },
-                                  "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
-                                    "maxLength": 316,
-                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "lastTransitionTime",
-                                  "message",
-                                  "reason",
-                                  "status",
-                                  "type"
-                                ],
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "description": {
-                              "description": "Description of APIGateway status",
-                              "type": "string"
-                            },
-                            "state": {
-                              "description": "State signifies current state of APIGateway. Value can be one of (\"Ready\", \"Processing\", \"Error\", \"Deleting\", \"Warning\").",
-                              "enum": [
-                                "Processing",
-                                "Deleting",
-                                "Ready",
-                                "Error",
-                                "Warning"
-                              ],
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "state"
-                          ],
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "served": true,
-                  "storage": true,
-                  "subresources": {
-                    "status": {}
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "apiextensions.k8s.io/v1",
-            "kind": "CustomResourceDefinition",
-            "metadata": {
-              "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.14.0"
-              },
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "apirules.gateway.kyma-project.io"
-            },
-            "spec": {
-              "conversion": {
-                "strategy": "Webhook",
-                "webhook": {
-                  "clientConfig": {
-                    "service": {
-                      "name": "api-gateway-webhook-service",
-                      "namespace": "kyma-system",
-                      "path": "/convert",
-                      "port": 9443
-                    }
-                  },
-                  "conversionReviewVersions": [
-                    "v1beta1",
-                    "v2alpha1"
-                  ]
-                }
-              },
-              "group": "gateway.kyma-project.io",
-              "names": {
-                "kind": "APIRule",
-                "listKind": "APIRuleList",
-                "plural": "apirules",
-                "singular": "apirule"
-              },
-              "scope": "Namespaced",
-              "versions": [
-                {
-                  "additionalPrinterColumns": [
-                    {
-                      "jsonPath": ".status.APIRuleStatus.code",
-                      "name": "Status",
-                      "type": "string"
-                    },
-                    {
-                      "jsonPath": ".spec.host",
-                      "name": "Host",
-                      "type": "string"
-                    }
-                  ],
-                  "name": "v1beta1",
-                  "schema": {
-                    "openAPIV3Schema": {
-                      "description": "APIRule is the Schema for ApiRule APIs.",
-                      "properties": {
-                        "apiVersion": {
-                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-                          "type": "string"
-                        },
-                        "kind": {
-                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-                          "type": "string"
-                        },
-                        "metadata": {
-                          "type": "object"
-                        },
-                        "spec": {
-                          "description": "Defines the desired state of ApiRule.",
-                          "properties": {
-                            "corsPolicy": {
-                              "description": "Specifies CORS headers configuration that will be sent downstream",
-                              "properties": {
-                                "allowCredentials": {
-                                  "type": "boolean"
-                                },
-                                "allowHeaders": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "allowMethods": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "allowOrigins": {
-                                  "items": {
-                                    "additionalProperties": {
-                                      "type": "string"
-                                    },
-                                    "type": "object"
-                                  },
-                                  "type": "array"
-                                },
-                                "exposeHeaders": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "maxAge": {
-                                  "format": "duration",
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "gateway": {
-                              "description": "Specifies the Istio Gateway to be used.",
-                              "pattern": "^[0-9a-z-_]+(\\/[0-9a-z-_]+|(\\.[0-9a-z-_]+)*)$",
-                              "type": "string"
-                            },
-                            "host": {
-                              "description": "Specifies the URL of the exposed service.",
-                              "maxLength": 256,
-                              "minLength": 3,
-                              "pattern": "^([a-zA-Z0-9][a-zA-Z0-9-_]*\\.)*[a-zA-Z0-9]*[a-zA-Z0-9-_]*[[a-zA-Z0-9]+$",
-                              "type": "string"
-                            },
-                            "rules": {
-                              "description": "Represents the array of Oathkeeper access rules to be applied.",
-                              "items": {
-                                "description": "Rule .",
-                                "properties": {
-                                  "accessStrategies": {
-                                    "description": "Specifies the list of access strategies.\nAll strategies listed in [Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper/pipeline/authn) are supported.",
-                                    "items": {
-                                      "description": "Represents a handler that authenticates provided credentials. See the corresponding type in the oathkeeper-maester project.",
-                                      "properties": {
-                                        "config": {
-                                          "description": "Configures the handler. Configuration keys vary per handler.",
-                                          "type": "object",
-                                          "x-kubernetes-preserve-unknown-fields": true
-                                        },
-                                        "handler": {
-                                          "description": "Specifies the name of the handler.",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "required": [
-                                        "handler"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    "minItems": 1,
-                                    "type": "array"
-                                  },
-                                  "methods": {
-                                    "description": "Represents the list of allowed HTTP request methods available for the **spec.rules.path**.",
-                                    "items": {
-                                      "description": "HttpMethod specifies the HTTP request method. The list of supported methods is defined in RFC 9910: HTTP Semantics and RFC 5789: PATCH Method for HTTP.",
-                                      "enum": [
-                                        "GET",
-                                        "HEAD",
-                                        "POST",
-                                        "PUT",
-                                        "DELETE",
-                                        "CONNECT",
-                                        "OPTIONS",
-                                        "TRACE",
-                                        "PATCH"
-                                      ],
-                                      "type": "string"
-                                    },
-                                    "minItems": 1,
-                                    "type": "array"
-                                  },
-                                  "mutators": {
-                                    "description": "Specifies the list of [Ory Oathkeeper](https://www.ory.sh/docs/oathkeeper/pipeline/mutator) mutators.",
-                                    "items": {
-                                      "description": "Mutator represents a handler that transforms the HTTP request before forwarding it. See the corresponding in the oathkeeper-maester project.",
-                                      "properties": {
-                                        "config": {
-                                          "description": "Configures the handler. Configuration keys vary per handler.",
-                                          "type": "object",
-                                          "x-kubernetes-preserve-unknown-fields": true
-                                        },
-                                        "handler": {
-                                          "description": "Specifies the name of the handler.",
-                                          "type": "string"
-                                        }
-                                      },
-                                      "required": [
-                                        "handler"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    "type": "array"
-                                  },
-                                  "path": {
-                                    "description": "Specifies the path of the exposed service.",
-                                    "pattern": "^([0-9a-zA-Z./*()?!\\\\_-]+)",
-                                    "type": "string"
-                                  },
-                                  "service": {
-                                    "description": "Describes the service to expose. Overwrites the **spec** level service if defined.",
-                                    "properties": {
-                                      "external": {
-                                        "description": "Specifies if the service is internal (in cluster) or external.",
-                                        "type": "boolean"
-                                      },
-                                      "name": {
-                                        "description": "Specifies the name of the exposed service.",
-                                        "type": "string"
-                                      },
-                                      "namespace": {
-                                        "description": "Specifies the Namespace of the exposed service. If not defined, it defaults to the APIRule Namespace.",
-                                        "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-                                        "type": "string"
-                                      },
-                                      "port": {
-                                        "description": "Specifies the communication port of the exposed service.",
-                                        "format": "int32",
-                                        "maximum": 65535,
-                                        "minimum": 1,
-                                        "type": "integer"
-                                      }
-                                    },
-                                    "required": [
-                                      "name",
-                                      "port"
-                                    ],
-                                    "type": "object"
-                                  },
-                                  "timeout": {
-                                    "description": "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes).",
-                                    "maximum": 3900,
-                                    "minimum": 1,
-                                    "type": "integer"
-                                  }
-                                },
-                                "required": [
-                                  "accessStrategies",
-                                  "methods",
-                                  "path"
-                                ],
-                                "type": "object"
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            },
-                            "service": {
-                              "description": "Describes the service to expose.",
-                              "properties": {
-                                "external": {
-                                  "description": "Specifies if the service is internal (in cluster) or external.",
-                                  "type": "boolean"
-                                },
-                                "name": {
-                                  "description": "Specifies the name of the exposed service.",
-                                  "type": "string"
-                                },
-                                "namespace": {
-                                  "description": "Specifies the Namespace of the exposed service. If not defined, it defaults to the APIRule Namespace.",
-                                  "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-                                  "type": "string"
-                                },
-                                "port": {
-                                  "description": "Specifies the communication port of the exposed service.",
-                                  "format": "int32",
-                                  "maximum": 65535,
-                                  "minimum": 1,
-                                  "type": "integer"
-                                }
-                              },
-                              "required": [
-                                "name",
-                                "port"
-                              ],
-                              "type": "object"
-                            },
-                            "timeout": {
-                              "description": "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes).",
-                              "maximum": 3900,
-                              "minimum": 1,
-                              "type": "integer"
-                            }
-                          },
-                          "required": [
-                            "gateway",
-                            "host",
-                            "rules"
-                          ],
-                          "type": "object"
-                        },
-                        "status": {
-                          "description": "Describes the observed state of ApiRule.",
-                          "properties": {
-                            "APIRuleStatus": {
-                              "description": "Describes the status of APIRule.",
-                              "properties": {
-                                "code": {
-                                  "description": "Status code describing APIRule.",
-                                  "type": "string"
-                                },
-                                "desc": {
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "accessRuleStatus": {
-                              "description": "Describes the status of APIRule.",
-                              "properties": {
-                                "code": {
-                                  "description": "Status code describing APIRule.",
-                                  "type": "string"
-                                },
-                                "desc": {
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "authorizationPolicyStatus": {
-                              "description": "Describes the status of APIRule.",
-                              "properties": {
-                                "code": {
-                                  "description": "Status code describing APIRule.",
-                                  "type": "string"
-                                },
-                                "desc": {
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "lastProcessedTime": {
-                              "format": "date-time",
-                              "type": "string"
-                            },
-                            "observedGeneration": {
-                              "format": "int64",
-                              "type": "integer"
-                            },
-                            "requestAuthenticationStatus": {
-                              "description": "Describes the status of APIRule.",
-                              "properties": {
-                                "code": {
-                                  "description": "Status code describing APIRule.",
-                                  "type": "string"
-                                },
-                                "desc": {
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "virtualServiceStatus": {
-                              "description": "Describes the status of APIRule.",
-                              "properties": {
-                                "code": {
-                                  "description": "Status code describing APIRule.",
-                                  "type": "string"
-                                },
-                                "desc": {
-                                  "type": "string"
-                                }
-                              },
-                              "type": "object"
-                            }
-                          },
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "served": true,
-                  "storage": true,
-                  "subresources": {
-                    "status": {}
-                  }
-                },
-                {
-                  "additionalPrinterColumns": [
-                    {
-                      "jsonPath": ".status.state",
-                      "name": "Status",
-                      "type": "string"
-                    },
-                    {
-                      "jsonPath": ".spec.hosts",
-                      "name": "Hosts",
-                      "type": "string"
-                    }
-                  ],
-                  "name": "v2alpha1",
-                  "schema": {
-                    "openAPIV3Schema": {
-                      "description": "APIRule is the Schema for ApiRule APIs.",
-                      "properties": {
-                        "apiVersion": {
-                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-                          "type": "string"
-                        },
-                        "kind": {
-                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-                          "type": "string"
-                        },
-                        "metadata": {
-                          "type": "object"
-                        },
-                        "spec": {
-                          "description": "APIRuleSpec defines the desired state of ApiRule.",
-                          "properties": {
-                            "corsPolicy": {
-                              "description": "Specifies CORS headers configuration that will be sent downstream",
-                              "properties": {
-                                "allowCredentials": {
-                                  "type": "boolean"
-                                },
-                                "allowHeaders": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "allowMethods": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "allowOrigins": {
-                                  "items": {
-                                    "additionalProperties": {
-                                      "type": "string"
-                                    },
-                                    "type": "object"
-                                  },
-                                  "type": "array"
-                                },
-                                "exposeHeaders": {
-                                  "items": {
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "maxAge": {
-                                  "format": "int64",
-                                  "minimum": 1,
-                                  "type": "integer"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "gateway": {
-                              "description": "Specifies the Istio Gateway to be used.",
-                              "pattern": "^[0-9a-z-_]+(\\/[0-9a-z-_]+|(\\.[0-9a-z-_]+)*)$",
-                              "type": "string"
-                            },
-                            "hosts": {
-                              "description": "Specifies the URLs of the exposed service.",
-                              "items": {
-                                "description": "Host is the URL of the exposed service.",
-                                "maxLength": 256,
-                                "minLength": 3,
-                                "pattern": "^([a-zA-Z0-9][a-zA-Z0-9-_]*\\.)*[a-zA-Z0-9]*[a-zA-Z0-9-_]*[[a-zA-Z0-9]+$",
-                                "type": "string"
-                              },
-                              "maxItems": 1,
-                              "minItems": 1,
-                              "type": "array"
-                            },
-                            "rules": {
-                              "description": "Represents the array of Oathkeeper access rules to be applied.",
-                              "items": {
-                                "description": "Rule .",
-                                "properties": {
-                                  "jwt": {
-                                    "description": "Specifies the Istio JWT access strategy.",
-                                    "properties": {
-                                      "authentications": {
-                                        "items": {
-                                          "description": "JwtAuthentication Config for Jwt Istio authentication",
-                                          "properties": {
-                                            "fromHeaders": {
-                                              "items": {
-                                                "description": "JwtHeader for specifying from header for the Jwt token",
-                                                "properties": {
-                                                  "name": {
-                                                    "type": "string"
-                                                  },
-                                                  "prefix": {
-                                                    "type": "string"
-                                                  }
-                                                },
-                                                "required": [
-                                                  "name"
-                                                ],
-                                                "type": "object"
-                                              },
-                                              "type": "array"
-                                            },
-                                            "fromParams": {
-                                              "items": {
-                                                "type": "string"
-                                              },
-                                              "type": "array"
-                                            },
-                                            "issuer": {
-                                              "type": "string"
-                                            },
-                                            "jwksUri": {
-                                              "type": "string"
-                                            }
-                                          },
-                                          "required": [
-                                            "issuer",
-                                            "jwksUri"
-                                          ],
-                                          "type": "object"
-                                        },
-                                        "type": "array"
-                                      },
-                                      "authorizations": {
-                                        "items": {
-                                          "description": "JwtAuthorization contains scopes and audiences required for the JWT token.",
-                                          "properties": {
-                                            "audiences": {
-                                              "items": {
-                                                "type": "string"
-                                              },
-                                              "type": "array"
-                                            },
-                                            "requiredScopes": {
-                                              "items": {
-                                                "type": "string"
-                                              },
-                                              "type": "array"
-                                            }
-                                          },
-                                          "type": "object"
-                                        },
-                                        "type": "array"
-                                      }
-                                    },
-                                    "type": "object"
-                                  },
-                                  "methods": {
-                                    "description": "Represents the list of allowed HTTP request methods available for the **spec.rules.path**.",
-                                    "items": {
-                                      "description": "HttpMethod specifies the HTTP request method. The list of supported methods is defined in RFC 9910: HTTP Semantics and RFC 5789: PATCH Method for HTTP.",
-                                      "enum": [
-                                        "GET",
-                                        "HEAD",
-                                        "POST",
-                                        "PUT",
-                                        "DELETE",
-                                        "CONNECT",
-                                        "OPTIONS",
-                                        "TRACE",
-                                        "PATCH"
-                                      ],
-                                      "type": "string"
-                                    },
-                                    "minItems": 1,
-                                    "type": "array"
-                                  },
-                                  "noAuth": {
-                                    "description": "Disables authorization when set to true.",
-                                    "type": "boolean"
-                                  },
-                                  "path": {
-                                    "description": "Specifies the path of the exposed service.",
-                                    "pattern": "^([0-9a-zA-Z./*()?!\\\\_-]+)",
-                                    "type": "string"
-                                  },
-                                  "service": {
-                                    "description": "Describes the service to expose. Overwrites the **spec** level service if defined.",
-                                    "properties": {
-                                      "external": {
-                                        "description": "Specifies if the service is internal (in cluster) or external.",
-                                        "type": "boolean"
-                                      },
-                                      "name": {
-                                        "description": "Specifies the name of the exposed service.",
-                                        "type": "string"
-                                      },
-                                      "namespace": {
-                                        "description": "Specifies the Namespace of the exposed service. If not defined, it defaults to the APIRule Namespace.",
-                                        "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-                                        "type": "string"
-                                      },
-                                      "port": {
-                                        "description": "Specifies the communication port of the exposed service.",
-                                        "format": "int32",
-                                        "maximum": 65535,
-                                        "minimum": 1,
-                                        "type": "integer"
-                                      }
-                                    },
-                                    "required": [
-                                      "name",
-                                      "port"
-                                    ],
-                                    "type": "object"
-                                  },
-                                  "timeout": {
-                                    "description": "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes).",
-                                    "maximum": 3900,
-                                    "minimum": 1,
-                                    "type": "integer"
-                                  }
-                                },
-                                "required": [
-                                  "methods",
-                                  "path"
-                                ],
-                                "type": "object",
-                                "x-kubernetes-validations": [
-                                  {
-                                    "message": "either jwt is configured or noAuth must be set to true in a rule",
-                                    "rule": "has(self.jwt) ? !has(self.noAuth) || self.noAuth == false : has(self.noAuth) && self.noAuth == true"
-                                  }
-                                ]
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            },
-                            "service": {
-                              "description": "Describes the service to expose.",
-                              "properties": {
-                                "external": {
-                                  "description": "Specifies if the service is internal (in cluster) or external.",
-                                  "type": "boolean"
-                                },
-                                "name": {
-                                  "description": "Specifies the name of the exposed service.",
-                                  "type": "string"
-                                },
-                                "namespace": {
-                                  "description": "Specifies the Namespace of the exposed service. If not defined, it defaults to the APIRule Namespace.",
-                                  "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
-                                  "type": "string"
-                                },
-                                "port": {
-                                  "description": "Specifies the communication port of the exposed service.",
-                                  "format": "int32",
-                                  "maximum": 65535,
-                                  "minimum": 1,
-                                  "type": "integer"
-                                }
-                              },
-                              "required": [
-                                "name",
-                                "port"
-                              ],
-                              "type": "object"
-                            },
-                            "timeout": {
-                              "description": "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes).",
-                              "maximum": 3900,
-                              "minimum": 1,
-                              "type": "integer"
-                            }
-                          },
-                          "required": [
-                            "gateway",
-                            "hosts",
-                            "rules"
-                          ],
-                          "type": "object"
-                        },
-                        "status": {
-                          "description": "APIRuleStatus describes the observed state of ApiRule.",
-                          "properties": {
-                            "description": {
-                              "description": "Description of APIRule status",
-                              "type": "string"
-                            },
-                            "lastProcessedTime": {
-                              "format": "date-time",
-                              "type": "string"
-                            },
-                            "state": {
-                              "description": "State signifies current state of APIRule.\nValue can be one of (\"Ready\", \"Processing\", \"Error\", \"Deleting\", \"Warning\").",
-                              "enum": [
-                                "Processing",
-                                "Deleting",
-                                "Ready",
-                                "Error",
-                                "Warning"
-                              ],
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "state"
-                          ],
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "served": true,
-                  "storage": false,
-                  "subresources": {
-                    "status": {}
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "v1",
-            "kind": "ServiceAccount",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-controller-manager",
-              "namespace": "kyma-system"
-            }
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "Role",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-leader-election-role",
-              "namespace": "kyma-system"
-            },
-            "rules": [
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "configmaps"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch",
-                  "create",
-                  "update",
-                  "patch",
-                  "delete"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "coordination.k8s.io"
-                ],
-                "resources": [
-                  "leases"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch",
-                  "create",
-                  "update",
-                  "patch",
-                  "delete"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "events"
-                ],
-                "verbs": [
-                  "create",
-                  "patch"
-                ]
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "ClusterRole",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-manager-role"
-            },
-            "rules": [
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "configmaps"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "deployments",
-                  "secrets",
-                  "serviceaccounts",
-                  "services"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "pods"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "secrets"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "services"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apiextensions.k8s.io"
-                ],
-                "resources": [
-                  "customresourcedefinitions"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
-                  "deployments"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "autoscaling"
-                ],
-                "resources": [
-                  "horizontalpodautoscalers"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "cert.gardener.cloud"
-                ],
-                "resources": [
-                  "certificates"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "dns.gardener.cloud"
-                ],
-                "resources": [
-                  "dnsentries"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "gateway.kyma-project.io"
-                ],
-                "resources": [
-                  "apirules"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "gateway.kyma-project.io"
-                ],
-                "resources": [
-                  "apirules/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "gateway.kyma-project.io"
-                ],
-                "resources": [
-                  "apirules/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "networking.istio.io"
-                ],
-                "resources": [
-                  "gateways"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "networking.istio.io"
-                ],
-                "resources": [
-                  "virtualservices"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "oathkeeper.ory.sh"
-                ],
-                "resources": [
-                  "rules"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "deletecollection",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "apigateways"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "apigateways/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "apigateways/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "policy"
-                ],
-                "resources": [
-                  "poddisruptionbudgets"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
-                  "clusterrolebindings",
-                  "clusterroles",
-                  "rolebindings",
-                  "roles"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "security.istio.io"
-                ],
-                "resources": [
-                  "authorizationpolicies"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "security.istio.io"
-                ],
-                "resources": [
-                  "peerauthentications"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "security.istio.io"
-                ],
-                "resources": [
-                  "requestauthentications"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "RoleBinding",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-leader-election-rolebinding",
-              "namespace": "kyma-system"
-            },
-            "roleRef": {
-              "apiGroup": "rbac.authorization.k8s.io",
-              "kind": "Role",
-              "name": "api-gateway-leader-election-role"
-            },
-            "subjects": [
-              {
-                "kind": "ServiceAccount",
-                "name": "api-gateway-controller-manager",
-                "namespace": "kyma-system"
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "ClusterRoleBinding",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-manager-rolebinding"
-            },
-            "roleRef": {
-              "apiGroup": "rbac.authorization.k8s.io",
-              "kind": "ClusterRole",
-              "name": "api-gateway-manager-role"
-            },
-            "subjects": [
-              {
-                "kind": "ServiceAccount",
-                "name": "api-gateway-controller-manager",
-                "namespace": "kyma-system"
-              }
-            ]
-          },
-          {
-            "apiVersion": "v1",
-            "data": {
-              "dataSources": "relatedGateways:\n  resource:\n    kind: Gateway\n    group: networking.istio.io\n    version: v1beta1\n    namespace: null\nrelatedServices:\n  resource:\n    kind: Service\n    version: v1\n    namespace: null\nvirtualServices:\n  resource:\n    kind: VirtualService\n    group: networking.istio.io\n    version: v1beta1\n    namespace: null\n  filter: '$item.metadata.labels.\"apirule.gateway.kyma-project.io/v1beta1\" = $root.metadata.name & \".\" & $root.metadata.namespace'",
-              "details": "header:\n  - name: status\n    widget: Badge\n    highlights:\n      positive:\n        - 'OK'\n      negative:\n        - 'ERROR'\n      critical:\n        - 'SKIPPED'\n    source: 'status.APIRuleStatus.code ? status.APIRuleStatus.code : \"UNKNOWN\"'\n    description: status.APIRuleStatus.desc\n  - name: host\n    widget: ExternalLink\n    source: 'spec.host'\n    link: 'status.APIRuleStatus.code = \"OK\" ? \"https://\" & $virtualServices().items[0].spec.hosts[0] : \"\"'\nbody:\n  - simple: true\n    widget: Alert\n    severity: warning\n    source: '\"alert.spec.jwks_url_http\"'\n    visibility: '$count(spec.rules.accessStrategies.config.jwks_urls)>0 and $reduce(spec.rules.accessStrategies.config.jwks_urls,function($i, $j){$i or $substringBefore($j,\"://\")=\"http\"},false)'\n  - simple: true\n    widget: Alert\n    severity: warning\n    source: '\"alert.spec.trusted_issuers_http\"'\n    visibility: '$count(spec.rules.accessStrategies.config.trusted_issuers)>0 and $reduce(spec.rules.accessStrategies.config.trusted_issuers,function($i, $j){$i or $substringBefore($j,\"://\")=\"http\"},false)'\n  - simple: true\n    widget: Alert\n    severity: warning\n    source: '\"alert.corsPolicy\"'\n    visibility: '$not($exists(spec.corsPolicy))'\n  - widget: Panel\n    name: corsPolicy\n    source: spec.corsPolicy\n    visibility: $exists(spec.corsPolicy)\n    children:\n      - name: corsAllowMethods\n        source: allowMethods\n        widget: JoinedArray\n        visibility: '$not($count(allowMethods)=0)'\n      - name: corsAllowOriginsRegex\n        source: $join(allowOrigins.regex,\",\")\n        widget: Text\n        visibility: '$not($count(allowOrigins.regex)=0)'\n      - name: corsAllowOriginsPrefix\n        source: $join(allowOrigins.prefix,\",\")\n        widget: Text\n        visibility: '$not($count(allowOrigins.prefix)=0)'\n      - name: corsAllowOriginsExact\n        source: $join(allowOrigins.exact,\",\")\n        widget: Text\n        visibility: '$not($count(allowOrigins.exact)=0)'\n      - name: corsExposeHeaders\n        source: exposeHeaders\n        widget: JoinedArray\n        visibility: '$not($count(exposeHeaders)=0)'\n      - name: corsAllowHeaders\n        source: allowHeaders\n        widget: JoinedArray\n        visibility: '$not($count(allowHeaders)=0)'\n      - name: corsAllowCredentials\n        source: allowCredentials\n        widget: Badge\n        visibility: '$exists(allowCredentials)'\n      - name: corsMaxAge\n        source: maxAge\n        widget: Text\n        visibility: '$exists(maxAge)'\n  - name: general\n    source: spec\n    widget: Panel\n    visibility: $exists(spec.timeout)\n    children:\n    - source: timeout\n      name: details.timeout\n  - name: service\n    source: spec.service\n    widget: Panel\n    children:\n      - name: service.name\n        source: name\n        widget: ResourceLink\n        resource:\n          name: $root.spec.service.name\n          namespace: $root.metadata.namespace\n          kind: '\"Service\"'\n      - name: service.port\n        source: port\n  - source: spec.rules\n    widget: Table\n    name: rules\n    children:\n      - source: $item.path\n        name: rules.path\n      - source: $item.methods\n        name: rules.methods\n        widget: Badge\n    collapsible:\n      - name: general\n        source: $item\n        widget: Panel\n        visibility: $exists($item.timeout)\n        children:\n        - source: $item.timeout\n          name: details.timeout\n      - source: $item.accessStrategies\n        widget: Table\n        disablePadding: true\n        name: accessStrategies\n        children:\n          - source: $item.handler\n            name: accessStrategies.handlers\n            widget: Badge\n          - source: $item.config.required_scope\n            name: accessStrategies.required_scope\n            widget: JoinedArray\n          - source: $item.config.jwks_urls\n            name: accessStrategies.jwks_urls\n            widget: JoinedArray\n          - source: $item.config.trusted_issuers\n            name: accessStrategies.trusted_issuers\n            widget: JoinedArray\n          - source: $item.config.introspection_url\n            name: accessStrategies.introspection_url\n            widget: Text\n          - source: $item.config.introspection_request_headers\n            name: accessStrategies.introspection_request_headers\n            widget: Labels\n          - source: $item.config.token_from\n            name: accessStrategies.token_from\n            widget: Labels\n      - source: $item.mutators\n        widget: Table\n        disablePadding: true\n        name: mutators\n        visibility: $exists($item.mutators)\n        children:\n          - source: $item.handler\n            name: mutators.handlers\n            widget: Badge\n          - source: $item.config\n            name: mutators.config\n            widget: CodeViewer\n            description: \"Configuration for {{[Ory Oathkeeper Rule mutators]https://www.ory.sh/docs/oathkeeper/pipeline/mutator}}\"\n            language: \"'yaml'\"\n            visibility: '$exists($value)'\n      - name: service\n        source: $item.service\n        widget: Panel\n        visibility: $exists($item.service)\n        children:\n          - name: service.name\n            source: $item.service.name\n            widget: ResourceLink\n            resource:\n              name: $item.service.name\n              namespace: $root.metadata.namespace\n              kind: '\"Service\"'\n          - name: service.port\n            source: $item.service.port\n  - widget: ResourceList\n    source: $virtualServices()\n    name: virtualService\n    disableCreate: true\n",
-              "form": "- simple: true\n  required: false\n  path: spec.timeout\n  name: timeout\n  inputInfo: inputInfo.timeout\n  value:\n    type: number\n- simple: true\n  required: false\n  path: spec.service\n  name: service\n  widget: FormGroup\n  defaultExpanded: true\n  children:\n    - simple: true\n      required: false\n      path: name\n      name: service-name\n      widget: Resource\n      resource:\n        kind: Service\n        version: v1\n        scope: namespace\n      trigger: [port]\n    - simple: true\n      required: false\n      path: port\n      name: service.port\n      subscribe:\n        port: \"$filter($relatedServices().items, function ($v) { $v.metadata.name = $root.spec.service.name and $v.metadata.namespace = $root.metadata.namespace }).spec.ports[0].port\"\n- simple: true\n  required: true\n  path: spec.gateway\n  name: gateway\n  widget: ResourceRef\n  defaultExpanded: true\n  visibility: $canI('networking.istio.io/v1beta1', 'Gateway')\n  resource:\n    kind: Gateway\n    group: networking.istio.io\n    version: v1beta1\n  overwrite: false\n  toInternal:  '($values := $split($, \"/\"); { \"namespace\": $values[0], \"name\": $values[1] })'\n  toExternal: 'namespace & \"/\" & name'\n  trigger: [host]\n- simple: true\n  var: separator\n  value: \"\"\n- simple: true\n  required: true\n  path: spec.gateway\n  name: gateway\n  visibility: $not($canI('networking.istio.io/v1beta1', 'Gateway'))\n  inputInfo: inputInfo.gateway\n  overwrite: false\n  trigger: [host]\n- simple: true\n  widget: Alert\n  severity: warning\n  alert: '\"alert.corsPolicy\"'\n  visibility: '$not($useCorsPolicy)'\n- var: useCorsPolicy\n  name: useCorsPolicy\n  simple: true\n  type: boolean\n  dynamicValue: '$boolean(spec.corsPolicy)'\n- simple: true\n  visibility: '$useCorsPolicy'\n  required: false\n  path: spec.corsPolicy\n  name: corsPolicy\n  defaultExpanded: true\n  inputInfo: inputInfo.corsPolicy\n  widget: FormGroup\n  children:\n    - simple: true\n      required: false\n      path: allowMethods\n      name: corsAllowMethods\n      widget: MultiCheckbox\n      options:\n        - key: GET\n        - key: POST\n        - key: PUT\n        - key: DELETE\n        - key: PATCH\n        - key: HEAD\n        - key: OPTIONS\n        - key: CONNECT\n        - key: TRACE\n    - simple: true\n      required: false\n      path: allowOrigins\n      name: corsAllowOrigins\n      widget: GenericList\n      children:\n        - path: '[]'\n          widget: KeyValuePair\n          keyEnum:\n          - exact\n          - prefix\n          - regex\n          simple: true\n    - simple: true\n      required: false\n      path: allowHeaders\n      name: corsAllowHeaders\n      widget: SimpleList\n      children:\n        - path: '[]'\n          simple: true\n    - simple: true\n      required: false\n      path: exposeHeaders\n      name: corsExposeHeaders\n      widget: SimpleList\n      children:\n        - path: '[]'\n          simple: true\n    - simple: true\n      required: false\n      path: allowCredentials\n      name: corsAllowCredentials\n      value:\n        type: boolean\n    - simple: true\n      required: false\n      path: maxAge\n      name: corsMaxAge\n      placeholder: 300s\n      value:\n        type: string\n- simple: true\n  required: true\n  path: spec.host\n  name: host\n  enum: \"$distinct($filter($relatedGateways().items, function ($v) { $v.metadata.namespace = $substringBefore($root.spec.gateway, '/') and $v.metadata.name = $substringAfter($root.spec.gateway, '/')}).spec.servers.hosts)\"\n  subscribe:\n    host: \"$string($filter($relatedGateways().items, function ($v) { $v.metadata.namespace = $substringBefore($root.spec.gateway, '/') and $v.metadata.name = $substringAfter($root.spec.gateway, '/')}).spec.servers[0].hosts[0])\"\n- simple: true\n  widget: Alert\n  severity: error\n  alert: '\"alert.spec.host\"'\n  visibility: '$substring(spec.host, 0, 1)=\"*\"'\n- simple: true\n  required: true\n  path: spec.rules\n  name: rules\n  widget: GenericList\n  defaultExpanded: true\n  template:\n    path: '/.*'\n    methods: ['GET']\n    accessStrategies:\n      - handler: 'no_auth'\n  children:\n    - simple: true\n      required: false\n      path: '[].timeout'\n      name: timeout\n      inputInfo: inputInfo.timeout\n      value:\n        type: number\n    - simple: true\n      required: true\n      path: '[].path'\n      name: path\n      inputInfo: inputInfo.path\n    - required: true\n      simple: true\n      path: '[].accessStrategies'\n      name: accessStrategies\n      widget: GenericList\n      defaultExpanded: true\n      template:\n        handler: 'no_auth'\n      children:\n        - required: true\n          simple: true\n          path: '[].handler'\n          name: accessStrategies.handler\n          enum:\n            - allow\n            - no_auth\n            - noop\n            - jwt\n            - oauth2_introspection\n        - path: '[].config'\n          simple: true\n          name: accessStrategies.config\n          type: object\n          properties:\n            jwks_urls:\n              type: array\n              items:\n                type: string\n                pattern: ^(https://|file://).*$\n            trusted_issuers:\n              type: array\n              items:\n                type: string\n                pattern: ^(https://|file://).*$\n            required_scope:\n              type: array\n              items:\n                type: string\n            introspection_url:\n              type: string\n              pattern: ^(https://|http://).*$\n            introspection_request_headers:\n              type: map\n            token_from:\n              type: map\n          children:\n            - simple: true\n              widget: Alert\n              severity: warning\n              alert: '\"alert.spec.jwks_url_http\"'\n              visibility: '$reduce($item.config.jwks_urls,function($i, $j){$i or $substringBefore($j,\"://\")=\"http\"},false)'\n            - path: jwks_urls\n              name: accessStrategies.jwks_urls\n              inputInfo: inputInfo.jwks_urls\n              simple: true\n              widget: SimpleList\n              visibility: '$item.handler=\"jwt\"'\n              children:\n                - path: '[]'\n                  simple: true\n            - simple: true\n              widget: Alert\n              severity: warning\n              alert: '\"alert.spec.trusted_issuers_http\"'\n              visibility: '$reduce($item.config.trusted_issuers,function($i, $j){$i or $substringBefore($j,\"://\")=\"http\"},false)'\n            - path: trusted_issuers\n              name: accessStrategies.trusted_issuers\n              inputInfo: inputInfo.trusted_issuers\n              simple: true\n              widget: SimpleList\n              visibility: '$item.handler=\"jwt\"'\n              children:\n                - path: '[]'\n                  simple: true\n            - path: introspection_url\n              name: accessStrategies.introspection_url\n              inputInfo: inputInfo.introspection_url\n              simple: true\n              visibility: '$item.handler=\"oauth2_introspection\"'\n            - path: introspection_request_headers\n              name: accessStrategies.introspection_request_headers\n              simple: true\n              inputInfo: inputInfo.introspection_request_headers\n              widget: KeyValuePair\n              visibility: '$item.handler=\"oauth2_introspection\"'\n            - path: required_scope\n              name: accessStrategies.required_scope\n              simple: true\n              widget: SimpleList\n              visibility: '$item.handler=\"oauth2_introspection\" or $item.handler=\"oauth2_client_credentials\" or $item.handler=\"jwt\"'\n              children:\n                - path: '[]'\n                  simple: true\n            - path: token_from\n              name: accessStrategies.token_from\n              simple: true\n              inputInfo: inputInfo.token_from\n              widget: KeyValuePair\n              visibility: '$item.handler!=\"allow\" and $item.handler!=\"no_auth\" and $item.handler!=\"noop\"'\n              keyEnum:\n              - header\n              - query_parameter\n              - cookie\n    - required: true\n      simple: true\n      path: '[].methods'\n      name: rules.methods\n      widget: MultiCheckbox\n      options:\n        - key: GET\n        - key: POST\n        - key: PUT\n        - key: DELETE\n        - key: PATCH\n        - key: HEAD\n        - key: OPTIONS\n        - key: CONNECT\n        - key: TRACE\n    - path: '[].mutators'\n      name: mutators\n      widget: GenericList\n      children:\n        - path: '[].config'\n          widget: CodeEditor\n          description: \"Configuration for {{[Ory Oathkeeper Rule mutators]https://www.ory.sh/docs/oathkeeper/pipeline/mutator}}\"\n          language: \"'yaml'\"\n        - required: true\n          path: '[].handler'\n          name: accessStrategies.handler\n          enum:\n          - noop\n          - id_token\n          - header\n          - cookie\n    - path: '[].service'\n      simple: true\n      name: service\n      widget: FormGroup\n      required: false\n      children:\n        - simple: true\n          required: false\n          path: name\n          name: service-name\n          widget: Resource\n          resource:\n            kind: Service\n            version: v1\n            scope: namespace\n          trigger: [accessStrategyPort]\n        - simple: true\n          required: false\n          path: port\n          name: service.port\n          subscribe:\n            accessStrategyPort: \"$filter($relatedServices().items, function ($v) { $v.metadata.name = $item.service.name and $v.metadata.namespace = $root.metadata.namespace }).spec.ports[0].port\"\n",
-              "general": "resource:\n  kind: APIRule\n  group: gateway.kyma-project.io\n  version: v1beta1\nname: API Rules\ncategory: Discovery and Network\nscope: namespace\ndescription: '{{[APIRule](https://kyma-project.io/#/api-gateway/user/custom-resources/apirule/04-10-apirule-custom-resource)}} allows for exposing a service externally.'\nurlPath: apirules",
-              "list": "- name: host\n  source: spec.host\n- name: service-name\n  source: '$string(spec.service.name) ? ($string(spec.service.name) & \" (port: \" & $string(spec.service.port) & \")\") : \"\"'\n  widget: ResourceLink\n  resource:\n    name: $root.spec.service.name\n    namespace: $root.metadata.namespace\n    kind: '\"Service\"'\n- name: status\n  widget: Badge\n  highlights:\n    positive:\n      - 'OK'\n    negative:\n      - 'ERROR'\n    critical:\n      - 'SKIPPED'\n  source: 'status.APIRuleStatus.code ? status.APIRuleStatus.code : \"UNKNOWN\"'\n  description: status.APIRuleStatus.desc",
-              "presets": "- name: Default gateway\n  default: true\n  value:\n    spec:\n      gateway: kyma-system/kyma-gateway\n      rules:\n        - path: /.*\n          methods:\n            - GET\n          accessStrategies:\n            - handler: no_auth",
-              "translations": "en:\n  accessStrategies: Access Strategies\n  accessStrategies.config: Config\n  accessStrategies.handler: Handler\n  accessStrategies.handlers: Handlers\n  accessStrategies.jwks_urls: JWKS URLs\n  accessStrategies.trusted_issuers: Trusted Issuers\n  accessStrategies.required_scope: Required Scope\n  accessStrategies.introspection_url: Introspection URL\n  accessStrategies.introspection_request_headers: Introspection Request Headers\n  accessStrategies.token_from: Token From\n  gateway: Gateway\n  useCorsPolicy: Use custom CORS policy\n  corsPolicy: CORS Policy\n  corsAllowMethods: CORS Allow Methods\n  corsAllowOrigins: CORS Allow Origins\n  corsAllowHeaders: CORS Allow Headers\n  corsExposeHeaders: CORS Expose Headers\n  corsAllowCredentials: CORS Allow Credentials\n  corsAllowOriginsRegex: CORS origins allowed with regex match\n  corsAllowOriginsPrefix: CORS origins allowed with prefix match\n  corsAllowOriginsExact: CORS origins allowed with exact match\n  corsMaxAge: CORS Max Age\n  host: Host\n  inputInfo.corsPolicy: Defines what CORS headers will be sent on CORS preflight and response\n  inputInfo.gateway: Gateway structure, '{NAMESPACE}/{NAME}'\n  inputInfo.path: \"Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'.\"\n  inputInfo.jwks_urls: \"JWKS URLs must start with 'https://', 'http://' or 'file://'. HTTP protocol is not recommended.\"\n  inputInfo.trusted_issuers: \"Trusted Issuers must start with 'https://', 'http://' or 'file://'. HTTP protocol is not recommended.\"\n  inputInfo.introspection_url: \"URL endpoint used for validating the Bearer token. Should start with 'http://' or 'https://'\"\n  inputInfo.introspection_request_headers: \"Headers sent alongside the introspection request\"\n  inputInfo.token_from: \"Defines where Ory Oathkeeper should look for access token\"\n  inputInfo.timeout: \"Timeout for HTTP requests in seconds. The timeout can be configured for a maximum of 3900 seconds (65 minutes).\"\n  mutators: Mutators\n  mutators.config: Config\n  mutators.handlers: Handlers\n  path: Path\n  rules: Rules\n  rules.methods: Methods\n  rules.path: Path\n  service: Service\n  service.name: Name\n  service.port: Port\n  service-name: Service Name\n  status: Status\n  general: General\n  timeout: HTTP Request Timeout\n  details.timeout: HTTP Request Timeout (seconds)\n  virtualService: Virtual Service\n  alert.spec.host: Host can not be a wildcard, replace * with subdomain name\n  alert.spec.jwks_url_http: \"JWKS URL: HTTP protocol is not secure, consider using HTTPS\"\n  alert.spec.trusted_issuers_http: \"Trusted Issuers: HTTP protocol is not secure, consider using HTTPS\"\n  alert.corsPolicy: \"Disabling custom CORS Policy is not recommended. Consider setting up CORS yourself\"\n"
-            },
-            "kind": "ConfigMap",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "busola.io/extension": "resource",
-                "busola.io/extension-version": "0.5",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-apirule-ui.operator.kyma-project.io",
-              "namespace": "kyma-system"
-            }
-          },
-          {
-            "apiVersion": "v1",
-            "data": {
-              "details": "header:\n- name: Ready\n  source: status.state\n  widget: Badge\n  description: status.description\n  highlights:\n    positive:\n    - 'Ready'\n    negative:\n    - 'Error'\n    critical:\n    - 'Warning'\nbody:\n- widget: Panel\n  name: Configuration\n  children:\n  - source: spec.enableKymaGateway\n    name: enableKymaGateway\n    visibility: '$exists($value)'\n\n- source: status.conditions\n  widget: Table\n  name: Reconciliation Conditions\n  children:\n  - source: type\n    name: Type\n  - source: status\n    name: Status\n    widget: Badge\n    highlights:\n      success:\n      - 'True'\n      error:\n      - 'False'\n  - source: reason\n    name: Reason\n  - source: message\n    name: Message\n  - source: '$readableTimestamp(lastTransitionTime)'\n    name: Last transition\n    sort: true",
-              "form": "- path: spec\n  simple: true\n  name: General\n  widget: FormGroup\n  defaultExpanded: true\n  children:\n  - path: enableKymaGateway\n    simple: true\n    name: enableKymaGateway\n    value:\n      type: boolean",
-              "general": "resource:\n  kind: APIGateway\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: apigateways\ncategory: Kyma\nname: APIGateway\nscope: cluster\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\ndescription: >-\n  {{[APIGateway custom resource](https://kyma-project.io/#/api-gateway/user/custom-resources/apigateway/04-00-apigateway-custom-resource)}}\n  configures the API Gateway module.\n  ",
-              "list": "- name: Ready\n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'\n    negative:\n      - 'Error'\n    critical:\n      - 'Warning'",
-              "translations": "en:\n  enableKymaGateway: Enable Kyma Gateway"
-            },
-            "kind": "ConfigMap",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "busola.io/extension": "resource",
-                "busola.io/extension-version": "0.5",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-ui.operator.kyma-project.io",
-              "namespace": "kyma-system"
-            }
-          },
-          {
-            "apiVersion": "v1",
-            "kind": "Service",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-operator-metrics",
-              "namespace": "kyma-system"
-            },
-            "spec": {
-              "ports": [
-                {
-                  "name": "http-metrics",
-                  "port": 8080,
-                  "targetPort": 8080
-                }
-              ],
-              "selector": {
-                "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io",
-                "control-plane": "controller-manager"
-              }
-            }
-          },
-          {
-            "apiVersion": "v1",
-            "kind": "Service",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-webhook-service",
-              "namespace": "kyma-system"
-            },
-            "spec": {
-              "ports": [
-                {
-                  "name": "https-convert",
-                  "port": 9443,
-                  "protocol": "TCP",
-                  "targetPort": 9443
-                }
-              ],
-              "selector": {
-                "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io",
-                "control-plane": "controller-manager"
-              }
-            }
-          },
-          {
-            "apiVersion": "scheduling.k8s.io/v1",
-            "description": "Scheduling priority of api-gateway component. Must not be blocked by unschedulable user workloads.",
-            "globalDefault": false,
-            "kind": "PriorityClass",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "operator",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-priority-class"
-            },
-            "value": 2100000
-          },
-          {
-            "apiVersion": "apps/v1",
-            "kind": "Deployment",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io",
-                "app.kubernetes.io/instance": "api-gateway-operator-default",
-                "app.kubernetes.io/name": "api-gateway-operator",
-                "app.kubernetes.io/part-of": "api-gateway",
-                "app.kubernetes.io/version": "2.4.2",
-                "control-plane": "controller-manager",
-                "kyma-project.io/module": "api-gateway"
-              },
-              "name": "api-gateway-controller-manager",
-              "namespace": "kyma-system"
-            },
-            "spec": {
-              "replicas": 1,
-              "selector": {
-                "matchLabels": {
-                  "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io",
-                  "control-plane": "controller-manager"
-                }
-              },
-              "template": {
-                "metadata": {
-                  "annotations": {
-                    "kubectl.kubernetes.io/default-container": "manager"
-                  },
-                  "labels": {
-                    "app.kubernetes.io/component": "api-gateway-operator.kyma-project.io",
-                    "app.kubernetes.io/instance": "api-gateway-operator-default",
-                    "app.kubernetes.io/name": "api-gateway-operator",
-                    "app.kubernetes.io/part-of": "api-gateway",
-                    "app.kubernetes.io/version": "2.4.2",
-                    "control-plane": "controller-manager",
-                    "kyma-project.io/module": "api-gateway",
-                    "sidecar.istio.io/inject": "false"
-                  }
-                },
-                "spec": {
-                  "containers": [
-                    {
-                      "args": [
-                        "--leader-elect",
-                        "--health-probe-bind-address=:8081",
-                        "--metrics-bind-address=:8080"
-                      ],
-                      "command": [
-                        "/manager"
-                      ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.4.2",
-                      "livenessProbe": {
-                        "httpGet": {
-                          "path": "/healthz",
-                          "port": 8081
-                        },
-                        "initialDelaySeconds": 15,
-                        "periodSeconds": 20
-                      },
-                      "name": "manager",
-                      "readinessProbe": {
-                        "httpGet": {
-                          "path": "/readyz",
-                          "port": 8081
-                        },
-                        "initialDelaySeconds": 5,
-                        "periodSeconds": 10
-                      },
-                      "resources": {
-                        "limits": {
-                          "cpu": "500m",
-                          "memory": "512Mi"
-                        },
-                        "requests": {
-                          "cpu": "10m",
-                          "memory": "128Mi"
-                        }
-                      },
-                      "securityContext": {
-                        "allowPrivilegeEscalation": false,
-                        "capabilities": {
-                          "drop": [
-                            "ALL"
-                          ]
-                        }
-                      }
-                    }
-                  ],
-                  "initContainers": [
-                    {
-                      "args": [
-                        "--init-only"
-                      ],
-                      "command": [
-                        "/manager"
-                      ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.4.2",
-                      "name": "init",
-                      "resources": {
-                        "limits": {
-                          "cpu": "500m",
-                          "memory": "512Mi"
-                        },
-                        "requests": {
-                          "cpu": "10m",
-                          "memory": "128Mi"
-                        }
-                      },
-                      "securityContext": {
-                        "allowPrivilegeEscalation": false,
-                        "capabilities": {
-                          "drop": [
-                            "ALL"
-                          ]
-                        }
-                      }
-                    }
-                  ],
-                  "priorityClassName": "api-gateway-priority-class",
-                  "securityContext": {
-                    "runAsNonRoot": true
-                  },
-                  "serviceAccountName": "api-gateway-controller-manager",
-                  "terminationGracePeriodSeconds": 10
-                }
-              }
-            }
-          }
-        ],
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "APIGateway",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "enableKymaGateway": true
-          }
-        },
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/apigateways/default",
-        "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.4.2/api-gateway-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.4.2/apigateway-default-cr.yaml"
-      },
-      {
         "version": "2.5.0",
         "deploymentYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.5.0/api-gateway-manager.yaml",
         "crYaml": "https://github.com/kyma-project/api-gateway/releases/download/2.5.0/apigateway-default-cr.yaml",
@@ -10688,7 +8985,8 @@
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.5.0",
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/apigateways/default",
         "channels": [
-          "fast"
+          "fast",
+          "regular"
         ],
         "documentation": "https://kyma-project.io/#/api-gateway/user/README",
         "repository": "https://github.com/kyma-project/api-gateway.git"
@@ -31002,6 +29300,862 @@
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample",
         "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.5/application-connector-manager.yaml",
         "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.5/default_application_connector_cr.yaml"
+      },
+      {
+        "version": "1.1.6",
+        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.6/application-connector-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.6/default_application_connector_cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "ApplicationConnector",
+          "metadata": {
+            "namespace": "kyma-system",
+            "labels": {
+              "app.kubernetes.io/name": "applicationconnector",
+              "app.kubernetes.io/instance": "applicationconnector-sample",
+              "app.kubernetes.io/part-of": "application-connector-manager",
+              "app.kuberentes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "application-connector-manager"
+            },
+            "name": "applicationconnector-sample"
+          },
+          "spec": {}
+        },
+        "resources": [
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.10.0"
+              },
+              "creationTimestamp": null,
+              "name": "applicationconnectors.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "ApplicationConnector",
+                "listKind": "ApplicationConnectorList",
+                "plural": "applicationconnectors",
+                "singular": "applicationconnector"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "ApplicationConnector is the Schema for the applicationconnectors API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "properties": {
+                            "appConnValidator": {
+                              "default": {
+                                "logFormat": "json",
+                                "logLevel": "info"
+                              },
+                              "properties": {
+                                "logFormat": {
+                                  "enum": [
+                                    "json",
+                                    "text"
+                                  ],
+                                  "type": "string"
+                                },
+                                "logLevel": {
+                                  "enum": [
+                                    "debug",
+                                    "panic",
+                                    "fatal",
+                                    "error",
+                                    "warn",
+                                    "info",
+                                    "debug"
+                                  ],
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "logFormat",
+                                "logLevel"
+                              ],
+                              "type": "object"
+                            },
+                            "appGateway": {
+                              "default": {
+                                "logLevel": "info",
+                                "proxyTimeout": "10s",
+                                "requestTimeout": "10s"
+                              },
+                              "properties": {
+                                "logLevel": {
+                                  "enum": [
+                                    "debug",
+                                    "panic",
+                                    "fatal",
+                                    "error",
+                                    "warn",
+                                    "info",
+                                    "debug"
+                                  ],
+                                  "type": "string"
+                                },
+                                "proxyTimeout": {
+                                  "type": "string"
+                                },
+                                "requestTimeout": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "logLevel",
+                                "proxyTimeout",
+                                "requestTimeout"
+                              ],
+                              "type": "object"
+                            },
+                            "domainName": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "properties": {
+                            "conditions": {
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, \n type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` \n // other fields }",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition. This may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "served": {
+                              "type": "string"
+                            },
+                            "state": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "served",
+                            "state"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "controller-manager-sa",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "serviceaccount",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-controller-manager",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "leader-election-role",
+                "app.kubernetes.io/name": "role",
+                "app.kubernetes.io/part-of": "application-connector-manager",
+                "app.kubernets.io/managed-by": "kustomize"
+              },
+              "name": "application-connector-leader-election-role",
+              "namespace": "kyma-system"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "coordination.k8s.io"
+                ],
+                "resources": [
+                  "leases"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "creationTimestamp": null,
+              "name": "application-connector-manager-role"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "limitranges"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "namespaces"
+                ],
+                "verbs": [
+                  "create",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "persistentvolumes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resourceNames": [
+                  "cluster-client-certificates",
+                  "compass-agent-configuration"
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "delete",
+                  "get"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "serviceaccounts"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "services"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "*"
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "applicationconnector.kyma-project.io"
+                ],
+                "resources": [
+                  "applications"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "replicasets"
+                ],
+                "verbs": [
+                  "delete",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "compass.kyma-project.io"
+                ],
+                "resources": [
+                  "compassconnections"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.istio.io"
+                ],
+                "resources": [
+                  "gateways"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.istio.io"
+                ],
+                "resources": [
+                  "virtualservices"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "applicationconnectors/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "rolebindings",
+                  "roles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "scheduling.k8s.io"
+                ],
+                "resources": [
+                  "priorityclasses"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "leader-election-rolebinding",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "rolebinding",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-leader-election-rolebinding",
+              "namespace": "kyma-system"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "Role",
+              "name": "application-connector-leader-election-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "application-connector-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "rbac",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "manager-rolebinding",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "clusterrolebinding",
+                "app.kubernetes.io/part-of": "application-connector-manager"
+              },
+              "name": "application-connector-manager-rolebinding"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "application-connector-manager-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "application-connector-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: Ready  \n    source: status.state\n    widget: Badge\n    highlights:\n      positive:\n        - 'Ready'\nbody:\n  - name: Configuration\n    widget: Panel\n    children:\n      - name: Domain name\n        source: spec.domainName\n        placeholder: Detected automatically\n  - widget: Columns\n    children:\n      - name: Application Connector Validator\n        widget: Panel\n        children: \n          - source: spec.appConnValidator.logLevel\n            name: Validator log level\n          - source: spec.appConnValidator.logFormat\n            name: Validator log format\n      - name: Application Connector Gateway\n        widget: Panel\n        children:\n          - source: spec.appGateway.proxyTimeout\n            name: Proxy timeout duration\n          - source: spec.appGateway.requestTimeout\n            name: Request timeout duration\n          - source: spec.appGateway.logLevel\n            name: Gateway log level\n\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          negative:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n\n  - widget: EventList\n    filter: '$matchEvents($$, $root.kind, $root.metadata.name)'\n    name: events\n    defaultType: information\n",
+              "form": "- path: spec.domainName\n  name: Domain name\n\n- path: spec.appConnValidator\n  widget: FormGroup\n  name: Application Connector Validator Configuration\n  children:\n   - widget: KeyValuePair\n     path: \n     keyEnum: ['logLevel', 'logFormat']\n\n- path: spec.appGateway\n  widget: FormGroup\n  name: Application Connector Gateway Configuration\n  children:\n   - widget: KeyValuePair\n     path: requests\n     keyEnum: ['proxyTimeout', 'requestTimeout','logLevel']\n\n",
+              "general": "resource:\n  kind: ApplicationConnector\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: applicationconnectors\ncategory: Kyma\nname: ApplicationConnector\nscope: namespace\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\ndescription: >-\n  {{[ApplicationConnector custom resource](https://kyma-project.io/#/application-connector-manager/user/resources/06-30-application-connector)}}\n  configures the Application Connector module.\n",
+              "list": "- name: Ready  \n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/name": "applicationconnectors.operator.kyma-project.io",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5"
+              },
+              "name": "application-connector-applicationconnectors.operator.kyma-project.io",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Scheduling priority of application-connector-manager component. Must not be blocked by unschedulable user workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "name": "application-connector-priority-class"
+            },
+            "value": 2100000
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "manager",
+                "app.kubernetes.io/created-by": "application-connector-manager",
+                "app.kubernetes.io/instance": "controller-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "deployment",
+                "app.kubernetes.io/part-of": "application-connector-manager",
+                "control-plane": "controller-manager"
+              },
+              "name": "application-connector-controller-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "control-plane": "controller-manager"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager"
+                  },
+                  "labels": {
+                    "control-plane": "controller-manager"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "args": [
+                        "--leader-elect"
+                      ],
+                      "command": [
+                        "/manager"
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:1.1.6",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "500m",
+                          "memory": "512Mi"
+                        },
+                        "requests": {
+                          "cpu": "10m",
+                          "memory": "128Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "priorityClassName": "application-connector-priority-class",
+                  "securityContext": {
+                    "runAsNonRoot": true
+                  },
+                  "serviceAccountName": "application-connector-controller-manager",
+                  "terminationGracePeriodSeconds": 10
+                }
+              }
+            }
+          }
+        ],
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:1.1.6",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
       }
     ]
   },
