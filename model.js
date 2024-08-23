@@ -41,7 +41,6 @@ export default [
       {
         "version": "1.8.2",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/istio/user/README",
@@ -7234,7 +7233,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/istio-controller-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/istio-manager:1.8.3",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha2/namespaces/kyma-system/istios/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha2/namespaces/kyma-system/istios/default",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/istio/user/README",
+        "repository": "https://github.com/kyma-project/istio.git"
       },
       {
         "version": "1.8.3-experimental",
