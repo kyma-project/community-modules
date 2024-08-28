@@ -14697,7 +14697,6 @@ export default [
       {
         "version": "1.21.0",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
@@ -21742,7 +21741,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git"
       },
       {
         "version": "1.22.0-dev",
