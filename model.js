@@ -38751,7 +38751,6 @@ export default [
       {
         "version": "1.5.2",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
@@ -38868,6 +38867,141 @@ export default [
                   }
                 },
                 "destinationService": {
+                  "connectionTimeoutSeconds": 5,
+                  "readTimeoutSeconds": 10,
+                  "instances": []
+                },
+                "connectivityProxy": {
+                  "httpPort": 20003,
+                  "tcpPort": 20004,
+                  "connectionTimeoutSeconds": 1
+                }
+              }
+            }
+          }
+        },
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/sap-transp-proxy-system/transparentproxies/transparent-proxy"
+      },
+      {
+        "version": "1.6.0",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/transparent-proxy-in-kyma-environment",
+        "repository": "https://github.wdf.sap.corp/transparent-proxy/sap-transp-proxy-operator.git",
+        "managerPath": "/apis/apps/v1/namespaces/sap-transp-proxy-system/deployments/sap-transp-proxy-operator",
+        "managerImage": "sapse/sap-transp-proxy-operator:1.6.0",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "TransparentProxy",
+          "metadata": {
+            "name": "transparent-proxy",
+            "namespace": "sap-transp-proxy-system"
+          },
+          "spec": {
+            "deployment": {
+              "image": {
+                "registry": "docker.io",
+                "repository": "sapse",
+                "pullPolicy": "IfNotPresent"
+              },
+              "replicas": {
+                "http": 1,
+                "tcp": 1
+              },
+              "resources": {
+                "http": {
+                  "requests": {
+                    "cpu": 0.2,
+                    "memory": "256M"
+                  },
+                  "limits": {
+                    "cpu": 0.4,
+                    "memory": "512M"
+                  }
+                },
+                "tcp": {
+                  "requests": {
+                    "cpu": 0.05,
+                    "memory": "32M"
+                  },
+                  "limits": {
+                    "cpu": 0.1,
+                    "memory": "64M"
+                  }
+                }
+              },
+              "autoscaling": {
+                "http": {
+                  "vertical": {
+                    "enabled": false,
+                    "updateMode": "Off"
+                  },
+                  "horizontal": {
+                    "enabled": false,
+                    "maxReplicaCount": 2,
+                    "metrics": {
+                      "cpuAverageUtilization": 80,
+                      "memoryAverageUtilization": 80
+                    }
+                  }
+                },
+                "tcp": {
+                  "horizontal": {
+                    "enabled": false,
+                    "maxReplicaCount": 2,
+                    "metrics": {
+                      "cpuAverageUtilization": 80,
+                      "memoryAverageUtilization": 80
+                    }
+                  },
+                  "vertical": {
+                    "enabled": false,
+                    "updateMode": "Off"
+                  }
+                }
+              }
+            },
+            "config": {
+              "logging": {
+                "level": "info"
+              },
+              "tenantMode": "dedicated",
+              "security": {
+                "accessControl": {
+                  "destinations": {
+                    "defaultScope": "namespaced"
+                  }
+                },
+                "communication": {
+                  "internal": {
+                    "encryptionEnabled": true,
+                    "certManager": {
+                      "certificate": {
+                        "privateKey": {
+                          "algorithm": "ECDSA",
+                          "encoding": "PKCS8",
+                          "size": 256
+                        },
+                        "duration": "720h",
+                        "renewBefore": "120h"
+                      }
+                    }
+                  }
+                }
+              },
+              "managedNamespacesMode": "all",
+              "manager": {
+                "executionIntervalMinutes": 3
+              },
+              "integration": {
+                "serviceMesh": {
+                  "istio": {
+                    "istio-injection": "enabled"
+                  }
+                },
+                "destinationService": {
+                  "defaultInstanceName": "sap-transp-proxy-default",
                   "connectionTimeoutSeconds": 5,
                   "readTimeoutSeconds": 10,
                   "instances": []
