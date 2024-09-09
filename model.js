@@ -32864,7 +32864,6 @@ export default [
       {
         "version": "1.2.0",
         "channels": [
-          "fast",
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
@@ -35843,7 +35842,12 @@ export default [
         ],
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/eventing-manager",
         "managerImage": "europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.2.1",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing"
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/eventings/eventing",
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/eventing-manager/user/README",
+        "repository": "https://github.com/kyma-project/eventing-manager.git"
       }
     ]
   },
