@@ -13499,24 +13499,14 @@ export default [
     "versions": [
       {
         "version": "1.1.16",
-        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.16/btp-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.16/btp-operator-default-cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "BtpOperator",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/name": "btpoperator",
-              "app.kubernetes.io/instance": "btpoperator",
-              "app.kubernetes.io/part-of": "btp-manager",
-              "app.kubernetes.io/managed-by": "btp-manager",
-              "app.kubernetes.io/created-by": "btp-manager"
-            },
-            "name": "btpoperator",
-            "namespace": "kyma-system"
-          },
-          "spec": null
-        },
+        "channels": [
+          "fast",
+          "regular"
+        ],
+        "documentation": "https://kyma-project.io/#/btp-manager/user/README",
+        "repository": "https://github.com/kyma-project/btp-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/btp-manager-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.16",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -14077,15 +14067,543 @@ export default [
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/btp-manager-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.16",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "BtpOperator",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "btpoperator",
+              "app.kubernetes.io/instance": "btpoperator",
+              "app.kubernetes.io/part-of": "btp-manager",
+              "app.kubernetes.io/managed-by": "btp-manager",
+              "app.kubernetes.io/created-by": "btp-manager"
+            },
+            "name": "btpoperator",
+            "namespace": "kyma-system"
+          },
+          "spec": null
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator",
-        "channels": [
-          "fast",
-          "regular"
+        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.16/btp-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.16/btp-operator-default-cr.yaml"
+      },
+      {
+        "version": "1.1.17",
+        "deploymentYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.17/btp-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/btp-manager/releases/download/1.1.17/btp-operator-default-cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "BtpOperator",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "btpoperator",
+              "app.kubernetes.io/instance": "btpoperator",
+              "app.kubernetes.io/part-of": "btp-manager",
+              "app.kubernetes.io/managed-by": "btp-manager",
+              "app.kubernetes.io/created-by": "btp-manager"
+            },
+            "name": "btpoperator",
+            "namespace": "kyma-system"
+          },
+          "spec": null
+        },
+        "resources": [
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.1"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btpoperators.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "BtpOperator",
+                "listKind": "BtpOperatorList",
+                "plural": "btpoperators",
+                "singular": "btpoperator"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.state",
+                      "name": "State",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "BtpOperator is the Schema for the btpoperators API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "BtpOperatorSpec defines the desired state of BtpOperator",
+                          "nullable": true,
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Status defines the observed state of CustomObject.",
+                          "properties": {
+                            "conditions": {
+                              "description": "Conditions associated with CustomStatus.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "state": {
+                              "description": "State signifies current state of CustomObject.\nValue can be one of (\"Ready\", \"Processing\", \"Error\", \"Deleting\", \"Warning\").",
+                              "enum": [
+                                "Processing",
+                                "Deleting",
+                                "Ready",
+                                "Error",
+                                "Warning"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "state"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-controller-manager",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-leader-election-role",
+              "namespace": "kyma-system"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "coordination.k8s.io"
+                ],
+                "resources": [
+                  "leases"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-manager-role"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps",
+                  "secrets",
+                  "serviceaccounts",
+                  "services"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "namespaces"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "admissionregistration.k8s.io"
+                ],
+                "resources": [
+                  "mutatingwebhookconfigurations",
+                  "validatingwebhookconfigurations"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "btpoperators",
+                  "btpoperators/status"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles",
+                  "rolebindings",
+                  "roles"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "services.cloud.sap.com"
+                ],
+                "resources": [
+                  "servicebindings",
+                  "serviceinstances"
+                ],
+                "verbs": [
+                  "*"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-leader-election-rolebinding",
+              "namespace": "kyma-system"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "Role",
+              "name": "btp-manager-leader-election-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "btp-manager-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-manager-rolebinding"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "btp-manager-manager-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "btp-manager-controller-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-metrics-service",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "name": "http",
+                  "port": 8080,
+                  "targetPort": "http"
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              }
+            }
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Scheduling priority of the btp-operator module. Must not be blocked by unschedulable user workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-kyma-priority"
+            },
+            "value": 2100000
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+              },
+              "name": "btp-manager-controller-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager",
+                    "traffic.sidecar.istio.io/excludeInboundPorts": "8080",
+                    "traffic.sidecar.istio.io/includeInboundPorts": "*"
+                  },
+                  "labels": {
+                    "app.kubernetes.io/component": "btp-manager.kyma-project.io"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "args": [
+                        "--leader-elect"
+                      ],
+                      "command": [
+                        "/manager"
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.17",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "ports": [
+                        {
+                          "containerPort": 8080,
+                          "name": "http"
+                        }
+                      ],
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "200m",
+                          "memory": "128Mi"
+                        },
+                        "requests": {
+                          "cpu": "10m",
+                          "memory": "32Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "priorityClassName": "btp-manager-kyma-priority",
+                  "securityContext": {
+                    "runAsNonRoot": true
+                  },
+                  "serviceAccountName": "btp-manager-controller-manager",
+                  "terminationGracePeriodSeconds": 10
+                }
+              }
+            }
+          }
         ],
-        "documentation": "https://kyma-project.io/#/btp-manager/user/README",
-        "repository": "https://github.com/kyma-project/btp-manager.git"
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/btp-manager-controller-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/btp-manager:1.1.17",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/btpoperators/btpoperator"
       }
     ]
   },
@@ -17530,23 +18048,13 @@ export default [
       },
       {
         "version": "1.22.0",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-default-cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "Telemetry",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/name": "telemetry",
-              "app.kubernetes.io/instance": "default",
-              "app.kubernetes.io/part-of": "telemetry-manager",
-              "app.kubernetes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "telemetry-manager"
-            },
-            "name": "default",
-            "namespace": "kyma-system"
-          }
-        },
+        "channels": [
+          "fast"
+        ],
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -21151,31 +21659,51 @@ export default [
             }
           }
         ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Telemetry",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "telemetry",
+              "app.kubernetes.io/instance": "default",
+              "app.kubernetes.io/part-of": "telemetry-manager",
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "telemetry-manager"
+            },
+            "name": "default",
+            "namespace": "kyma-system"
+          }
+        },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "channels": [
-          "fast"
-        ],
-        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
-        "repository": "https://github.com/kyma-project/telemetry-manager.git"
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-default-cr.yaml"
       },
       {
-        "version": "1.22.0-dev",
-        "channels": [
-          "experimental"
-        ],
-        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
-        "repository": "https://github.com/kyma-project/telemetry-manager.git",
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
+        "version": "1.23.0",
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.23.0/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.23.0/telemetry-default-cr.yaml",
+        "cr": {
+          "apiVersion": "operator.kyma-project.io/v1alpha1",
+          "kind": "Telemetry",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "telemetry",
+              "app.kubernetes.io/instance": "default",
+              "app.kubernetes.io/part-of": "telemetry-manager",
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/created-by": "telemetry-manager"
+            },
+            "name": "default",
+            "namespace": "kyma-system"
+          }
+        },
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
             "kind": "CustomResourceDefinition",
             "metadata": {
               "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.15.0"
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
               },
               "labels": {
                 "app.kubernetes.io/component": "telemetry",
@@ -21244,7 +21772,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the parser.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -21279,7 +21807,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -21317,7 +21845,7 @@ export default [
             "kind": "CustomResourceDefinition",
             "metadata": {
               "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.15.0"
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
               },
               "labels": {
                 "app.kubernetes.io/component": "telemetry",
@@ -21846,7 +22374,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the pipeline.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -21881,580 +22409,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
-                                    "maxLength": 316,
-                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "lastTransitionTime",
-                                  "message",
-                                  "reason",
-                                  "status",
-                                  "type"
-                                ],
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "unsupportedMode": {
-                              "description": "Is active when the LogPipeline uses a `custom` output or filter; see [unsupported mode](https://github.com/kyma-project/telemetry-manager/blob/main/docs/user/02-logs.md#unsupported-mode).",
-                              "type": "boolean"
-                            }
-                          },
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "served": true,
-                  "storage": false,
-                  "subresources": {
-                    "status": {}
-                  }
-                },
-                {
-                  "additionalPrinterColumns": [
-                    {
-                      "jsonPath": ".status.conditions[?(@.type==\"ConfigurationGenerated\")].status",
-                      "name": "Configuration Generated",
-                      "type": "string"
-                    },
-                    {
-                      "jsonPath": ".status.conditions[?(@.type==\"AgentHealthy\")].status",
-                      "name": "Agent Healthy",
-                      "type": "string"
-                    },
-                    {
-                      "jsonPath": ".status.conditions[?(@.type==\"TelemetryFlowHealthy\")].status",
-                      "name": "Flow Healthy",
-                      "type": "string"
-                    },
-                    {
-                      "jsonPath": ".status.unsupportedMode",
-                      "name": "Unsupported Mode",
-                      "type": "boolean"
-                    },
-                    {
-                      "jsonPath": ".metadata.creationTimestamp",
-                      "name": "Age",
-                      "type": "date"
-                    }
-                  ],
-                  "name": "v1beta1",
-                  "schema": {
-                    "openAPIV3Schema": {
-                      "description": "LogPipeline is the Schema for the logpipelines API",
-                      "properties": {
-                        "apiVersion": {
-                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-                          "type": "string"
-                        },
-                        "kind": {
-                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-                          "type": "string"
-                        },
-                        "metadata": {
-                          "type": "object"
-                        },
-                        "spec": {
-                          "description": "Defines the desired state of LogPipeline",
-                          "properties": {
-                            "files": {
-                              "items": {
-                                "description": "Provides file content to be consumed by a LogPipeline configuration",
-                                "properties": {
-                                  "content": {
-                                    "type": "string"
-                                  },
-                                  "name": {
-                                    "type": "string"
-                                  }
-                                },
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "filters": {
-                              "items": {
-                                "description": "Describes a filtering option on the logs of the pipeline.",
-                                "properties": {
-                                  "custom": {
-                                    "description": "Custom filter definition in the Fluent Bit syntax. Note: If you use a `custom` filter, you put the LogPipeline in unsupported mode.",
-                                    "type": "string"
-                                  }
-                                },
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "input": {
-                              "description": "Defines where to collect logs, including selector mechanisms.",
-                              "properties": {
-                                "application": {
-                                  "description": "Configures in more detail from which containers application logs are enabled as input.",
-                                  "properties": {
-                                    "containers": {
-                                      "description": "Describes whether application logs from specific containers are selected. The options are mutually exclusive.",
-                                      "properties": {
-                                        "exclude": {
-                                          "description": "Specifies to exclude only the container logs with the specified container names.",
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        },
-                                        "include": {
-                                          "description": "Specifies to include only the container logs with the specified container names.",
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "dropLabels": {
-                                      "description": "Defines whether to drop all Kubernetes labels. The default is `false`.",
-                                      "type": "boolean"
-                                    },
-                                    "keepAnnotations": {
-                                      "description": "Defines whether to keep all Kubernetes annotations. The default is `false`.",
-                                      "type": "boolean"
-                                    },
-                                    "keepOriginalBody": {
-                                      "default": true,
-                                      "description": "If the `log` attribute contains a JSON payload and it is successfully parsed, the `log` attribute will be retained if `keepOriginalBody` is set to `true`. Otherwise, the log attribute will be removed from the log record. The default is `true`.",
-                                      "type": "boolean"
-                                    },
-                                    "namespaces": {
-                                      "description": "Describes whether application logs from specific Namespaces are selected. The options are mutually exclusive. System Namespaces are excluded by default from the collection.",
-                                      "properties": {
-                                        "exclude": {
-                                          "description": "Exclude the container logs of the specified Namespace names.",
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        },
-                                        "include": {
-                                          "description": "Include only the container logs of the specified Namespace names.",
-                                          "items": {
-                                            "type": "string"
-                                          },
-                                          "type": "array"
-                                        },
-                                        "system": {
-                                          "description": "Set to `true` if collecting from all Namespaces must also include the system Namespaces like kube-system, istio-system, and kyma-system.",
-                                          "type": "boolean"
-                                        }
-                                      },
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": "object"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "output": {
-                              "description": "[Fluent Bit output](https://docs.fluentbit.io/manual/pipeline/outputs) where you want to push the logs. Only one output can be specified.",
-                              "properties": {
-                                "custom": {
-                                  "description": "Defines a custom output in the Fluent Bit syntax. Note: If you use a `custom` output, you put the LogPipeline in unsupported mode.",
-                                  "type": "string"
-                                },
-                                "grafana-loki": {
-                                  "description": "The grafana-loki output is not supported anymore. For integration with a custom Loki installation, use the `custom` output and follow [Installing a custom Loki stack in Kyma](https://kyma-project.io/#/telemetry-manager/user/integration/loki/README ).",
-                                  "properties": {
-                                    "labels": {
-                                      "additionalProperties": {
-                                        "type": "string"
-                                      },
-                                      "description": "Labels to set for each log record.",
-                                      "type": "object"
-                                    },
-                                    "removeKeys": {
-                                      "description": "Attributes to be removed from a log record.",
-                                      "items": {
-                                        "type": "string"
-                                      },
-                                      "type": "array"
-                                    },
-                                    "url": {
-                                      "description": "Grafana Loki URL.",
-                                      "properties": {
-                                        "value": {
-                                          "description": "The value as plain text.",
-                                          "type": "string"
-                                        },
-                                        "valueFrom": {
-                                          "description": "The value as a reference to a resource.",
-                                          "properties": {
-                                            "secretKeyRef": {
-                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                              "properties": {
-                                                "key": {
-                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                  "type": "string"
-                                                },
-                                                "name": {
-                                                  "description": "The name of the Secret containing the referenced value",
-                                                  "type": "string"
-                                                },
-                                                "namespace": {
-                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        }
-                                      },
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": "object"
-                                },
-                                "http": {
-                                  "description": "Configures an HTTP-based output compatible with the Fluent Bit HTTP output plugin.",
-                                  "properties": {
-                                    "compress": {
-                                      "description": "Defines the compression algorithm to use.",
-                                      "type": "string"
-                                    },
-                                    "dedot": {
-                                      "description": "Enables de-dotting of Kubernetes labels and annotations for compatibility with ElasticSearch based backends. Dots (.) will be replaced by underscores (_). Default is `false`.",
-                                      "type": "boolean"
-                                    },
-                                    "format": {
-                                      "description": "Data format to be used in the HTTP request body. Default is `json`.",
-                                      "type": "string"
-                                    },
-                                    "host": {
-                                      "description": "Defines the host of the HTTP receiver.",
-                                      "properties": {
-                                        "value": {
-                                          "description": "The value as plain text.",
-                                          "type": "string"
-                                        },
-                                        "valueFrom": {
-                                          "description": "The value as a reference to a resource.",
-                                          "properties": {
-                                            "secretKeyRef": {
-                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                              "properties": {
-                                                "key": {
-                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                  "type": "string"
-                                                },
-                                                "name": {
-                                                  "description": "The name of the Secret containing the referenced value",
-                                                  "type": "string"
-                                                },
-                                                "namespace": {
-                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "password": {
-                                      "description": "Defines the basic auth password.",
-                                      "properties": {
-                                        "value": {
-                                          "description": "The value as plain text.",
-                                          "type": "string"
-                                        },
-                                        "valueFrom": {
-                                          "description": "The value as a reference to a resource.",
-                                          "properties": {
-                                            "secretKeyRef": {
-                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                              "properties": {
-                                                "key": {
-                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                  "type": "string"
-                                                },
-                                                "name": {
-                                                  "description": "The name of the Secret containing the referenced value",
-                                                  "type": "string"
-                                                },
-                                                "namespace": {
-                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        }
-                                      },
-                                      "type": "object"
-                                    },
-                                    "port": {
-                                      "description": "Defines the port of the HTTP receiver. Default is 443.",
-                                      "type": "string"
-                                    },
-                                    "tls": {
-                                      "description": "Configures TLS for the HTTP target server.",
-                                      "properties": {
-                                        "ca": {
-                                          "description": "Defines an optional CA certificate for server certificate verification when using TLS. The certificate must be provided in PEM format.",
-                                          "properties": {
-                                            "value": {
-                                              "description": "The value as plain text.",
-                                              "type": "string"
-                                            },
-                                            "valueFrom": {
-                                              "description": "The value as a reference to a resource.",
-                                              "properties": {
-                                                "secretKeyRef": {
-                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                                  "properties": {
-                                                    "key": {
-                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                      "type": "string"
-                                                    },
-                                                    "name": {
-                                                      "description": "The name of the Secret containing the referenced value",
-                                                      "type": "string"
-                                                    },
-                                                    "namespace": {
-                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        },
-                                        "cert": {
-                                          "description": "Defines a client certificate to use when using TLS. The certificate must be provided in PEM format.",
-                                          "properties": {
-                                            "value": {
-                                              "description": "The value as plain text.",
-                                              "type": "string"
-                                            },
-                                            "valueFrom": {
-                                              "description": "The value as a reference to a resource.",
-                                              "properties": {
-                                                "secretKeyRef": {
-                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                                  "properties": {
-                                                    "key": {
-                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                      "type": "string"
-                                                    },
-                                                    "name": {
-                                                      "description": "The name of the Secret containing the referenced value",
-                                                      "type": "string"
-                                                    },
-                                                    "namespace": {
-                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        },
-                                        "disabled": {
-                                          "description": "Indicates if TLS is disabled or enabled. Default is `false`.",
-                                          "type": "boolean"
-                                        },
-                                        "key": {
-                                          "description": "Defines the client key to use when using TLS. The key must be provided in PEM format.",
-                                          "properties": {
-                                            "value": {
-                                              "description": "The value as plain text.",
-                                              "type": "string"
-                                            },
-                                            "valueFrom": {
-                                              "description": "The value as a reference to a resource.",
-                                              "properties": {
-                                                "secretKeyRef": {
-                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                                  "properties": {
-                                                    "key": {
-                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                      "type": "string"
-                                                    },
-                                                    "name": {
-                                                      "description": "The name of the Secret containing the referenced value",
-                                                      "type": "string"
-                                                    },
-                                                    "namespace": {
-                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        },
-                                        "skipCertificateValidation": {
-                                          "description": "If `true`, the validation of certificates is skipped. Default is `false`.",
-                                          "type": "boolean"
-                                        }
-                                      },
-                                      "type": "object",
-                                      "x-kubernetes-validations": [
-                                        {
-                                          "message": "Can define either both 'cert' and 'key', or neither",
-                                          "rule": "has(self.cert) == has(self.key)"
-                                        }
-                                      ]
-                                    },
-                                    "uri": {
-                                      "description": "Defines the URI of the HTTP receiver. Default is \"/\".",
-                                      "type": "string"
-                                    },
-                                    "user": {
-                                      "description": "Defines the basic auth user.",
-                                      "properties": {
-                                        "value": {
-                                          "description": "The value as plain text.",
-                                          "type": "string"
-                                        },
-                                        "valueFrom": {
-                                          "description": "The value as a reference to a resource.",
-                                          "properties": {
-                                            "secretKeyRef": {
-                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                              "properties": {
-                                                "key": {
-                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
-                                                  "type": "string"
-                                                },
-                                                "name": {
-                                                  "description": "The name of the Secret containing the referenced value",
-                                                  "type": "string"
-                                                },
-                                                "namespace": {
-                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "type": "object"
-                                            }
-                                          },
-                                          "type": "object"
-                                        }
-                                      },
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": "object"
-                                }
-                              },
-                              "type": "object"
-                            },
-                            "variables": {
-                              "description": "A list of mappings from Kubernetes Secret keys to environment variables. Mapped keys are mounted as environment variables, so that they are available as [Variables](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/variables) in the sections.",
-                              "items": {
-                                "description": "References a Kubernetes secret that should be provided as environment variable to Fluent Bit",
-                                "properties": {
-                                  "name": {
-                                    "description": "Name of the variable to map.",
-                                    "type": "string"
-                                  },
-                                  "valueFrom": {
-                                    "properties": {
-                                      "secretKeyRef": {
-                                        "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
-                                        "properties": {
-                                          "key": {
-                                            "description": "The name of the attribute of the Secret holding the referenced value.",
-                                            "type": "string"
-                                          },
-                                          "name": {
-                                            "description": "The name of the Secret containing the referenced value",
-                                            "type": "string"
-                                          },
-                                          "namespace": {
-                                            "description": "The name of the Namespace containing the Secret with the referenced value.",
-                                            "type": "string"
-                                          }
-                                        },
-                                        "type": "object"
-                                      }
-                                    },
-                                    "type": "object"
-                                  }
-                                },
-                                "type": "object"
-                              },
-                              "type": "array"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "status": {
-                          "description": "Shows the observed state of the LogPipeline",
-                          "properties": {
-                            "conditions": {
-                              "description": "An array of conditions describing the status of the pipeline.",
-                              "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
-                                "properties": {
-                                  "lastTransitionTime": {
-                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
-                                    "format": "date-time",
-                                    "type": "string"
-                                  },
-                                  "message": {
-                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
-                                    "maxLength": 32768,
-                                    "type": "string"
-                                  },
-                                  "observedGeneration": {
-                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
-                                    "format": "int64",
-                                    "minimum": 0,
-                                    "type": "integer"
-                                  },
-                                  "reason": {
-                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
-                                    "maxLength": 1024,
-                                    "minLength": 1,
-                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
-                                    "type": "string"
-                                  },
-                                  "status": {
-                                    "description": "status of the condition, one of True, False, Unknown.",
-                                    "enum": [
-                                      "True",
-                                      "False",
-                                      "Unknown"
-                                    ],
-                                    "type": "string"
-                                  },
-                                  "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -22496,7 +22451,7 @@ export default [
             "kind": "CustomResourceDefinition",
             "metadata": {
               "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.15.0"
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
               },
               "labels": {
                 "app.kubernetes.io/component": "telemetry",
@@ -23131,7 +23086,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the pipeline.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -23166,7 +23121,3762 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetries.operator.kyma-project.io"
+            },
+            "spec": {
+              "group": "operator.kyma-project.io",
+              "names": {
+                "kind": "Telemetry",
+                "listKind": "TelemetryList",
+                "plural": "telemetries",
+                "singular": "telemetry"
+              },
+              "scope": "Namespaced",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".metadata.generation",
+                      "name": "generation",
+                      "type": "integer"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "age",
+                      "type": "date"
+                    },
+                    {
+                      "jsonPath": ".status.state",
+                      "name": "state",
+                      "type": "string"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "Telemetry is the Schema for the telemetries API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "TelemetrySpec defines the desired state of Telemetry",
+                          "properties": {
+                            "metric": {
+                              "description": "MetricSpec defines the behavior of the metric gateway",
+                              "properties": {
+                                "gateway": {
+                                  "properties": {
+                                    "scaling": {
+                                      "description": "Scaling defines which strategy is used for scaling the gateway, with detailed configuration options for each strategy type.",
+                                      "properties": {
+                                        "static": {
+                                          "description": "Static is a scaling strategy enabling you to define a custom amount of replicas to be used for the gateway. Present only if Type =\nStaticScalingStrategyType.",
+                                          "properties": {
+                                            "replicas": {
+                                              "description": "Replicas defines a static number of pods to run the gateway. Minimum is 1.",
+                                              "format": "int32",
+                                              "minimum": 1,
+                                              "type": "integer"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "type": {
+                                          "description": "Type of scaling strategy. Default is none, using a fixed amount of replicas.",
+                                          "enum": [
+                                            "Static"
+                                          ],
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "trace": {
+                              "description": "TraceSpec defines the behavior of the trace gateway",
+                              "properties": {
+                                "gateway": {
+                                  "properties": {
+                                    "scaling": {
+                                      "description": "Scaling defines which strategy is used for scaling the gateway, with detailed configuration options for each strategy type.",
+                                      "properties": {
+                                        "static": {
+                                          "description": "Static is a scaling strategy enabling you to define a custom amount of replicas to be used for the gateway. Present only if Type =\nStaticScalingStrategyType.",
+                                          "properties": {
+                                            "replicas": {
+                                              "description": "Replicas defines a static number of pods to run the gateway. Minimum is 1.",
+                                              "format": "int32",
+                                              "minimum": 1,
+                                              "type": "integer"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "type": {
+                                          "description": "Type of scaling strategy. Default is none, using a fixed amount of replicas.",
+                                          "enum": [
+                                            "Static"
+                                          ],
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "TelemetryStatus defines the observed state of Telemetry",
+                          "properties": {
+                            "conditions": {
+                              "description": "Conditions contain a set of conditionals to determine the State of Status.\nIf all Conditions are met, State is expected to be in StateReady.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "endpoints": {
+                              "description": "endpoints for trace and metric gateway.",
+                              "nullable": true,
+                              "properties": {
+                                "metrics": {
+                                  "description": "metrics contains the endpoints for metric gateway supporting OTLP.",
+                                  "properties": {
+                                    "grpc": {
+                                      "description": "GRPC endpoint for OTLP.",
+                                      "type": "string"
+                                    },
+                                    "http": {
+                                      "description": "HTTP endpoint for OTLP.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "traces": {
+                                  "description": "traces contains the endpoints for trace gateway supporting OTLP.",
+                                  "properties": {
+                                    "grpc": {
+                                      "description": "GRPC endpoint for OTLP.",
+                                      "type": "string"
+                                    },
+                                    "http": {
+                                      "description": "HTTP endpoint for OTLP.",
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "state": {
+                              "description": "State signifies current state of Module CR.\nValue can be one of these three: \"Ready\", \"Deleting\", or \"Warning\".",
+                              "enum": [
+                                "Deleting",
+                                "Ready",
+                                "Warning"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "state"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "tracepipelines.telemetry.kyma-project.io"
+            },
+            "spec": {
+              "group": "telemetry.kyma-project.io",
+              "names": {
+                "categories": [
+                  "telemetry-pipelines"
+                ],
+                "kind": "TracePipeline",
+                "listKind": "TracePipelineList",
+                "plural": "tracepipelines",
+                "singular": "tracepipeline"
+              },
+              "scope": "Cluster",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"ConfigurationGenerated\")].status",
+                      "name": "Configuration Generated",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"GatewayHealthy\")].status",
+                      "name": "Gateway Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"TelemetryFlowHealthy\")].status",
+                      "name": "Flow Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "TracePipeline is the Schema for the tracepipelines API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired state of TracePipeline",
+                          "properties": {
+                            "output": {
+                              "description": "Defines a destination for shipping trace data. Only one can be defined per pipeline.",
+                              "properties": {
+                                "otlp": {
+                                  "description": "Configures the underlying OTel Collector with an [OTLP exporter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/otlpexporter/README.md). If you switch `protocol`to `http`, an [OTLP HTTP exporter](https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/otlphttpexporter) is used.",
+                                  "properties": {
+                                    "authentication": {
+                                      "description": "Defines authentication options for the OTLP output",
+                                      "properties": {
+                                        "basic": {
+                                          "description": "Activates `Basic` authentication for the destination providing relevant Secrets.",
+                                          "properties": {
+                                            "password": {
+                                              "description": "Contains the basic auth password or a Secret reference.",
+                                              "properties": {
+                                                "value": {
+                                                  "description": "The value as plain text.",
+                                                  "type": "string"
+                                                },
+                                                "valueFrom": {
+                                                  "description": "The value as a reference to a resource.",
+                                                  "properties": {
+                                                    "secretKeyRef": {
+                                                      "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                      "properties": {
+                                                        "key": {
+                                                          "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                          "type": "string"
+                                                        },
+                                                        "name": {
+                                                          "description": "The name of the Secret containing the referenced value",
+                                                          "type": "string"
+                                                        },
+                                                        "namespace": {
+                                                          "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            },
+                                            "user": {
+                                              "description": "Contains the basic auth username or a Secret reference.",
+                                              "properties": {
+                                                "value": {
+                                                  "description": "The value as plain text.",
+                                                  "type": "string"
+                                                },
+                                                "valueFrom": {
+                                                  "description": "The value as a reference to a resource.",
+                                                  "properties": {
+                                                    "secretKeyRef": {
+                                                      "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                      "properties": {
+                                                        "key": {
+                                                          "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                          "type": "string"
+                                                        },
+                                                        "name": {
+                                                          "description": "The name of the Secret containing the referenced value",
+                                                          "type": "string"
+                                                        },
+                                                        "namespace": {
+                                                          "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "required": [
+                                            "password",
+                                            "user"
+                                          ],
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "endpoint": {
+                                      "description": "Defines the host and port (<host>:<port>) of an OTLP endpoint.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "headers": {
+                                      "description": "Defines custom headers to be added to outgoing HTTP or GRPC requests.",
+                                      "items": {
+                                        "properties": {
+                                          "name": {
+                                            "description": "Defines the header name.",
+                                            "type": "string"
+                                          },
+                                          "prefix": {
+                                            "description": "Defines an optional header value prefix. The prefix is separated from the value by a space character.",
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "description": "The value as plain text.",
+                                            "type": "string"
+                                          },
+                                          "valueFrom": {
+                                            "description": "The value as a reference to a resource.",
+                                            "properties": {
+                                              "secretKeyRef": {
+                                                "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                "properties": {
+                                                  "key": {
+                                                    "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                    "type": "string"
+                                                  },
+                                                  "name": {
+                                                    "description": "The name of the Secret containing the referenced value",
+                                                    "type": "string"
+                                                  },
+                                                  "namespace": {
+                                                    "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "type": "object"
+                                              }
+                                            },
+                                            "type": "object"
+                                          }
+                                        },
+                                        "required": [
+                                          "name"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "path": {
+                                      "description": "Defines OTLP export URL path (only for the HTTP protocol). This value overrides auto-appended paths /v1/metrics and /v1/traces",
+                                      "type": "string"
+                                    },
+                                    "protocol": {
+                                      "default": "grpc",
+                                      "description": "Defines the OTLP protocol (http or grpc). Default is grpc.",
+                                      "enum": [
+                                        "grpc",
+                                        "http"
+                                      ],
+                                      "minLength": 1,
+                                      "type": "string"
+                                    },
+                                    "tls": {
+                                      "description": "Defines TLS options for the OTLP output.",
+                                      "properties": {
+                                        "ca": {
+                                          "description": "Defines an optional CA certificate for server certificate verification when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "cert": {
+                                          "description": "Defines a client certificate to use when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "insecure": {
+                                          "description": "Defines whether to send requests using plaintext instead of TLS.",
+                                          "type": "boolean"
+                                        },
+                                        "insecureSkipVerify": {
+                                          "description": "Defines whether to skip server certificate verification when using TLS.",
+                                          "type": "boolean"
+                                        },
+                                        "key": {
+                                          "description": "Defines the client key to use when using TLS. The key must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can define either both 'cert' and 'key', or neither",
+                                          "rule": "has(self.cert) == has(self.key)"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "endpoint"
+                                  ],
+                                  "type": "object",
+                                  "x-kubernetes-validations": [
+                                    {
+                                      "message": "Path is only available with HTTP protocol",
+                                      "rule": "((!has(self.path) || size(self.path) <= 0) && (has(self.protocol) && self.protocol == 'grpc')) || (has(self.protocol) && self.protocol == 'http')"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "otlp"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "required": [
+                            "output"
+                          ],
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Shows the observed state of the TracePipeline",
+                          "properties": {
+                            "conditions": {
+                              "description": "An array of conditions describing the status of the pipeline.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "ServiceAccount",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-leader-election-role",
+              "namespace": "kyma-system"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "coordination.k8s.io"
+                ],
+                "resources": [
+                  "leases"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "create",
+                  "update",
+                  "patch",
+                  "delete"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-role",
+              "namespace": "kyma-system"
+            },
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "configmaps",
+                  "serviceaccounts",
+                  "services"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "secrets"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "daemonsets",
+                  "deployments"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.k8s.io"
+                ],
+                "resources": [
+                  "networkpolicies"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "telemetries"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "telemetries/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "telemetries/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "security.istio.io"
+                ],
+                "resources": [
+                  "peerauthentications"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "patch",
+                  "update"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRole",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-role"
+            },
+            "rules": [
+              {
+                "nonResourceURLs": [
+                  "/metrics",
+                  "/metrics/cadvisor"
+                ],
+                "verbs": [
+                  "get"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "endpoints",
+                  "namespaces",
+                  "namespaces/status",
+                  "nodes",
+                  "nodes/metrics",
+                  "nodes/spec",
+                  "nodes/stats",
+                  "pods",
+                  "pods/status",
+                  "replicationcontrollers",
+                  "replicationcontrollers/status",
+                  "resourcequotas",
+                  "secrets",
+                  "services"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "get",
+                  "list",
+                  "patch",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "admissionregistration.k8s.io"
+                ],
+                "resources": [
+                  "validatingwebhookconfigurations"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apiextensions.k8s.io"
+                ],
+                "resources": [
+                  "customresourcedefinitions"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "daemonsets",
+                  "deployments",
+                  "replicasets",
+                  "statefulsets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "cronjobs",
+                  "jobs"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "extensions"
+                ],
+                "resources": [
+                  "daemonsets",
+                  "deployments",
+                  "replicasets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "networking.k8s.io"
+                ],
+                "resources": [
+                  "networkpolicies"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "operator.kyma-project.io"
+                ],
+                "resources": [
+                  "telemetries"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "rbac.authorization.k8s.io"
+                ],
+                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles",
+                  "rolebindings",
+                  "roles"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "security.istio.io"
+                ],
+                "resources": [
+                  "peerauthentications"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "telemetry.kyma-project.io"
+                ],
+                "resources": [
+                  "logparsers",
+                  "logpipelines",
+                  "metricpipelines",
+                  "tracepipelines"
+                ],
+                "verbs": [
+                  "create",
+                  "delete",
+                  "get",
+                  "list",
+                  "patch",
+                  "update",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "telemetry.kyma-project.io"
+                ],
+                "resources": [
+                  "logparsers/finalizers",
+                  "logpipelines/finalizers",
+                  "metricpipelines/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "telemetry.kyma-project.io"
+                ],
+                "resources": [
+                  "logparsers/status",
+                  "logpipelines/status",
+                  "metricpipelines/status",
+                  "tracepipelines/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-leader-election-rolebinding",
+              "namespace": "kyma-system"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "Role",
+              "name": "telemetry-manager-leader-election-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "telemetry-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-rolebinding",
+              "namespace": "kyma-system"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "Role",
+              "name": "telemetry-manager-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "telemetry-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "ClusterRoleBinding",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-rolebinding"
+            },
+            "roleRef": {
+              "apiGroup": "rbac.authorization.k8s.io",
+              "kind": "ClusterRole",
+              "name": "telemetry-manager-role"
+            },
+            "subjects": [
+              {
+                "kind": "ServiceAccount",
+                "name": "telemetry-manager",
+                "namespace": "kyma-system"
+              }
+            ]
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - source: >-\n      $each(spec.output, function($v, $k) {$v.url.value or\n      $v.url.valueFrom.secretKeyRef.name or $v.host.value or\n      $v.host.valueFrom.secretKeyRef.name ? $k})\n    placeholder: custom\n    type: string\n    name: Type\n    isSelected: true\n    widget: Text\n  - name: Unsupported-Mode\n    source: status.unsupportedMode\n    widget: Badge\n    highlights:\n      positive:\n        - 'false'\n      critical:\n        - 'true'\nbody:\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          critical:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n  - widget: Panel\n    name: Applications\n    children:\n      - widget: Panel\n        name: Namespaces\n        children:\n          - name: Include\n            widget: JoinedArray\n            source: spec.input.application.namespaces.include\n            separator: ', '\n          - name: Exclude\n            widget: JoinedArray\n            source: spec.input.application.namespaces.exclude\n            separator: ', '\n          - name: System Namespaces\n            source: spec.input.application.namespaces.system\n      - widget: Panel\n        name: Containers\n        children:\n          - name: Include\n            widget: JoinedArray\n            source: spec.input.application.containers.include\n            separator: ', '\n          - name: Exclude\n            widget: JoinedArray\n            source: spec.input.application.containers.exclude\n            separator: ', '\n      - widget: Panel\n        name: Other Settings\n        children:\n          - name: Keep Annotations\n            source: spec.input.application.keepAnnotations\n          - name: Drop Labels\n            source: spec.input.application.dropLabels\n          - name: Keep Original Log Body\n            source: spec.input.application.keepOriginalBody\n  - widget: Panel\n    name: Output\n    children:\n      - name: Custom\n        widget: CodeViewer\n        language: '''plaintext'''\n        source: spec.output.custom\n        visibility: $exists(spec.output.custom)\n      - name: Grafana-Loki\n        widget: Panel\n        visibility: $not($exists(spec.output.custom) or $exists(spec.output.http))\n        children:\n          - name: URL\n            source: spec.output.`grafana-loki`.url.value\n          - name: Labels\n            widget: Labels\n            source: spec.output.`grafana-loki`.labels\n          - name: Remove keys\n            widget: JoinedArray\n            separator: ','\n            source: spec.output.`grafana-loki`.removeKeys\n      - name: HTTP\n        widget: Panel\n        visibility: $exists(spec.output.http)\n        children:\n          - name: Host\n            widget: Panel\n            children:\n              - name: Value\n                source: spec.output.http.host.value\n                visibility: $exists(spec.output.http.host.value)\n              - name: Value From Secret\n                widget: ResourceRefs\n                source: spec.output.http.host.valueFrom.secretKeyRef\n                kind: Secret\n                visibility: $exists(spec.output.http.host.valueFrom.secretKeyRef.name)\n          - name: User\n            widget: Panel\n            children:\n              - name: Value\n                source: spec.output.http.user.value\n                visibility: $exists(spec.output.http.user.value)\n              - name: Value From Secret\n                widget: ResourceRefs\n                source: spec.output.http.user.valueFrom.secretKeyRef\n                kind: Secret\n                visibility: $exists(spec.output.http.user.valueFrom.secretKeyRef.name)\n          - name: Password\n            widget: Panel\n            children:\n              - name: Value\n                source: spec.output.http.password.value\n                visibility: $exists(spec.output.http.password.value)\n              - name: Value From Secret\n                widget: ResourceRefs\n                source: spec.output.http.password.valueFrom.secretKeyRef\n                kind: Secret\n                visibility: $exists(spec.output.http.password.valueFrom.secretKeyRef.name)\n          - name: TLS Settings\n            widget: Panel\n            children:\n              - name: Disabled\n                source: spec.output.http.tls.disabled\n                placeholder: 'false'\n              - name: Skip certificate validation\n                source: spec.output.http.tls.skipCertificateValidation\n                placeholder: 'false'\n              - name: Ca\n                widget: Panel\n                visibility: $exists(spec.output.http.tls.ca)\n                source: spec.output.http.tls.ca\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Cert\n                widget: Panel\n                visibility: $exists(spec.output.http.tls.cert)\n                source: spec.output.http.tls.cert\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Key\n                widget: Panel\n                visibility: $exists(spec.output.http.tls.key)\n                source: spec.output.http.tls.key\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n          - name: Other Settings\n            widget: Panel\n            children:\n              - name: Compression\n                source: spec.output.http.compress\n              - name: De-dot\n                source: spec.output.http.dedot\n                placeholder: 'false'\n              - name: Format\n                source: spec.output.http.format\n                placeholder: json\n              - name: Port\n                source: spec.output.http.port\n                placeholder: '443'\n              - name: URI\n                source: spec.output.http.uri",
+              "form": "- path: spec.input\n  widget: FormGroup\n  defaultExpanded: true\n  children:\n    - name: Include Namespaces\n      widget: SimpleList\n      path: application.namespaces.include\n      defaultExpanded: true\n      inputInfo: Include container logs from selected namespaces\n      children:\n        - path: '[]'\n    - name: Exclude Namespaces\n      widget: SimpleList\n      path: application.namespaces.exclude\n      children:\n        - path: '[]'\n    - name: Include System Namespaces\n      path: application.namespaces.system\n    - name: Include Containers\n      widget: SimpleList\n      path: application.containers.include\n    - name: Exclude Containers\n      widget: SimpleList\n      path: application.containers.exclude\n    - name: Keep Annotations\n      path: application.keepAnnotations\n    - name: Drop Labels\n      path: application.dropLabels\n    - name: Keep Original Log Body\n      path: application.keepOriginalBody\n- name: Filters\n  widget: SimpleList\n  path: spec.filters\n  children:\n    - widget: FormGroup\n      path: '[]'\n      children:\n        - widget: CodeEditor\n          path: custom\n- path: spec.output\n  widget: FormGroup\n  defaultExpanded: true\n  simple: true\n  children:\n    - name: Custom\n      path: custom\n      widget: CodeEditor\n      advanced: true\n      inputInfo: >-\n        Note: If you use a custom output, you put the LogPipeline in unsupported\n        mode\n        (https://kyma-project.io/#/telemetry-manager/user/02-logs?id=unsupported-mode)\n    - name: HTTP\n      path: http\n      widget: FormGroup\n      defaultExpanded: true\n      simple: true\n      children:\n        - name: Host\n          path: host\n          simple: true\n          widget: FormGroup\n          children:\n            - name: Value\n              path: value\n              simple: true\n              widget: Text\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              simple: true\n              widget: ResourceRef\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - path: key\n                  simple: true\n                  enum: $keys($secret.data)\n        - name: User\n          path: user\n          simple: true\n          widget: FormGroup\n          children:\n            - name: Value\n              path: value\n              simple: true\n              widget: Text\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              simple: true\n              widget: ResourceRef\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - path: key\n                  simple: true\n                  enum: $keys($secret.data)\n        - name: Password\n          path: password\n          simple: true\n          widget: FormGroup\n          children:\n            - name: Value\n              path: value\n              simple: true\n              widget: Text\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              simple: true\n              widget: ResourceRef\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - path: key\n                  simple: true\n                  enum: $keys($secret.data)\n        - name: TLS\n          widget: FormGroup\n          path: tls\n          children:\n            - name: Disabled\n              path: disabled\n            - name: Skip Certificate Validation\n              path: skipCertificateValidation\n            - name: CA\n              path: ca\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Cert\n              path: cert\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Key\n              path: key\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n        - name: URI\n          path: uri\n          widget: Text\n        - name: Port\n          path: port\n          widget: Text\n        - name: Compress\n          path: compress\n          widget: Text\n        - name: Format\n          path: format\n          widget: Text\n        - name: Dedot\n          simple: true\n          path: dedot\n",
+              "general": "resource:\n  kind: LogPipeline\n  group: telemetry.kyma-project.io\n  version: v1alpha1\nname: Log Pipelines\ncategory: Telemetry\nurlPath: logpipelines\nscope: cluster\ndescription: >-\n  {{[LogPipeline custom resource](https://kyma-project.io/#/telemetry-manager/user/resources/02-logpipeline)}} configures a custom Log Pipeline.",
+              "list": "- source: >-\n    $each(spec.output, function($v, $k) {$v.url.value or\n    $v.url.valueFrom.secretKeyRef.name or $v.host.value or\n    $v.host.valueFrom.secretKeyRef.name ? $k})\n  placeholder: custom\n  type: string\n  name: Type\n  isSelected: true\n  widget: Text\n- name: Unsupported-Mode\n  source: status.unsupportedMode\n  widget: Badge\n  highlights:\n    positive:\n      - 'false'\n    critical:\n      - 'true'\n- name: Status\n  source: status.conditions\n  widget: Columns\n  children:\n    - name: Type\n      source: type\n      widget: Badge\n    - name: Status\n      source: status\n      widget: Badge\n      highlights:\n        positive:\n          - 'True'\n        critical:\n          - 'False'"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-logpipelines",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - source: >-\n      $each(spec.output, function($v, $k) {$v.endpoint.value or\n      $v.endpoint.valueFrom.secretKeyRef.name ? $k})\n    placeholder: custom\n    type: string\n    name: Type\n    isSelected: true\n    widget: Text\nbody:\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          critical:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n  - widget: Panel\n    name: Input\n    children:\n      - name: Prometheus\n        widget: Panel\n        visibility: $exists(spec.input.prometheus)\n        children:\n          - name: Enabled\n            visibility: $exists(spec.input.prometheus.enabled)\n            source: spec.input.prometheus.enabled\n          - name: Include Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.prometheus.namespaces.include)\n            source: spec.input.prometheus.namespaces.include\n            separator: ', '\n          - name: Exclude Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.prometheus.namespaces.exclude)\n            source: spec.input.prometheus.namespaces.exclude\n            separator: ', '\n          - name: Diagnostic Metrics\n            visibility: $exists(spec.input.prometheus.diagnosticMetrics.enabled)\n            source: spec.input.prometheus.diagnosticMetrics.enabled\n      - name: Istio\n        widget: Panel\n        visibility: $exists(spec.input.istio)\n        children:\n          - name: Enabled\n            visibility: $exists(spec.input.istio.enabled)\n            source: spec.input.istio.enabled\n          - name: Include Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.istio.namespaces.include)\n            source: spec.input.istio.namespaces.include\n            separator: ', '\n          - name: Exclude Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.istio.namespaces.exclude)\n            source: spec.input.istio.namespaces.exclude\n            separator: ', '\n          - name: Diagnostic Metrics\n            visibility: $exists(spec.input.istio.diagnosticMetrics.enabled)\n            source: spec.input.istio.diagnosticMetrics.enabled\n      - name: Runtime\n        widget: Panel\n        visibility: $exists(spec.input.runtime)\n        children:\n          - name: Enabled\n            visibility: $exists(spec.input.runtime.enabled)\n            source: spec.input.runtime.enabled\n          - name: Include Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.runtime.namespaces.include)\n            source: spec.input.runtime.namespaces.include\n            separator: ', '\n          - name: Exclude Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.runtime.namespaces.exclude)\n            source: spec.input.runtime.namespaces.exclude\n            separator: ', '\n          - name: Resources\n            widget: Panel\n            visibility: $exists(spec.input.runtime.resources)\n            children:\n              - name: Pod\n                visibility: $exists(spec.input.runtime.resources.pod)\n                source: spec.input.runtime.resources.pod.enabled\n              - name: Container\n                visibility: $exists(spec.input.runtime.resources.container)\n                source: spec.input.runtime.resources.container.enabled\n      - name: OTLP\n        widget: Panel\n        visibility: $exists(spec.input.otlp)\n        children:\n          - name: Disabled\n            visibility: $exists(spec.input.otlp.disabled)\n            source: spec.input.otlp.disabled\n          - name: Include Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.otlp.namespaces.include)\n            source: spec.input.otlp.namespaces.include\n            separator: ', '\n          - name: Exclude Namespaces\n            widget: JoinedArray\n            visibility: $exists(spec.input.otlp.namespaces.exclude)\n            source: spec.input.otlp.namespaces.exclude\n            separator: ', '\n  - widget: Panel\n    name: Output\n    children:\n      - name: OTLP\n        widget: Panel\n        visibility: $exists(spec.output.otlp)\n        children:\n          - name: Endpoint\n            widget: Panel\n            visibility: $exists(spec.output.otlp.endpoint)\n            children:\n              - name: Value\n                source: spec.output.otlp.endpoint.value\n                visibility: $exists(spec.output.otlp.endpoint.value)\n              - name: Value From Secret\n                widget: ResourceRefs\n                source: spec.output.otlp.endpoint.valueFrom.secretKeyRef\n                kind: Secret\n                visibility: $exists(spec.output.otlp.endpoint.valueFrom.secretKeyRef.name)\n          - name: Authentication\n            widget: Panel\n            visibility: $exists(spec.output.otlp.authentication)\n            children:\n              - name: User\n                widget: Panel\n                visibility: $exists(spec.output.otlp.authentication.basic.user)\n                children:\n                  - name: Value\n                    source: spec.output.otlp.authentication.basic.user.value\n                    visibility: $exists(spec.output.otlp.authentication.basic.user.value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: >-\n                      spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef.name)\n              - name: Password\n                widget: Panel\n                visibility: $exists(spec.output.otlp.authentication.basic.password)\n                children:\n                  - name: Value\n                    source: spec.output.otlp.authentication.basic.password.value\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.password.value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: >-\n                      spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef.name)\n          - name: Headers\n            widget: Panel\n            visibility: $exists(spec.output.otlp.headers)\n            children:\n              - name: Header\n                widget: Panel\n                visibility: $exists(spec.output.otlp.headers[].name)\n                source: spec.output.otlp.headers[]\n                children:\n                  - name: Name\n                    source: name\n                    visibility: $exists(name)\n                  - name: Prefix\n                    source: prefix\n                    visibility: $exists(prefix)\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n          - name: TLS\n            widget: Panel\n            visibility: $exists(spec.output.otlp.tls)\n            children:\n              - name: Insecure\n                visibility: $exists(spec.output.otlp.tls.insecure)\n                source: spec.output.otlp.tls.insecure\n              - name: Skip Cert Verification\n                visibility: $exists(spec.output.otlp.tls.insecureSkipVerify)\n                source: spec.output.otlp.tls.insecureSkipVerify\n              - name: Ca\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.ca)\n                source: spec.output.otlp.tls.ca\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Cert\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.cert)\n                source: spec.output.otlp.tls.cert\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Key\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.key)\n                source: spec.output.otlp.tls.key\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n          - widget: Panel\n            name: Other Settings\n            children:\n              - name: Protocol\n                source: spec.output.otlp.protocol",
+              "form": "- path: spec.input\n  widget: FormGroup\n  defaultExpanded: true\n  simple: true\n  children:\n    - name: Prometheus\n      path: prometheus\n      widget: FormGroup\n      simple: true\n      children:\n        - name: Enabled\n          path: enabled\n          simple: true\n        - name: Include Namespaces\n          widget: SimpleList\n          path: namespaces.include\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Exclude Namespaces\n          widget: SimpleList\n          path: namespaces.exclude\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Enable Diagnostic Metrics\n          path: diagnosticMetrics.enabled\n          simple: true\n    - name: Istio\n      path: istio\n      widget: FormGroup\n      simple: true\n      children:\n        - name: Enabled\n          path: enabled\n          simple: true\n        - name: Include Namespaces\n          widget: SimpleList\n          path: namespaces.include\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Exclude Namespaces\n          widget: SimpleList\n          path: namespaces.exclude\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Enable Diagnostic Metrics\n          path: diagnosticMetrics.enabled\n          simple: true\n    - name: Runtime\n      path: runtime\n      widget: FormGroup\n      simple: true\n      children:\n        - name: Enabled\n          path: enabled\n          simple: true\n        - name: Include Namespaces\n          widget: SimpleList\n          path: namespaces.include\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Exclude Namespaces\n          widget: SimpleList\n          path: namespaces.exclude\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Resources\n          path: resources\n          widget: FormGroup\n          simple: true\n          children:\n          - name: Enable Pod Metrics\n            path: pod.enabled\n            simple: true\n          - name: Enable Container Metrics\n            path: container.enabled\n            simple: true\n    - name: OTLP\n      path: otlp\n      widget: FormGroup\n      simple: true\n      children:\n        - name: Disabled\n          path: disabled\n          simple: true\n        - name: Include Namespaces\n          widget: SimpleList\n          path: namespaces.include\n          defaultExpanded: true\n          children:\n            - path: '[]'\n        - name: Exclude Namespaces\n          widget: SimpleList\n          path: namespaces.exclude\n          defaultExpanded: true\n          children:\n            - path: '[]'\n- path: spec.output\n  widget: FormGroup\n  defaultExpanded: true\n  simple: true\n  children:\n    - name: OTLP\n      path: otlp\n      widget: FormGroup\n      defaultExpanded: true\n      simple: true\n      children:\n        - name: Endpoint\n          path: endpoint\n          widget: FormGroup\n          simple: true\n          children:\n            - name: Value\n              path: value\n              widget: Text\n              simple: true\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              widget: ResourceRef\n              simple: true\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - simple: true\n                  path: key\n                  enum: $keys($secret.data)\n        - name: Protocol\n          path: protocol\n          simple: true\n          widget: FormGroup\n          children:\n            - name: Value\n              widget: Text\n        - name: Authentication\n          path: authentication\n          widget: FormGroup\n          simple: true\n          children:\n            - name: User\n              path: basic.user\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  resource:\n                    kind: secret\n                    version: v1\n                  simple: true\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Password\n              path: basic.password\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  resource:\n                    kind: secret\n                    version: v1\n                  simple: true\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n        - name: Headers\n          path: headers[]\n          widget: FormGroup\n          simple: true\n          children:\n            - name: Name\n              path: name\n              widget: Text\n              simple: true\n            - name: Prefix\n              path: prefix\n              widget: Text\n              simple: true\n            - name: Value\n              path: value\n              widget: Text\n              simple: true\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              widget: ResourceRef\n              simple: true\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - simple: true\n                  path: key\n                  enum: $keys($secret.data)\n        - name: TLS\n          widget: FormGroup\n          path: tls\n          children:\n            - name: Insecure\n              path: insecure\n            - name: Skip Certificate Validation\n              path: insecureSkipVerify\n            - name: CA\n              path: ca\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Cert\n              path: cert\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Key\n              path: key\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n",
+              "general": "resource:\n  kind: MetricPipeline\n  group: telemetry.kyma-project.io\n  version: v1alpha1\nname: Metric Pipelines\ncategory: Telemetry\nurlPath: metricpipelines\nscope: cluster\ndescription: >-\n  {{[MetricPipeline custom resource](https://kyma-project.io/#/telemetry-manager/user/resources/05-metricpipeline)}} configures a custom Metric Pipeline.",
+              "list": "- source: >-\n    $each(spec.output, function($v, $k) {$v.endpoint.value or\n    $v.endpoint.valueFrom.secretKeyRef.name ? $k})\n  placeholder: custom\n  type: string\n  name: Type\n  isSelected: true\n  widget: Text\n- name: Status\n  source: status.conditions\n  widget: Columns\n  children:\n    - name: Type\n      source: type\n      widget: Badge\n    - name: Status\n      source: status\n      widget: Badge\n      highlights:\n        positive:\n          - 'True'\n        critical:\n          - 'False'"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-metricpipelines",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - name: State\n    source: status.state\n    widget: Badge\n\nbody:\n  - name: Traces\n    widget: Panel\n    visibility: $exists(spec.trace.gateway.scaling.static.replicas)\n    children:\n    - name: Gateway Replicas\n      source: spec.trace.gateway.scaling.static.replicas\n    - name: Scaling Type\n      source: spec.trace.gateway.scaling.type\n  - name: Metrics\n    widget: Panel\n    visibility: $exists(spec.metric.gateway.scaling.static.replicas)\n    children:\n    - name: Gateway Replicas\n      source: spec.metric.gateway.scaling.static.replicas\n    - name: Scaling Type\n      source: spec.metric.gateway.scaling.type\n  - name: Status\n    widget: Panel\n    children:\n    - source: status.endpoints.traces.grpc\n      name: OTLP GRPC Trace Endpoint\n    - source: status.endpoints.traces.http\n      name: OTLP HTTP Trace Endpoint\n    - source: status.endpoints.metrics.grpc\n      name: OTLP GRPC Metric Endpoint\n    - source: status.endpoints.metrics.http\n      name: OTLP HTTP Metric Endpoint\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          critical:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n",
+              "form": "- advanced: true\n  defaultExpanded: false\n  readOnly: false\n  decodable: false\n  path: spec.trace\n  name: Traces\n  widget: FormGroup\n  children:\n    - advanced: true\n      defaultExpanded: false\n      readOnly: false\n      decodable: false\n      path: gateway\n      name: Gateway\n      widget: FormGroup\n      children:\n        - advanced: true\n          defaultExpanded: false\n          readOnly: false\n          decodable: false\n          path: scaling\n          name: Scaling\n          widget: FormGroup\n          children:\n            - path: type\n              override: false\n              enum:\n                - None\n            - advanced: true\n              defaultExpanded: false\n              readOnly: false\n              decodable: false\n              visibility: \"$item.spec.trace.gateway.scaling.type = 'Static'\"\n              path: static\n              name: Static\n              widget: FormGroup\n              children:\n                - advanced: true\n                  defaultExpanded: false\n                  readOnly: false\n                  decodable: false\n                  path: replicas\n                  name: Replicas\n                  simple: false\n                  widget: Text\n- advanced: true\n  defaultExpanded: false\n  readOnly: false\n  decodable: false\n  path: spec.metric\n  name: Metrics\n  widget: FormGroup\n  children:\n    - advanced: true\n      defaultExpanded: false\n      readOnly: false\n      decodable: false\n      path: gateway\n      name: Gateway\n      widget: FormGroup\n      children:\n        - advanced: true\n          defaultExpanded: false\n          readOnly: false\n          decodable: false\n          path: scaling\n          name: Scaling\n          widget: FormGroup\n          children:\n            - path: type\n              override: false\n              enum:\n                - None\n            - advanced: true\n              defaultExpanded: false\n              readOnly: false\n              decodable: false\n              visibility: \"$item.spec.metric.gateway.scaling.type = 'Static'\"\n              path: static\n              name: Static\n              widget: FormGroup\n              children:\n                - advanced: true\n                  defaultExpanded: false\n                  readOnly: false\n                  decodable: false\n                  path: replicas\n                  name: Replicas\n                  simple: false\n                  widget: Text\n",
+              "general": "resource:\n  kind: Telemetry\n  group: operator.kyma-project.io\n  version: v1alpha1\nname: Telemetry\ncategory: Kyma\nurlPath: telemetries\nscope: namespace\ndescription: >-\n  {{[Telemetry custom resource](https://kyma-project.io/#/telemetry-manager/user/resources/01-telemetry)}} configures the Telemetry module.\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\n",
+              "list": "- name: State\n  source: status.state\n  widget: Badge\n"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-module",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "data": {
+              "details": "header:\n  - source: >-\n      $each(spec.output, function($v, $k) {$v.endpoint.value or\n      $v.endpoint.valueFrom.secretKeyRef.name ? $k})\n    placeholder: custom\n    type: string\n    name: Type\n    isSelected: true\n    widget: Text\nbody:\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          critical:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n  - widget: Panel\n    name: Output\n    children:\n      - name: OTLP\n        widget: Panel\n        visibility: $exists(spec.output.otlp)\n        children:\n          - name: Endpoint\n            widget: Panel\n            visibility: $exists(spec.output.otlp.endpoint)\n            children:\n              - name: Value\n                source: spec.output.otlp.endpoint.value\n                visibility: $exists(spec.output.otlp.endpoint.value)\n              - name: Value From Secret\n                widget: ResourceRefs\n                source: spec.output.otlp.endpoint.valueFrom.secretKeyRef\n                kind: Secret\n                visibility: $exists(spec.output.otlp.endpoint.valueFrom.secretKeyRef.name)\n          - name: Authentication\n            widget: Panel\n            visibility: $exists(spec.output.otlp.authentication)\n            children:\n              - name: User\n                widget: Panel\n                visibility: $exists(spec.output.otlp.authentication.basic.user)\n                children:\n                  - name: Value\n                    source: spec.output.otlp.authentication.basic.user.value\n                    visibility: $exists(spec.output.otlp.authentication.basic.user.value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: >-\n                      spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef.name)\n              - name: Password\n                widget: Panel\n                visibility: $exists(spec.output.otlp.authentication.basic.password)\n                children:\n                  - name: Value\n                    source: spec.output.otlp.authentication.basic.password.value\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.password.value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: >-\n                      spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: >-\n                      $exists(spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef.name)\n          - name: Headers\n            widget: Panel\n            visibility: $exists(spec.output.otlp.headers)\n            children:\n              - name: Header\n                widget: Panel\n                visibility: $exists(spec.output.otlp.headers[].name)\n                source: spec.output.otlp.headers[]\n                children:\n                  - name: Name\n                    source: name\n                    visibility: $exists(name)\n                  - name: Prefix\n                    source: prefix\n                    visibility: $exists(prefix)\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n          - name: TLS\n            widget: Panel\n            visibility: $exists(spec.output.otlp.tls)\n            children:\n              - name: Insecure\n                visibility: $exists(spec.output.otlp.tls.insecure)\n                source: spec.output.otlp.tls.insecure\n              - name: Skip Cert Verification\n                visibility: $exists(spec.output.otlp.tls.insecureSkipVerify)\n                source: spec.output.otlp.tls.insecureSkipVerify\n              - name: Ca\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.ca)\n                source: spec.output.otlp.tls.ca\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Cert\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.cert)\n                source: spec.output.otlp.tls.cert\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n              - name: Key\n                widget: Panel\n                visibility: $exists(spec.output.otlp.tls.key)\n                source: spec.output.otlp.tls.key\n                children:\n                  - name: Value\n                    source: value\n                    visibility: $exists(value)\n                  - name: Value From Secret\n                    widget: ResourceRefs\n                    source: valueFrom.secretKeyRef\n                    kind: Secret\n                    visibility: $exists(valueFrom.secretKeyRef.name)\n          - widget: Panel\n            name: Other Settings\n            children:\n              - name: Protocol\n                source: spec.output.otlp.protocol",
+              "form": "- path: spec.output\n  widget: FormGroup\n  defaultExpanded: true\n  simple: true\n  children:\n    - name: OTLP\n      path: otlp\n      widget: FormGroup\n      defaultExpanded: true\n      simple: true\n      children:\n        - name: Endpoint\n          path: endpoint\n          widget: FormGroup\n          simple: true\n          children:\n            - name: Value\n              path: value\n              widget: Text\n              simple: true\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              widget: ResourceRef\n              simple: true\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - simple: true\n                  path: key\n                  enum: $keys($secret.data)\n        - name: Protocol\n          path: protocol\n          simple: true\n          widget: FormGroup\n          children:\n            - name: Value\n              widget: Text\n        - name: Authentication\n          path: authentication\n          widget: FormGroup\n          simple: true\n          children:\n            - name: User\n              path: basic.user\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  resource:\n                    kind: secret\n                    version: v1\n                  simple: true\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Password\n              path: basic.password\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  resource:\n                    kind: secret\n                    version: v1\n                  simple: true\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n        - name: Headers\n          path: headers[]\n          widget: FormGroup\n          simple: true\n          children:\n            - name: Name\n              path: name\n              widget: Text\n              simple: true\n            - name: Prefix\n              path: prefix\n              widget: Text\n              simple: true\n            - name: Value\n              path: value\n              widget: Text\n              simple: true\n            - name: Secret Reference\n              path: valueFrom.secretKeyRef\n              widget: ResourceRef\n              simple: true\n              resource:\n                kind: secret\n                version: v1\n              children:\n                - simple: true\n                  path: key\n                  enum: $keys($secret.data)\n        - name: TLS\n          widget: FormGroup\n          path: tls\n          children:\n            - name: Insecure\n              path: insecure\n            - name: Skip Certificate Validation\n              path: insecureSkipVerify\n            - name: CA\n              path: ca\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Cert\n              path: cert\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n            - name: Key\n              path: key\n              widget: FormGroup\n              simple: true\n              children:\n                - name: Value\n                  path: value\n                  widget: Text\n                  simple: true\n                - name: Secret Reference\n                  path: valueFrom.secretKeyRef\n                  widget: ResourceRef\n                  simple: true\n                  resource:\n                    kind: secret\n                    version: v1\n                  children:\n                    - simple: true\n                      path: key\n                      enum: $keys($secret.data)\n",
+              "general": "resource:\n  kind: TracePipeline\n  group: telemetry.kyma-project.io\n  version: v1alpha1\nname: Trace Pipelines\ncategory: Telemetry\nurlPath: tracepipelines\nscope: cluster\ndescription: >-\n  {{[TracePipeline custom resource](https://kyma-project.io/#/telemetry-manager/user/resources/04-tracepipeline)}} configures a custom Trace Pipeline.",
+              "list": "- source: >-\n    $each(spec.output, function($v, $k) {$v.endpoint.value or\n    $v.endpoint.valueFrom.secretKeyRef.name ? $k})\n  placeholder: custom\n  type: string\n  name: Type\n  isSelected: true\n  widget: Text\n- name: Status\n  source: status.conditions\n  widget: Columns\n  children:\n    - name: Type\n      source: type\n      widget: Badge\n    - name: Status\n      source: status\n      widget: Badge\n      highlights:\n        positive:\n          - 'True'\n        critical:\n          - 'False'"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "busola.io/extension": "resource",
+                "busola.io/extension-version": "0.5",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-tracepipelines",
+              "namespace": "kyma-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "annotations": {
+                "prometheus.io/port": "8080",
+                "prometheus.io/scrape": "true"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-metrics",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "name": "http-metrics",
+                  "port": 8080,
+                  "targetPort": 8080
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/instance": "telemetry",
+                "app.kubernetes.io/name": "manager",
+                "control-plane": "telemetry-manager",
+                "kyma-project.io/component": "controller"
+              }
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager-webhook",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "ports": [
+                {
+                  "port": 443,
+                  "protocol": "TCP",
+                  "targetPort": 9443
+                }
+              ],
+              "selector": {
+                "app.kubernetes.io/instance": "telemetry",
+                "app.kubernetes.io/name": "manager",
+                "control-plane": "telemetry-manager",
+                "kyma-project.io/component": "controller"
+              }
+            }
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Global (default) scheduling priority of Kyma components. Must not be blocked by unschedulable user workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-priority-class"
+            },
+            "value": 2000000
+          },
+          {
+            "apiVersion": "scheduling.k8s.io/v1",
+            "description": "Global scheduling priority of Telemetry DaemonSet components. Must not be blocked by unschedulable non-daemonset workloads.",
+            "globalDefault": false,
+            "kind": "PriorityClass",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-priority-class-high"
+            },
+            "value": 2100000
+          },
+          {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "replicas": 1,
+              "selector": {
+                "matchLabels": {
+                  "app.kubernetes.io/instance": "telemetry",
+                  "app.kubernetes.io/name": "manager",
+                  "control-plane": "telemetry-manager",
+                  "kyma-project.io/component": "controller"
+                }
+              },
+              "template": {
+                "metadata": {
+                  "annotations": {
+                    "kubectl.kubernetes.io/default-container": "manager",
+                    "sidecar.istio.io/inject": "false"
+                  },
+                  "labels": {
+                    "app.kubernetes.io/instance": "telemetry",
+                    "app.kubernetes.io/name": "manager",
+                    "control-plane": "telemetry-manager",
+                    "kyma-project.io/component": "controller"
+                  }
+                },
+                "spec": {
+                  "containers": [
+                    {
+                      "args": [
+                        "--cert-dir=/tmp",
+                        "--fluent-bit-priority-class-name=telemetry-priority-class-high",
+                        "--metric-gateway-priority-class=telemetry-priority-class",
+                        "--trace-collector-priority-class=telemetry-priority-class",
+                        "--self-monitor-priority-class=telemetry-priority-class",
+                        "--validating-webhook-enabled=true"
+                      ],
+                      "command": [
+                        "/manager"
+                      ],
+                      "env": [
+                        {
+                          "name": "GOMEMLIMIT",
+                          "value": "300MiB"
+                        },
+                        {
+                          "name": "APP_LOG_LEVEL",
+                          "value": "info"
+                        },
+                        {
+                          "name": "MANAGER_NAMESPACE",
+                          "valueFrom": {
+                            "fieldRef": {
+                              "fieldPath": "metadata.namespace"
+                            }
+                          }
+                        }
+                      ],
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.23.0",
+                      "livenessProbe": {
+                        "httpGet": {
+                          "path": "/healthz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 15,
+                        "periodSeconds": 20
+                      },
+                      "name": "manager",
+                      "readinessProbe": {
+                        "httpGet": {
+                          "path": "/readyz",
+                          "port": 8081
+                        },
+                        "initialDelaySeconds": 5,
+                        "periodSeconds": 10
+                      },
+                      "resources": {
+                        "limits": {
+                          "cpu": "100m",
+                          "memory": "384Mi"
+                        },
+                        "requests": {
+                          "cpu": "5m",
+                          "memory": "100Mi"
+                        }
+                      },
+                      "securityContext": {
+                        "allowPrivilegeEscalation": false,
+                        "capabilities": {
+                          "drop": [
+                            "ALL"
+                          ]
+                        },
+                        "privileged": false,
+                        "readOnlyRootFilesystem": false
+                      },
+                      "volumeMounts": [
+                        {
+                          "mountPath": "/tmp",
+                          "name": "crt-volume"
+                        }
+                      ]
+                    }
+                  ],
+                  "priorityClassName": "telemetry-priority-class",
+                  "securityContext": {
+                    "runAsNonRoot": true,
+                    "seccompProfile": {
+                      "type": "RuntimeDefault"
+                    }
+                  },
+                  "serviceAccountName": "telemetry-manager",
+                  "terminationGracePeriodSeconds": 10,
+                  "volumes": [
+                    {
+                      "emptyDir": {},
+                      "name": "crt-volume"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "apiVersion": "networking.k8s.io/v1",
+            "kind": "NetworkPolicy",
+            "metadata": {
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "telemetry-manager",
+              "namespace": "kyma-system"
+            },
+            "spec": {
+              "egress": [
+                {
+                  "to": [
+                    {
+                      "ipBlock": {
+                        "cidr": "0.0.0.0/0"
+                      }
+                    },
+                    {
+                      "ipBlock": {
+                        "cidr": "::/0"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ingress": [
+                {
+                  "from": [
+                    {
+                      "ipBlock": {
+                        "cidr": "0.0.0.0/0"
+                      }
+                    },
+                    {
+                      "ipBlock": {
+                        "cidr": "::/0"
+                      }
+                    }
+                  ],
+                  "ports": [
+                    {
+                      "port": 8080,
+                      "protocol": "TCP"
+                    },
+                    {
+                      "port": 8081,
+                      "protocol": "TCP"
+                    },
+                    {
+                      "port": 9443,
+                      "protocol": "TCP"
+                    }
+                  ]
+                }
+              ],
+              "podSelector": {
+                "matchLabels": {
+                  "app.kubernetes.io/instance": "telemetry",
+                  "app.kubernetes.io/name": "manager",
+                  "control-plane": "telemetry-manager",
+                  "kyma-project.io/component": "controller"
+                }
+              },
+              "policyTypes": [
+                "Ingress",
+                "Egress"
+              ]
+            }
+          }
+        ],
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.23.0",
+        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default"
+      },
+      {
+        "version": "1.23.0-dev",
+        "channels": [
+          "experimental"
+        ],
+        "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
+        "repository": "https://github.com/kyma-project/telemetry-manager.git",
+        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.23.0",
+        "resources": [
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "logparsers.telemetry.kyma-project.io"
+            },
+            "spec": {
+              "group": "telemetry.kyma-project.io",
+              "names": {
+                "kind": "LogParser",
+                "listKind": "LogParserList",
+                "plural": "logparsers",
+                "singular": "logparser"
+              },
+              "scope": "Cluster",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"AgentHealthy\")].status",
+                      "name": "Agent Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "deprecated": true,
+                  "deprecationWarning": "The LogParser API is deprecated. Instead, log in JSON format and use the JSON parsing feature of the LogPipeline",
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "LogParser is the Schema for the logparsers API.",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired state of LogParser.",
+                          "properties": {
+                            "parser": {
+                              "description": "[Fluent Bit Parsers](https://docs.fluentbit.io/manual/pipeline/parsers). The parser specified here has no effect until it is referenced by a [Pod annotation](https://docs.fluentbit.io/manual/pipeline/filters/kubernetes#kubernetes-annotations) on your workload or by a [Parser Filter](https://docs.fluentbit.io/manual/pipeline/filters/parser) defined in a pipeline's filters section.",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Shows the observed state of the LogParser.",
+                          "properties": {
+                            "conditions": {
+                              "description": "An array of conditions describing the status of the parser.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "logpipelines.telemetry.kyma-project.io"
+            },
+            "spec": {
+              "group": "telemetry.kyma-project.io",
+              "names": {
+                "categories": [
+                  "telemetry-pipelines"
+                ],
+                "kind": "LogPipeline",
+                "listKind": "LogPipelineList",
+                "plural": "logpipelines",
+                "singular": "logpipeline"
+              },
+              "scope": "Cluster",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"ConfigurationGenerated\")].status",
+                      "name": "Configuration Generated",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"AgentHealthy\")].status",
+                      "name": "Agent Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"TelemetryFlowHealthy\")].status",
+                      "name": "Flow Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.unsupportedMode",
+                      "name": "Unsupported Mode",
+                      "type": "boolean"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "LogPipeline is the Schema for the logpipelines API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired state of LogPipeline",
+                          "properties": {
+                            "files": {
+                              "items": {
+                                "description": "Provides file content to be consumed by a LogPipeline configuration",
+                                "properties": {
+                                  "content": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "filters": {
+                              "items": {
+                                "description": "Describes a filtering option on the logs of the pipeline.",
+                                "properties": {
+                                  "custom": {
+                                    "description": "Custom filter definition in the Fluent Bit syntax. Note: If you use a `custom` filter, you put the LogPipeline in unsupported mode.",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "input": {
+                              "description": "Defines where to collect logs, including selector mechanisms.",
+                              "properties": {
+                                "application": {
+                                  "description": "Configures in more detail from which containers application logs are enabled as input.",
+                                  "properties": {
+                                    "containers": {
+                                      "description": "Describes whether application logs from specific containers are selected. The options are mutually exclusive.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Specifies to exclude only the container logs with the specified container names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Specifies to include only the container logs with the specified container names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "dropLabels": {
+                                      "description": "Defines whether to drop all Kubernetes labels. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "keepAnnotations": {
+                                      "description": "Defines whether to keep all Kubernetes annotations. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "keepOriginalBody": {
+                                      "default": true,
+                                      "description": "If the `log` attribute contains a JSON payload and it is successfully parsed, the `log` attribute will be retained if `KeepOriginalBody` is set to `true`. Otherwise, the log attribute will be removed from the log record. The default is `true`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "description": "Describes whether application logs from specific Namespaces are selected. The options are mutually exclusive. System Namespaces are excluded by default from the collection.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude the container logs of the specified Namespace names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include only the container logs of the specified Namespace names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "system": {
+                                          "description": "Set to `true` if collecting from all Namespaces must also include the system Namespaces like kube-system, istio-system, and kyma-system.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "output": {
+                              "description": "[Fluent Bit output](https://docs.fluentbit.io/manual/pipeline/outputs) where you want to push the logs. Only one output can be specified.",
+                              "properties": {
+                                "custom": {
+                                  "description": "Defines a custom output in the Fluent Bit syntax. Note: If you use a `custom` output, you put the LogPipeline in unsupported mode.",
+                                  "type": "string"
+                                },
+                                "grafana-loki": {
+                                  "description": "The grafana-loki output is not supported anymore. For integration with a custom Loki installation, use the `custom` output and follow [Installing a custom Loki stack in Kyma](https://kyma-project.io/#/telemetry-manager/user/integration/loki/README ).",
+                                  "properties": {
+                                    "labels": {
+                                      "additionalProperties": {
+                                        "type": "string"
+                                      },
+                                      "description": "Labels to set for each log record.",
+                                      "type": "object"
+                                    },
+                                    "removeKeys": {
+                                      "description": "Attributes to be removed from a log record.",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "url": {
+                                      "description": "Grafana Loki URL.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "http": {
+                                  "description": "Configures an HTTP-based output compatible with the Fluent Bit HTTP output plugin.",
+                                  "properties": {
+                                    "compress": {
+                                      "description": "Defines the compression algorithm to use.",
+                                      "type": "string"
+                                    },
+                                    "dedot": {
+                                      "description": "Enables de-dotting of Kubernetes labels and annotations for compatibility with ElasticSearch based backends. Dots (.) will be replaced by underscores (_). Default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "format": {
+                                      "description": "Data format to be used in the HTTP request body. Default is `json`.",
+                                      "type": "string"
+                                    },
+                                    "host": {
+                                      "description": "Defines the host of the HTTP receiver.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "password": {
+                                      "description": "Defines the basic auth password.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "port": {
+                                      "description": "Defines the port of the HTTP receiver. Default is 443.",
+                                      "type": "string"
+                                    },
+                                    "tls": {
+                                      "description": "Configures TLS for the HTTP target server.",
+                                      "properties": {
+                                        "ca": {
+                                          "description": "Defines an optional CA certificate for server certificate verification when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "cert": {
+                                          "description": "Defines a client certificate to use when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "disabled": {
+                                          "description": "Indicates if TLS is disabled or enabled. Default is `false`.",
+                                          "type": "boolean"
+                                        },
+                                        "key": {
+                                          "description": "Defines the client key to use when using TLS. The key must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "skipCertificateValidation": {
+                                          "description": "If `true`, the validation of certificates is skipped. Default is `false`.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can define either both 'cert' and 'key', or neither",
+                                          "rule": "has(self.cert) == has(self.key)"
+                                        }
+                                      ]
+                                    },
+                                    "uri": {
+                                      "description": "Defines the URI of the HTTP receiver. Default is \"/\".",
+                                      "type": "string"
+                                    },
+                                    "user": {
+                                      "description": "Defines the basic auth user.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "variables": {
+                              "description": "A list of mappings from Kubernetes Secret keys to environment variables. Mapped keys are mounted as environment variables, so that they are available as [Variables](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/variables) in the sections.",
+                              "items": {
+                                "description": "References a Kubernetes secret that should be provided as environment variable to Fluent Bit",
+                                "properties": {
+                                  "name": {
+                                    "description": "Name of the variable to map.",
+                                    "type": "string"
+                                  },
+                                  "valueFrom": {
+                                    "properties": {
+                                      "secretKeyRef": {
+                                        "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                        "properties": {
+                                          "key": {
+                                            "description": "The name of the attribute of the Secret holding the referenced value.",
+                                            "type": "string"
+                                          },
+                                          "name": {
+                                            "description": "The name of the Secret containing the referenced value",
+                                            "type": "string"
+                                          },
+                                          "namespace": {
+                                            "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "type": "object"
+                                      }
+                                    },
+                                    "type": "object"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Shows the observed state of the LogPipeline",
+                          "properties": {
+                            "conditions": {
+                              "description": "An array of conditions describing the status of the pipeline.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "unsupportedMode": {
+                              "description": "Is active when the LogPipeline uses a `custom` output or filter; see [unsupported mode](https://github.com/kyma-project/telemetry-manager/blob/main/docs/user/02-logs.md#unsupported-mode).",
+                              "type": "boolean"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": false,
+                  "subresources": {
+                    "status": {}
+                  }
+                },
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"ConfigurationGenerated\")].status",
+                      "name": "Configuration Generated",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"AgentHealthy\")].status",
+                      "name": "Agent Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"TelemetryFlowHealthy\")].status",
+                      "name": "Flow Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.unsupportedMode",
+                      "name": "Unsupported Mode",
+                      "type": "boolean"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1beta1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "LogPipeline is the Schema for the logpipelines API",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired state of LogPipeline",
+                          "properties": {
+                            "files": {
+                              "items": {
+                                "description": "Provides file content to be consumed by a LogPipeline configuration",
+                                "properties": {
+                                  "content": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "filters": {
+                              "items": {
+                                "description": "Describes a filtering option on the logs of the pipeline.",
+                                "properties": {
+                                  "custom": {
+                                    "description": "Custom filter definition in the Fluent Bit syntax. Note: If you use a `custom` filter, you put the LogPipeline in unsupported mode.",
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "input": {
+                              "description": "Defines where to collect logs, including selector mechanisms.",
+                              "properties": {
+                                "application": {
+                                  "description": "Configures in more detail from which containers application logs are enabled as input.",
+                                  "properties": {
+                                    "containers": {
+                                      "description": "Describes whether application logs from specific containers are selected. The options are mutually exclusive.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Specifies to exclude only the container logs with the specified container names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Specifies to include only the container logs with the specified container names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "dropLabels": {
+                                      "description": "Defines whether to drop all Kubernetes labels. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "keepAnnotations": {
+                                      "description": "Defines whether to keep all Kubernetes annotations. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "keepOriginalBody": {
+                                      "default": true,
+                                      "description": "If the `log` attribute contains a JSON payload and it is successfully parsed, the `log` attribute will be retained if `keepOriginalBody` is set to `true`. Otherwise, the log attribute will be removed from the log record. The default is `true`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "description": "Describes whether application logs from specific Namespaces are selected. The options are mutually exclusive. System Namespaces are excluded by default from the collection.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude the container logs of the specified Namespace names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include only the container logs of the specified Namespace names.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "system": {
+                                          "description": "Set to `true` if collecting from all Namespaces must also include the system Namespaces like kube-system, istio-system, and kyma-system.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "output": {
+                              "description": "[Fluent Bit output](https://docs.fluentbit.io/manual/pipeline/outputs) where you want to push the logs. Only one output can be specified.",
+                              "properties": {
+                                "custom": {
+                                  "description": "Defines a custom output in the Fluent Bit syntax. Note: If you use a `custom` output, you put the LogPipeline in unsupported mode.",
+                                  "type": "string"
+                                },
+                                "grafana-loki": {
+                                  "description": "The grafana-loki output is not supported anymore. For integration with a custom Loki installation, use the `custom` output and follow [Installing a custom Loki stack in Kyma](https://kyma-project.io/#/telemetry-manager/user/integration/loki/README ).",
+                                  "properties": {
+                                    "labels": {
+                                      "additionalProperties": {
+                                        "type": "string"
+                                      },
+                                      "description": "Labels to set for each log record.",
+                                      "type": "object"
+                                    },
+                                    "removeKeys": {
+                                      "description": "Attributes to be removed from a log record.",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "url": {
+                                      "description": "Grafana Loki URL.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "http": {
+                                  "description": "Configures an HTTP-based output compatible with the Fluent Bit HTTP output plugin.",
+                                  "properties": {
+                                    "compress": {
+                                      "description": "Defines the compression algorithm to use.",
+                                      "type": "string"
+                                    },
+                                    "dedot": {
+                                      "description": "Enables de-dotting of Kubernetes labels and annotations for compatibility with ElasticSearch based backends. Dots (.) will be replaced by underscores (_). Default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "format": {
+                                      "description": "Data format to be used in the HTTP request body. Default is `json`.",
+                                      "type": "string"
+                                    },
+                                    "host": {
+                                      "description": "Defines the host of the HTTP receiver.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "password": {
+                                      "description": "Defines the basic auth password.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "port": {
+                                      "description": "Defines the port of the HTTP receiver. Default is 443.",
+                                      "type": "string"
+                                    },
+                                    "tls": {
+                                      "description": "Configures TLS for the HTTP target server.",
+                                      "properties": {
+                                        "ca": {
+                                          "description": "Defines an optional CA certificate for server certificate verification when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "cert": {
+                                          "description": "Defines a client certificate to use when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "disabled": {
+                                          "description": "Indicates if TLS is disabled or enabled. Default is `false`.",
+                                          "type": "boolean"
+                                        },
+                                        "key": {
+                                          "description": "Defines the client key to use when using TLS. The key must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "skipCertificateValidation": {
+                                          "description": "If `true`, the validation of certificates is skipped. Default is `false`.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can define either both 'cert' and 'key', or neither",
+                                          "rule": "has(self.cert) == has(self.key)"
+                                        }
+                                      ]
+                                    },
+                                    "uri": {
+                                      "description": "Defines the URI of the HTTP receiver. Default is \"/\".",
+                                      "type": "string"
+                                    },
+                                    "user": {
+                                      "description": "Defines the basic auth user.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "variables": {
+                              "description": "A list of mappings from Kubernetes Secret keys to environment variables. Mapped keys are mounted as environment variables, so that they are available as [Variables](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/variables) in the sections.",
+                              "items": {
+                                "description": "References a Kubernetes secret that should be provided as environment variable to Fluent Bit",
+                                "properties": {
+                                  "name": {
+                                    "description": "Name of the variable to map.",
+                                    "type": "string"
+                                  },
+                                  "valueFrom": {
+                                    "properties": {
+                                      "secretKeyRef": {
+                                        "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                        "properties": {
+                                          "key": {
+                                            "description": "The name of the attribute of the Secret holding the referenced value.",
+                                            "type": "string"
+                                          },
+                                          "name": {
+                                            "description": "The name of the Secret containing the referenced value",
+                                            "type": "string"
+                                          },
+                                          "namespace": {
+                                            "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "type": "object"
+                                      }
+                                    },
+                                    "type": "object"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Shows the observed state of the LogPipeline",
+                          "properties": {
+                            "conditions": {
+                              "description": "An array of conditions describing the status of the pipeline.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
+                                    "maxLength": 316,
+                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "lastTransitionTime",
+                                  "message",
+                                  "reason",
+                                  "status",
+                                  "type"
+                                ],
+                                "type": "object"
+                              },
+                              "type": "array"
+                            },
+                            "unsupportedMode": {
+                              "description": "Is active when the LogPipeline uses a `custom` output or filter; see [unsupported mode](https://github.com/kyma-project/telemetry-manager/blob/main/docs/user/02-logs.md#unsupported-mode).",
+                              "type": "boolean"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "served": true,
+                  "storage": true,
+                  "subresources": {
+                    "status": {}
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "apiVersion": "apiextensions.k8s.io/v1",
+            "kind": "CustomResourceDefinition",
+            "metadata": {
+              "annotations": {
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
+              },
+              "labels": {
+                "app.kubernetes.io/component": "telemetry",
+                "app.kubernetes.io/instance": "telemetry-manager",
+                "app.kubernetes.io/managed-by": "kustomize",
+                "app.kubernetes.io/name": "telemetry-manager",
+                "app.kubernetes.io/part-of": "kyma",
+                "control-plane": "telemetry-manager"
+              },
+              "name": "metricpipelines.telemetry.kyma-project.io"
+            },
+            "spec": {
+              "group": "telemetry.kyma-project.io",
+              "names": {
+                "categories": [
+                  "telemetry-pipelines"
+                ],
+                "kind": "MetricPipeline",
+                "listKind": "MetricPipelineList",
+                "plural": "metricpipelines",
+                "singular": "metricpipeline"
+              },
+              "scope": "Cluster",
+              "versions": [
+                {
+                  "additionalPrinterColumns": [
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"ConfigurationGenerated\")].status",
+                      "name": "Configuration Generated",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"GatewayHealthy\")].status",
+                      "name": "Gateway Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"AgentHealthy\")].status",
+                      "name": "Agent Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".status.conditions[?(@.type==\"TelemetryFlowHealthy\")].status",
+                      "name": "Flow Healthy",
+                      "type": "string"
+                    },
+                    {
+                      "jsonPath": ".metadata.creationTimestamp",
+                      "name": "Age",
+                      "type": "date"
+                    }
+                  ],
+                  "name": "v1alpha1",
+                  "schema": {
+                    "openAPIV3Schema": {
+                      "description": "MetricPipeline is the Schema for the metricpipelines API.",
+                      "properties": {
+                        "apiVersion": {
+                          "description": "APIVersion defines the versioned schema of this representation of an object.\nServers should convert recognized schemas to the latest internal value, and\nmay reject unrecognized values.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+                          "type": "string"
+                        },
+                        "kind": {
+                          "description": "Kind is a string value representing the REST resource this object represents.\nServers may infer this from the endpoint the client submits requests to.\nCannot be updated.\nIn CamelCase.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+                          "type": "string"
+                        },
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "spec": {
+                          "description": "Defines the desired characteristics of MetricPipeline.",
+                          "properties": {
+                            "input": {
+                              "description": "Configures different inputs to send additional metrics to the metric gateway.",
+                              "properties": {
+                                "istio": {
+                                  "description": "Configures istio-proxy metrics scraping.",
+                                  "properties": {
+                                    "diagnosticMetrics": {
+                                      "description": "Configures diagnostic metrics scraping",
+                                      "properties": {
+                                        "enabled": {
+                                          "description": "If enabled, diagnostic metrics are scraped. The default is `false`.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "enabled": {
+                                      "description": "If enabled, metrics for istio-proxy containers are scraped from Pods that have had the istio-proxy sidecar injected. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "description": "Describes whether istio-proxy metrics from specific namespaces are selected. System namespaces are enabled by default.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can only define one namespace selector - either 'include' or 'exclude'",
+                                          "rule": "!((has(self.include) && size(self.include) != 0) && (has(self.exclude) && size(self.exclude) != 0))"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "otlp": {
+                                  "description": "Configures the collection of push-based metrics that use the OpenTelemetry protocol.",
+                                  "properties": {
+                                    "disabled": {
+                                      "description": "If disabled, push-based OTLP metrics are not collected. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "description": "Describes whether push-based OTLP metrics from specific namespaces are selected. System namespaces are enabled by default.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can only define one namespace selector - either 'include' or 'exclude'",
+                                          "rule": "!((has(self.include) && size(self.include) != 0) && (has(self.exclude) && size(self.exclude) != 0))"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "prometheus": {
+                                  "description": "Configures Prometheus scraping.",
+                                  "properties": {
+                                    "diagnosticMetrics": {
+                                      "description": "Configures diagnostic metrics scraping",
+                                      "properties": {
+                                        "enabled": {
+                                          "description": "If enabled, diagnostic metrics are scraped. The default is `false`.",
+                                          "type": "boolean"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "enabled": {
+                                      "description": "If enabled, Pods marked with `prometheus.io/scrape=true` annotation are scraped. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "default": {
+                                        "exclude": [
+                                          "kyma-system",
+                                          "kube-system",
+                                          "istio-system",
+                                          "compass-system"
+                                        ]
+                                      },
+                                      "description": "Describes whether Prometheus metrics from specific namespaces are selected. System namespaces are disabled by default.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can only define one namespace selector - either 'include' or 'exclude'",
+                                          "rule": "!((has(self.include) && size(self.include) != 0) && (has(self.exclude) && size(self.exclude) != 0))"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "runtime": {
+                                  "description": "Configures runtime scraping.",
+                                  "properties": {
+                                    "enabled": {
+                                      "description": "If enabled, runtime metrics are scraped. The default is `false`.",
+                                      "type": "boolean"
+                                    },
+                                    "namespaces": {
+                                      "default": {
+                                        "exclude": [
+                                          "kyma-system",
+                                          "kube-system",
+                                          "istio-system",
+                                          "compass-system"
+                                        ]
+                                      },
+                                      "description": "Describes whether runtime metrics from specific namespaces are selected. System namespaces are disabled by default.",
+                                      "properties": {
+                                        "exclude": {
+                                          "description": "Exclude metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        },
+                                        "include": {
+                                          "description": "Include metrics from the specified Namespace names only.",
+                                          "items": {
+                                            "type": "string"
+                                          },
+                                          "type": "array"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can only define one namespace selector - either 'include' or 'exclude'",
+                                          "rule": "!((has(self.include) && size(self.include) != 0) && (has(self.exclude) && size(self.exclude) != 0))"
+                                        }
+                                      ]
+                                    },
+                                    "resources": {
+                                      "default": {
+                                        "container": {
+                                          "enabled": true
+                                        },
+                                        "pod": {
+                                          "enabled": true
+                                        }
+                                      },
+                                      "description": "Describes the Kubernetes resources for which runtime metrics are scraped.",
+                                      "properties": {
+                                        "container": {
+                                          "default": {
+                                            "enabled": true
+                                          },
+                                          "description": "Configures container runtime metrics scraping.",
+                                          "properties": {
+                                            "enabled": {
+                                              "default": true,
+                                              "description": "If enabled, the runtime metrics for the resource are scraped. The default is `true`.",
+                                              "type": "boolean"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "pod": {
+                                          "default": {
+                                            "enabled": true
+                                          },
+                                          "description": "Configures Pod runtime metrics scraping.",
+                                          "properties": {
+                                            "enabled": {
+                                              "default": true,
+                                              "description": "If enabled, the runtime metrics for the resource are scraped. The default is `true`.",
+                                              "type": "boolean"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "output": {
+                              "description": "Configures the metric gateway.",
+                              "properties": {
+                                "otlp": {
+                                  "description": "Defines an output using the OpenTelemetry protocol.",
+                                  "properties": {
+                                    "authentication": {
+                                      "description": "Defines authentication options for the OTLP output",
+                                      "properties": {
+                                        "basic": {
+                                          "description": "Activates `Basic` authentication for the destination providing relevant Secrets.",
+                                          "properties": {
+                                            "password": {
+                                              "description": "Contains the basic auth password or a Secret reference.",
+                                              "properties": {
+                                                "value": {
+                                                  "description": "The value as plain text.",
+                                                  "type": "string"
+                                                },
+                                                "valueFrom": {
+                                                  "description": "The value as a reference to a resource.",
+                                                  "properties": {
+                                                    "secretKeyRef": {
+                                                      "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                      "properties": {
+                                                        "key": {
+                                                          "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                          "type": "string"
+                                                        },
+                                                        "name": {
+                                                          "description": "The name of the Secret containing the referenced value",
+                                                          "type": "string"
+                                                        },
+                                                        "namespace": {
+                                                          "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            },
+                                            "user": {
+                                              "description": "Contains the basic auth username or a Secret reference.",
+                                              "properties": {
+                                                "value": {
+                                                  "description": "The value as plain text.",
+                                                  "type": "string"
+                                                },
+                                                "valueFrom": {
+                                                  "description": "The value as a reference to a resource.",
+                                                  "properties": {
+                                                    "secretKeyRef": {
+                                                      "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                      "properties": {
+                                                        "key": {
+                                                          "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                          "type": "string"
+                                                        },
+                                                        "name": {
+                                                          "description": "The name of the Secret containing the referenced value",
+                                                          "type": "string"
+                                                        },
+                                                        "namespace": {
+                                                          "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "type": "object"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "required": [
+                                            "password",
+                                            "user"
+                                          ],
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "endpoint": {
+                                      "description": "Defines the host and port (<host>:<port>) of an OTLP endpoint.",
+                                      "properties": {
+                                        "value": {
+                                          "description": "The value as plain text.",
+                                          "type": "string"
+                                        },
+                                        "valueFrom": {
+                                          "description": "The value as a reference to a resource.",
+                                          "properties": {
+                                            "secretKeyRef": {
+                                              "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                              "properties": {
+                                                "key": {
+                                                  "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "description": "The name of the Secret containing the referenced value",
+                                                  "type": "string"
+                                                },
+                                                "namespace": {
+                                                  "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "headers": {
+                                      "description": "Defines custom headers to be added to outgoing HTTP or GRPC requests.",
+                                      "items": {
+                                        "properties": {
+                                          "name": {
+                                            "description": "Defines the header name.",
+                                            "type": "string"
+                                          },
+                                          "prefix": {
+                                            "description": "Defines an optional header value prefix. The prefix is separated from the value by a space character.",
+                                            "type": "string"
+                                          },
+                                          "value": {
+                                            "description": "The value as plain text.",
+                                            "type": "string"
+                                          },
+                                          "valueFrom": {
+                                            "description": "The value as a reference to a resource.",
+                                            "properties": {
+                                              "secretKeyRef": {
+                                                "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                "properties": {
+                                                  "key": {
+                                                    "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                    "type": "string"
+                                                  },
+                                                  "name": {
+                                                    "description": "The name of the Secret containing the referenced value",
+                                                    "type": "string"
+                                                  },
+                                                  "namespace": {
+                                                    "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                    "type": "string"
+                                                  }
+                                                },
+                                                "type": "object"
+                                              }
+                                            },
+                                            "type": "object"
+                                          }
+                                        },
+                                        "required": [
+                                          "name"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "path": {
+                                      "description": "Defines OTLP export URL path (only for the HTTP protocol). This value overrides auto-appended paths /v1/metrics and /v1/traces",
+                                      "type": "string"
+                                    },
+                                    "protocol": {
+                                      "default": "grpc",
+                                      "description": "Defines the OTLP protocol (http or grpc). Default is grpc.",
+                                      "enum": [
+                                        "grpc",
+                                        "http"
+                                      ],
+                                      "minLength": 1,
+                                      "type": "string"
+                                    },
+                                    "tls": {
+                                      "description": "Defines TLS options for the OTLP output.",
+                                      "properties": {
+                                        "ca": {
+                                          "description": "Defines an optional CA certificate for server certificate verification when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "cert": {
+                                          "description": "Defines a client certificate to use when using TLS. The certificate must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        },
+                                        "insecure": {
+                                          "description": "Defines whether to send requests using plaintext instead of TLS.",
+                                          "type": "boolean"
+                                        },
+                                        "insecureSkipVerify": {
+                                          "description": "Defines whether to skip server certificate verification when using TLS.",
+                                          "type": "boolean"
+                                        },
+                                        "key": {
+                                          "description": "Defines the client key to use when using TLS. The key must be provided in PEM format.",
+                                          "properties": {
+                                            "value": {
+                                              "description": "The value as plain text.",
+                                              "type": "string"
+                                            },
+                                            "valueFrom": {
+                                              "description": "The value as a reference to a resource.",
+                                              "properties": {
+                                                "secretKeyRef": {
+                                                  "description": "Refers to the value of a specific key in a Secret. You must provide `name` and `namespace` of the Secret, as well as the name of the `key`.",
+                                                  "properties": {
+                                                    "key": {
+                                                      "description": "The name of the attribute of the Secret holding the referenced value.",
+                                                      "type": "string"
+                                                    },
+                                                    "name": {
+                                                      "description": "The name of the Secret containing the referenced value",
+                                                      "type": "string"
+                                                    },
+                                                    "namespace": {
+                                                      "description": "The name of the Namespace containing the Secret with the referenced value.",
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "type": "object"
+                                                }
+                                              },
+                                              "type": "object"
+                                            }
+                                          },
+                                          "type": "object"
+                                        }
+                                      },
+                                      "type": "object",
+                                      "x-kubernetes-validations": [
+                                        {
+                                          "message": "Can define either both 'cert' and 'key', or neither",
+                                          "rule": "has(self.cert) == has(self.key)"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "endpoint"
+                                  ],
+                                  "type": "object",
+                                  "x-kubernetes-validations": [
+                                    {
+                                      "message": "Path is only available with HTTP protocol",
+                                      "rule": "((!has(self.path) || size(self.path) <= 0) && (has(self.protocol) && self.protocol == 'grpc')) || (has(self.protocol) && self.protocol == 'http')"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "otlp"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "status": {
+                          "description": "Represents the current information/status of MetricPipeline.",
+                          "properties": {
+                            "conditions": {
+                              "description": "An array of conditions describing the status of the pipeline.",
+                              "items": {
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
+                                "properties": {
+                                  "lastTransitionTime": {
+                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  "message": {
+                                    "description": "message is a human readable message indicating details about the transition.\nThis may be an empty string.",
+                                    "maxLength": 32768,
+                                    "type": "string"
+                                  },
+                                  "observedGeneration": {
+                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon.\nFor instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date\nwith respect to the current state of the instance.",
+                                    "format": "int64",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                  },
+                                  "reason": {
+                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition.\nProducers of specific condition types may define expected values and meanings for this field,\nand whether the values are considered a guaranteed API.\nThe value should be a CamelCase string.\nThis field may not be empty.",
+                                    "maxLength": 1024,
+                                    "minLength": 1,
+                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+                                    "type": "string"
+                                  },
+                                  "status": {
+                                    "description": "status of the condition, one of True, False, Unknown.",
+                                    "enum": [
+                                      "True",
+                                      "False",
+                                      "Unknown"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -23805,7 +27515,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the pipeline.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -23840,7 +27550,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -23878,7 +27588,7 @@ export default [
             "kind": "CustomResourceDefinition",
             "metadata": {
               "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.15.0"
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
               },
               "labels": {
                 "app.kubernetes.io/component": "telemetry",
@@ -24018,7 +27728,7 @@ export default [
                             "conditions": {
                               "description": "Conditions contain a set of conditionals to determine the State of Status.\nIf all Conditions are met, State is expected to be in StateReady.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -24053,7 +27763,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -24138,7 +27848,7 @@ export default [
             "kind": "CustomResourceDefinition",
             "metadata": {
               "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.15.0"
+                "controller-gen.kubebuilder.io/version": "v0.16.2"
               },
               "labels": {
                 "app.kubernetes.io/component": "telemetry",
@@ -24543,7 +28253,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the pipeline.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -24578,7 +28288,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -24987,7 +28697,7 @@ export default [
                             "conditions": {
                               "description": "An array of conditions describing the status of the pipeline.",
                               "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource.\n---\nThis struct is intended for direct use as an array at the field path .status.conditions.  For example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the observations of a foo's current state.\n\t    // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    // +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t    // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t    // other fields\n\t}",
+                                "description": "Condition contains details for one aspect of the current state of this API Resource.",
                                 "properties": {
                                   "lastTransitionTime": {
                                     "description": "lastTransitionTime is the last time the condition transitioned from one status to another.\nThis should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
@@ -25022,7 +28732,7 @@ export default [
                                     "type": "string"
                                   },
                                   "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.\n---\nMany .condition.type values are consistent across resources like Available, but because arbitrary conditions can be\nuseful (see .node.status.conditions), the ability to deconflict is important.\nThe regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
+                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase.",
                                     "maxLength": 316,
                                     "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
                                     "type": "string"
@@ -25156,7 +28866,9 @@ export default [
                   ""
                 ],
                 "resources": [
-                  "configmaps"
+                  "configmaps",
+                  "serviceaccounts",
+                  "services"
                 ],
                 "verbs": [
                   "create",
@@ -25184,60 +28896,10 @@ export default [
               },
               {
                 "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "serviceaccounts"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "services"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
                   "apps"
                 ],
                 "resources": [
-                  "daemonsets"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
+                  "daemonsets",
                   "deployments"
                 ],
                 "verbs": [
@@ -25338,14 +29000,7 @@ export default [
             "rules": [
               {
                 "nonResourceURLs": [
-                  "/metrics"
-                ],
-                "verbs": [
-                  "get"
-                ]
-              },
-              {
-                "nonResourceURLs": [
+                  "/metrics",
                   "/metrics/cadvisor"
                 ],
                 "verbs": [
@@ -25357,7 +29012,20 @@ export default [
                   ""
                 ],
                 "resources": [
-                  "endpoints"
+                  "endpoints",
+                  "namespaces",
+                  "namespaces/status",
+                  "nodes",
+                  "nodes/metrics",
+                  "nodes/spec",
+                  "nodes/stats",
+                  "pods",
+                  "pods/status",
+                  "replicationcontrollers",
+                  "replicationcontrollers/status",
+                  "resourcequotas",
+                  "secrets",
+                  "services"
                 ],
                 "verbs": [
                   "get",
@@ -25377,175 +29045,6 @@ export default [
                   "get",
                   "list",
                   "patch",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "namespaces"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "namespaces/status"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes/metrics"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes/spec"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes/stats"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "pods"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "pods/status"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "replicationcontrollers"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "replicationcontrollers/status"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "resourcequotas"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "secrets"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "services"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
                   "watch"
                 ]
               },
@@ -25584,45 +29083,9 @@ export default [
                   "apps"
                 ],
                 "resources": [
-                  "daemonsets"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
-                  "deployments"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
-                  "replicasets"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
+                  "daemonsets",
+                  "deployments",
+                  "replicasets",
                   "statefulsets"
                 ],
                 "verbs": [
@@ -25649,19 +29112,7 @@ export default [
                   "batch"
                 ],
                 "resources": [
-                  "cronjobs"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "batch"
-                ],
-                "resources": [
+                  "cronjobs",
                   "jobs"
                 ],
                 "verbs": [
@@ -25675,32 +29126,8 @@ export default [
                   "extensions"
                 ],
                 "resources": [
-                  "daemonsets"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "extensions"
-                ],
-                "resources": [
-                  "deployments"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "extensions"
-                ],
-                "resources": [
+                  "daemonsets",
+                  "deployments",
                   "replicasets"
                 ],
                 "verbs": [
@@ -25740,57 +29167,9 @@ export default [
                   "rbac.authorization.k8s.io"
                 ],
                 "resources": [
-                  "clusterrolebindings"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
-                  "clusterroles"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
-                  "rolebindings"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
+                  "clusterrolebindings",
+                  "clusterroles",
+                  "rolebindings",
                   "roles"
                 ],
                 "verbs": [
@@ -25821,129 +29200,9 @@ export default [
                   "telemetry.kyma-project.io"
                 ],
                 "resources": [
-                  "logparsers"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "logparsers/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "logparsers/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "logpipelines"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "logpipelines/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "logpipelines/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "metricpipelines"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "metricpipelines/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
-                  "metricpipelines/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "telemetry.kyma-project.io"
-                ],
-                "resources": [
+                  "logparsers",
+                  "logpipelines",
+                  "metricpipelines",
                   "tracepipelines"
                 ],
                 "verbs": [
@@ -25961,6 +29220,22 @@ export default [
                   "telemetry.kyma-project.io"
                 ],
                 "resources": [
+                  "logparsers/finalizers",
+                  "logpipelines/finalizers",
+                  "metricpipelines/finalizers"
+                ],
+                "verbs": [
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "telemetry.kyma-project.io"
+                ],
+                "resources": [
+                  "logparsers/status",
+                  "logpipelines/status",
+                  "metricpipelines/status",
                   "tracepipelines/status"
                 ],
                 "verbs": [
@@ -26323,7 +29598,7 @@ export default [
                           }
                         }
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.23.0",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -37603,862 +40878,6 @@ export default [
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample",
         "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.5/application-connector-manager.yaml",
         "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.5/default_application_connector_cr.yaml"
-      },
-      {
-        "version": "1.1.6",
-        "deploymentYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.6/application-connector-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/application-connector-manager/releases/download/1.1.6/default_application_connector_cr.yaml",
-        "cr": {
-          "apiVersion": "operator.kyma-project.io/v1alpha1",
-          "kind": "ApplicationConnector",
-          "metadata": {
-            "namespace": "kyma-system",
-            "labels": {
-              "app.kubernetes.io/name": "applicationconnector",
-              "app.kubernetes.io/instance": "applicationconnector-sample",
-              "app.kubernetes.io/part-of": "application-connector-manager",
-              "app.kuberentes.io/managed-by": "kustomize",
-              "app.kubernetes.io/created-by": "application-connector-manager"
-            },
-            "name": "applicationconnector-sample"
-          },
-          "spec": {}
-        },
-        "resources": [
-          {
-            "apiVersion": "apiextensions.k8s.io/v1",
-            "kind": "CustomResourceDefinition",
-            "metadata": {
-              "annotations": {
-                "controller-gen.kubebuilder.io/version": "v0.10.0"
-              },
-              "creationTimestamp": null,
-              "name": "applicationconnectors.operator.kyma-project.io"
-            },
-            "spec": {
-              "group": "operator.kyma-project.io",
-              "names": {
-                "kind": "ApplicationConnector",
-                "listKind": "ApplicationConnectorList",
-                "plural": "applicationconnectors",
-                "singular": "applicationconnector"
-              },
-              "scope": "Namespaced",
-              "versions": [
-                {
-                  "name": "v1alpha1",
-                  "schema": {
-                    "openAPIV3Schema": {
-                      "description": "ApplicationConnector is the Schema for the applicationconnectors API",
-                      "properties": {
-                        "apiVersion": {
-                          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-                          "type": "string"
-                        },
-                        "kind": {
-                          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-                          "type": "string"
-                        },
-                        "metadata": {
-                          "type": "object"
-                        },
-                        "spec": {
-                          "properties": {
-                            "appConnValidator": {
-                              "default": {
-                                "logFormat": "json",
-                                "logLevel": "info"
-                              },
-                              "properties": {
-                                "logFormat": {
-                                  "enum": [
-                                    "json",
-                                    "text"
-                                  ],
-                                  "type": "string"
-                                },
-                                "logLevel": {
-                                  "enum": [
-                                    "debug",
-                                    "panic",
-                                    "fatal",
-                                    "error",
-                                    "warn",
-                                    "info",
-                                    "debug"
-                                  ],
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "logFormat",
-                                "logLevel"
-                              ],
-                              "type": "object"
-                            },
-                            "appGateway": {
-                              "default": {
-                                "logLevel": "info",
-                                "proxyTimeout": "10s",
-                                "requestTimeout": "10s"
-                              },
-                              "properties": {
-                                "logLevel": {
-                                  "enum": [
-                                    "debug",
-                                    "panic",
-                                    "fatal",
-                                    "error",
-                                    "warn",
-                                    "info",
-                                    "debug"
-                                  ],
-                                  "type": "string"
-                                },
-                                "proxyTimeout": {
-                                  "type": "string"
-                                },
-                                "requestTimeout": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "logLevel",
-                                "proxyTimeout",
-                                "requestTimeout"
-                              ],
-                              "type": "object"
-                            },
-                            "domainName": {
-                              "type": "string"
-                            }
-                          },
-                          "type": "object"
-                        },
-                        "status": {
-                          "properties": {
-                            "conditions": {
-                              "items": {
-                                "description": "Condition contains details for one aspect of the current state of this API Resource. --- This struct is intended for direct use as an array at the field path .status.conditions.  For example, \n type FooStatus struct{ // Represents the observations of a foo's current state. // Known .status.conditions.type are: \"Available\", \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge // +listType=map // +listMapKey=type Conditions []metav1.Condition `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"` \n // other fields }",
-                                "properties": {
-                                  "lastTransitionTime": {
-                                    "description": "lastTransitionTime is the last time the condition transitioned from one status to another. This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.",
-                                    "format": "date-time",
-                                    "type": "string"
-                                  },
-                                  "message": {
-                                    "description": "message is a human readable message indicating details about the transition. This may be an empty string.",
-                                    "maxLength": 32768,
-                                    "type": "string"
-                                  },
-                                  "observedGeneration": {
-                                    "description": "observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.",
-                                    "format": "int64",
-                                    "minimum": 0,
-                                    "type": "integer"
-                                  },
-                                  "reason": {
-                                    "description": "reason contains a programmatic identifier indicating the reason for the condition's last transition. Producers of specific condition types may define expected values and meanings for this field, and whether the values are considered a guaranteed API. The value should be a CamelCase string. This field may not be empty.",
-                                    "maxLength": 1024,
-                                    "minLength": 1,
-                                    "pattern": "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
-                                    "type": "string"
-                                  },
-                                  "status": {
-                                    "description": "status of the condition, one of True, False, Unknown.",
-                                    "enum": [
-                                      "True",
-                                      "False",
-                                      "Unknown"
-                                    ],
-                                    "type": "string"
-                                  },
-                                  "type": {
-                                    "description": "type of condition in CamelCase or in foo.example.com/CamelCase. --- Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)",
-                                    "maxLength": 316,
-                                    "pattern": "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "lastTransitionTime",
-                                  "message",
-                                  "reason",
-                                  "status",
-                                  "type"
-                                ],
-                                "type": "object"
-                              },
-                              "type": "array"
-                            },
-                            "served": {
-                              "type": "string"
-                            },
-                            "state": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "served",
-                            "state"
-                          ],
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "served": true,
-                  "storage": true,
-                  "subresources": {
-                    "status": {}
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "v1",
-            "kind": "ServiceAccount",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "rbac",
-                "app.kubernetes.io/created-by": "application-connector-manager",
-                "app.kubernetes.io/instance": "controller-manager-sa",
-                "app.kubernetes.io/managed-by": "kustomize",
-                "app.kubernetes.io/name": "serviceaccount",
-                "app.kubernetes.io/part-of": "application-connector-manager"
-              },
-              "name": "application-connector-controller-manager",
-              "namespace": "kyma-system"
-            }
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "Role",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "rbac",
-                "app.kubernetes.io/created-by": "application-connector-manager",
-                "app.kubernetes.io/instance": "leader-election-role",
-                "app.kubernetes.io/name": "role",
-                "app.kubernetes.io/part-of": "application-connector-manager",
-                "app.kubernets.io/managed-by": "kustomize"
-              },
-              "name": "application-connector-leader-election-role",
-              "namespace": "kyma-system"
-            },
-            "rules": [
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "configmaps"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch",
-                  "create",
-                  "update",
-                  "patch",
-                  "delete"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "coordination.k8s.io"
-                ],
-                "resources": [
-                  "leases"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "watch",
-                  "create",
-                  "update",
-                  "patch",
-                  "delete"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "events"
-                ],
-                "verbs": [
-                  "create",
-                  "patch"
-                ]
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "ClusterRole",
-            "metadata": {
-              "creationTimestamp": null,
-              "name": "application-connector-manager-role"
-            },
-            "rules": [
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "configmaps"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "limitranges"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "namespaces"
-                ],
-                "verbs": [
-                  "create",
-                  "delete"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "nodes"
-                ],
-                "verbs": [
-                  "get",
-                  "list"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "persistentvolumes"
-                ],
-                "verbs": [
-                  "get",
-                  "list"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "pods"
-                ],
-                "verbs": [
-                  "get",
-                  "list",
-                  "patch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resourceNames": [
-                  "cluster-client-certificates",
-                  "compass-agent-configuration"
-                ],
-                "resources": [
-                  "secrets"
-                ],
-                "verbs": [
-                  "delete",
-                  "get"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "serviceaccounts"
-                ],
-                "verbs": [
-                  "*"
-                ]
-              },
-              {
-                "apiGroups": [
-                  ""
-                ],
-                "resources": [
-                  "services"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "*"
-                ],
-                "resources": [
-                  "secrets"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apiextensions.k8s.io"
-                ],
-                "resources": [
-                  "customresourcedefinitions"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "applicationconnector.kyma-project.io"
-                ],
-                "resources": [
-                  "applications"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
-                  "deployments"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "apps"
-                ],
-                "resources": [
-                  "replicasets"
-                ],
-                "verbs": [
-                  "delete",
-                  "list",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "autoscaling"
-                ],
-                "resources": [
-                  "horizontalpodautoscalers"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "compass.kyma-project.io"
-                ],
-                "resources": [
-                  "compassconnections"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "metrics.k8s.io"
-                ],
-                "resources": [
-                  "nodes"
-                ],
-                "verbs": [
-                  "get",
-                  "list"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "networking.istio.io"
-                ],
-                "resources": [
-                  "gateways"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "networking.istio.io"
-                ],
-                "resources": [
-                  "virtualservices"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "applicationconnectors"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "applicationconnectors/finalizers"
-                ],
-                "verbs": [
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "operator.kyma-project.io"
-                ],
-                "resources": [
-                  "applicationconnectors/status"
-                ],
-                "verbs": [
-                  "get",
-                  "patch",
-                  "update"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
-                  "clusterrolebindings",
-                  "clusterroles"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "rbac.authorization.k8s.io"
-                ],
-                "resources": [
-                  "rolebindings",
-                  "roles"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              },
-              {
-                "apiGroups": [
-                  "scheduling.k8s.io"
-                ],
-                "resources": [
-                  "priorityclasses"
-                ],
-                "verbs": [
-                  "create",
-                  "delete",
-                  "get",
-                  "list",
-                  "patch",
-                  "update",
-                  "watch"
-                ]
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "RoleBinding",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "rbac",
-                "app.kubernetes.io/created-by": "application-connector-manager",
-                "app.kubernetes.io/instance": "leader-election-rolebinding",
-                "app.kubernetes.io/managed-by": "kustomize",
-                "app.kubernetes.io/name": "rolebinding",
-                "app.kubernetes.io/part-of": "application-connector-manager"
-              },
-              "name": "application-connector-leader-election-rolebinding",
-              "namespace": "kyma-system"
-            },
-            "roleRef": {
-              "apiGroup": "rbac.authorization.k8s.io",
-              "kind": "Role",
-              "name": "application-connector-leader-election-role"
-            },
-            "subjects": [
-              {
-                "kind": "ServiceAccount",
-                "name": "application-connector-controller-manager",
-                "namespace": "kyma-system"
-              }
-            ]
-          },
-          {
-            "apiVersion": "rbac.authorization.k8s.io/v1",
-            "kind": "ClusterRoleBinding",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "rbac",
-                "app.kubernetes.io/created-by": "application-connector-manager",
-                "app.kubernetes.io/instance": "manager-rolebinding",
-                "app.kubernetes.io/managed-by": "kustomize",
-                "app.kubernetes.io/name": "clusterrolebinding",
-                "app.kubernetes.io/part-of": "application-connector-manager"
-              },
-              "name": "application-connector-manager-rolebinding"
-            },
-            "roleRef": {
-              "apiGroup": "rbac.authorization.k8s.io",
-              "kind": "ClusterRole",
-              "name": "application-connector-manager-role"
-            },
-            "subjects": [
-              {
-                "kind": "ServiceAccount",
-                "name": "application-connector-controller-manager",
-                "namespace": "kyma-system"
-              }
-            ]
-          },
-          {
-            "apiVersion": "v1",
-            "data": {
-              "details": "header:\n  - name: Ready  \n    source: status.state\n    widget: Badge\n    highlights:\n      positive:\n        - 'Ready'\nbody:\n  - name: Configuration\n    widget: Panel\n    children:\n      - name: Domain name\n        source: spec.domainName\n        placeholder: Detected automatically\n  - widget: Columns\n    children:\n      - name: Application Connector Validator\n        widget: Panel\n        children: \n          - source: spec.appConnValidator.logLevel\n            name: Validator log level\n          - source: spec.appConnValidator.logFormat\n            name: Validator log format\n      - name: Application Connector Gateway\n        widget: Panel\n        children:\n          - source: spec.appGateway.proxyTimeout\n            name: Proxy timeout duration\n          - source: spec.appGateway.requestTimeout\n            name: Request timeout duration\n          - source: spec.appGateway.logLevel\n            name: Gateway log level\n\n  - source: status.conditions\n    widget: Table\n    name: Reconciliation Conditions\n    children:\n      - source: type\n        name: Type\n      - source: status\n        name: Status\n        widget: Badge\n        highlights:\n          positive:\n            - 'True'\n          negative:\n            - 'False'\n      - source: reason\n        name: Reason\n      - source: message\n        name: Message\n      - source: '$readableTimestamp(lastTransitionTime)'\n        name: Last transition\n        sort: true\n\n  - widget: EventList\n    filter: '$matchEvents($$, $root.kind, $root.metadata.name)'\n    name: events\n    defaultType: information\n",
-              "form": "- path: spec.domainName\n  name: Domain name\n\n- path: spec.appConnValidator\n  widget: FormGroup\n  name: Application Connector Validator Configuration\n  children:\n   - widget: KeyValuePair\n     path: \n     keyEnum: ['logLevel', 'logFormat']\n\n- path: spec.appGateway\n  widget: FormGroup\n  name: Application Connector Gateway Configuration\n  children:\n   - widget: KeyValuePair\n     path: requests\n     keyEnum: ['proxyTimeout', 'requestTimeout','logLevel']\n\n",
-              "general": "resource:\n  kind: ApplicationConnector\n  group: operator.kyma-project.io\n  version: v1alpha1\nurlPath: applicationconnectors\ncategory: Kyma\nname: ApplicationConnector\nscope: namespace\nfeatures:\n  actions:\n    disableCreate: true\n    disableDelete: true\ndescription: >-\n  {{[ApplicationConnector custom resource](https://kyma-project.io/#/application-connector-manager/user/resources/06-30-application-connector)}}\n  configures the Application Connector module.\n",
-              "list": "- name: Ready  \n  source: status.state\n  widget: Badge\n  highlights:\n    positive:\n      - 'Ready'\n"
-            },
-            "kind": "ConfigMap",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/name": "applicationconnectors.operator.kyma-project.io",
-                "busola.io/extension": "resource",
-                "busola.io/extension-version": "0.5"
-              },
-              "name": "application-connector-applicationconnectors.operator.kyma-project.io",
-              "namespace": "kyma-system"
-            }
-          },
-          {
-            "apiVersion": "scheduling.k8s.io/v1",
-            "description": "Scheduling priority of application-connector-manager component. Must not be blocked by unschedulable user workloads.",
-            "globalDefault": false,
-            "kind": "PriorityClass",
-            "metadata": {
-              "name": "application-connector-priority-class"
-            },
-            "value": 2100000
-          },
-          {
-            "apiVersion": "apps/v1",
-            "kind": "Deployment",
-            "metadata": {
-              "labels": {
-                "app.kubernetes.io/component": "manager",
-                "app.kubernetes.io/created-by": "application-connector-manager",
-                "app.kubernetes.io/instance": "controller-manager",
-                "app.kubernetes.io/managed-by": "kustomize",
-                "app.kubernetes.io/name": "deployment",
-                "app.kubernetes.io/part-of": "application-connector-manager",
-                "control-plane": "controller-manager"
-              },
-              "name": "application-connector-controller-manager",
-              "namespace": "kyma-system"
-            },
-            "spec": {
-              "replicas": 1,
-              "selector": {
-                "matchLabels": {
-                  "control-plane": "controller-manager"
-                }
-              },
-              "template": {
-                "metadata": {
-                  "annotations": {
-                    "kubectl.kubernetes.io/default-container": "manager"
-                  },
-                  "labels": {
-                    "control-plane": "controller-manager"
-                  }
-                },
-                "spec": {
-                  "containers": [
-                    {
-                      "args": [
-                        "--leader-elect"
-                      ],
-                      "command": [
-                        "/manager"
-                      ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:1.1.6",
-                      "livenessProbe": {
-                        "httpGet": {
-                          "path": "/healthz",
-                          "port": 8081
-                        },
-                        "initialDelaySeconds": 15,
-                        "periodSeconds": 20
-                      },
-                      "name": "manager",
-                      "readinessProbe": {
-                        "httpGet": {
-                          "path": "/readyz",
-                          "port": 8081
-                        },
-                        "initialDelaySeconds": 5,
-                        "periodSeconds": 10
-                      },
-                      "resources": {
-                        "limits": {
-                          "cpu": "500m",
-                          "memory": "512Mi"
-                        },
-                        "requests": {
-                          "cpu": "10m",
-                          "memory": "128Mi"
-                        }
-                      },
-                      "securityContext": {
-                        "allowPrivilegeEscalation": false,
-                        "capabilities": {
-                          "drop": [
-                            "ALL"
-                          ]
-                        }
-                      }
-                    }
-                  ],
-                  "priorityClassName": "application-connector-priority-class",
-                  "securityContext": {
-                    "runAsNonRoot": true
-                  },
-                  "serviceAccountName": "application-connector-controller-manager",
-                  "terminationGracePeriodSeconds": 10
-                }
-              }
-            }
-          }
-        ],
-        "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/application-connector-controller-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/application-connector-manager:1.1.6",
-        "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/applicationconnectors/applicationconnector-sample"
       }
     ]
   },
