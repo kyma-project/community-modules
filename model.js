@@ -11029,14 +11029,14 @@ export default [
     },
     "versions": [
       {
-        "version": "1.21.0",
+        "version": "1.22.0",
         "channels": [
           "regular"
         ],
         "documentation": "https://kyma-project.io/#/telemetry-manager/user/README",
         "repository": "https://github.com/kyma-project/telemetry-manager.git",
         "managerPath": "/apis/apps/v1/namespaces/kyma-system/deployments/telemetry-manager",
-        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.21.0",
+        "managerImage": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
         "resources": [
           {
             "apiVersion": "apiextensions.k8s.io/v1",
@@ -13551,7 +13551,10 @@ export default [
                 ],
                 "verbs": [
                   "create",
-                  "patch"
+                  "get",
+                  "list",
+                  "patch",
+                  "watch"
                 ]
               },
               {
@@ -13560,6 +13563,19 @@ export default [
                 ],
                 "resources": [
                   "namespaces"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "namespaces/status"
                 ],
                 "verbs": [
                   "get",
@@ -13598,6 +13614,19 @@ export default [
                   ""
                 ],
                 "resources": [
+                  "nodes/spec"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
                   "nodes/stats"
                 ],
                 "verbs": [
@@ -13612,6 +13641,58 @@ export default [
                 ],
                 "resources": [
                   "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "replicationcontrollers"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "replicationcontrollers/status"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "resourcequotas"
                 ],
                 "verbs": [
                   "get",
@@ -13678,6 +13759,123 @@ export default [
               {
                 "apiGroups": [
                   "apps"
+                ],
+                "resources": [
+                  "daemonsets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "replicasets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "resources": [
+                  "statefulsets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "cronjobs"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "jobs"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "extensions"
+                ],
+                "resources": [
+                  "daemonsets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "extensions"
+                ],
+                "resources": [
+                  "deployments"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "extensions"
                 ],
                 "resources": [
                   "replicasets"
@@ -14293,7 +14491,7 @@ export default [
                           "value": "info"
                         },
                         {
-                          "name": "MY_POD_NAMESPACE",
+                          "name": "MANAGER_NAMESPACE",
                           "valueFrom": {
                             "fieldRef": {
                               "fieldPath": "metadata.namespace"
@@ -14301,7 +14499,7 @@ export default [
                           }
                         }
                       ],
-                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.21.0",
+                      "image": "europe-docker.pkg.dev/kyma-project/prod/telemetry-manager:1.22.0",
                       "livenessProbe": {
                         "httpGet": {
                           "path": "/healthz",
@@ -14338,7 +14536,13 @@ export default [
                         },
                         "privileged": false,
                         "readOnlyRootFilesystem": false
-                      }
+                      },
+                      "volumeMounts": [
+                        {
+                          "mountPath": "/tmp",
+                          "name": "crt-volume"
+                        }
+                      ]
                     }
                   ],
                   "priorityClassName": "telemetry-priority-class",
@@ -14349,7 +14553,13 @@ export default [
                     }
                   },
                   "serviceAccountName": "telemetry-manager",
-                  "terminationGracePeriodSeconds": 10
+                  "terminationGracePeriodSeconds": 10,
+                  "volumes": [
+                    {
+                      "emptyDir": {},
+                      "name": "crt-volume"
+                    }
+                  ]
                 }
               }
             }
@@ -14447,8 +14657,8 @@ export default [
           }
         },
         "crPath": "/apis/operator.kyma-project.io/v1alpha1/namespaces/kyma-system/telemetries/default",
-        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.21.0/telemetry-manager.yaml",
-        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.21.0/telemetry-default-cr.yaml"
+        "deploymentYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-manager.yaml",
+        "crYaml": "https://github.com/kyma-project/telemetry-manager/releases/download/1.22.0/telemetry-default-cr.yaml"
       },
       {
         "version": "1.23.0",
