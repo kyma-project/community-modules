@@ -1,0 +1,39 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: docker-registry-0.8.0
+  namespace: kyma-system
+  labels:
+    "operator.kyma-project.io/module-name": "docker-registry"
+  annotations:
+    "operator.kyma-project.io/is-cluster-scoped": "false" 
+spec:
+  moduleName: docker-registry
+  version: 0.8.0
+  mandatory: false
+  requiresDowntime: false
+  info:
+    repository: https://github.com/kyma-project/docker-registry.git
+    documentation: https://kyma-project.io/#/docker-registry/user/README
+    icons:
+    - name: module-icon
+      link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  associatedResources:
+  - group: operator.kyma-project.io
+    version: v1alpha1
+    kind: DockerRegistry
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: DockerRegistry
+    metadata:
+      name: default
+      namespace: kyma-system
+    spec: {}
+  manager:
+    name: dockerregistry-operator
+    group: apps
+    version: v1
+    kind: Deployment
+  resources:
+  - name: rawManifest
+    link: https://github.com/kyma-project/docker-registry/releases/download/0.8.0/dockerregistry-operator.yaml
