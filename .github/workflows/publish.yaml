@@ -48,10 +48,6 @@ jobs:
         name: Install dependencies
       - name: Aggregate and validate modules
         run: node scripts/aggregate-modules.js
-      - name: Move all-modules.json to public/
-        run: |
-          mkdir -p public
-          mv all-modules.json public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

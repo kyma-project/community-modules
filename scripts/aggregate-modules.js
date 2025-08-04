@@ -5,7 +5,7 @@ const glob = require('glob');
 const yaml = require('js-yaml');
 
 const MODULES_DIR = path.join(__dirname, '../modules');
-const OUTPUT_FILE = path.join(__dirname, '../all-modules.json');
+const OUTPUT_FILE = path.join(__dirname, '../public/all-modules.json');
 
 function validateModule(obj, file) {
   if (!obj || typeof obj !== 'object') throw new Error(`${file}: Not a valid YAML object`);
@@ -30,7 +30,10 @@ function main() {
     }
   }
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(modules, null, 2));
-  console.log(`Aggregated ${modules.length} modules to all-modules.json`);
+  // Write all modules as YAML documents separated by '---'
+  const yamlOutput = modules.map(m => yaml.dump(m)).join('---\n');
+  fs.writeFileSync(path.join(__dirname, '../public/all-modules.yaml'), yamlOutput);
+  console.log(`Aggregated ${modules.length} modules to all-modules.json and all-modules.yaml`);
 }
 
 main();

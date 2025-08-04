@@ -24,7 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 .env
-public
+public/all-modules.json
+public/all-modules.yaml
 btp-dump.json
 busola
 cis.json

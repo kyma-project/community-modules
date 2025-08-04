@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Community Modules Index</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 2em auto; line-height: 1.6; }
+    h1 { color: #2c3e50; }
+    a { color: #0074d9; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <h1>Community Modules</h1>
+  <p>
+    This repository provides a collection of reusable Kubernetes module templates.<br>
+    <strong>How to install a module in your cluster:</strong>
+  </p>
+  <ol>
+    <li>Download the desired module YAML from the <code>modules/</code> directory or use the aggregated files below.</li>
+    <li>Apply it to your cluster with:<br>
+      <code>kubectl apply -f &lt;module-file.yaml&gt;</code>
+    </li>
+  </ol>
+  <h2>Aggregated Module Files</h2>
+  <ul>
+    <li><a href="all-modules.json">all-modules.json</a> &mdash; All modules as a single JSON array</li>
+    <li><a href="all-modules.yaml">all-modules.yaml</a> &mdash; All modules as YAML documents</li>
+  </ul>
+  <h2>Install All Modules at Once</h2>
+  <p>
+    To install all community modules in your cluster with a single command, run:<br>
+    <code>
+      kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
+    </code>
+  </p>
+  <p>For more details, see the <a href="docs/user/README.md">User Guide</a>.</p>
+</body>
+</html>
