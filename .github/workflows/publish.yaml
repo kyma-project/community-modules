@@ -14,20 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install js-yaml glob
+      - run: npm install
         name: Install dependencies
       - name: Aggregate and validate modules
         run: node scripts/aggregate-modules.js
-      - name: Move all-modules.json to public/
-        run: |
-          mkdir -p public
-          mv all-modules.json public/
-      - name: Upload artifact (PR only)
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-modules.json
-          path: public/all-modules.json
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -44,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install js-yaml glob
+      - run: npm install
         name: Install dependencies
       - name: Aggregate and validate modules
         run: node scripts/aggregate-modules.js
