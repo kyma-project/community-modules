@@ -50,4 +50,6 @@ spec:
   resources:
   - name: rawManifest
     link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.15.0/manager_manifest.yaml
+  - name: defaultResource
+    link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.15.0/manager_default_CR.yaml
   descriptor: {} # descriptor field will be removed in the future, now provided for compatibility reasons

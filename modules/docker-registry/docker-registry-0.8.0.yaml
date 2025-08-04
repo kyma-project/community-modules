@@ -37,4 +37,6 @@ spec:
   resources:
   - name: rawManifest
     link: https://github.com/kyma-project/docker-registry/releases/download/0.8.0/dockerregistry-operator.yaml
+  - name: defaultResource
+    link: https://github.com/kyma-project/docker-registry/releases/download/0.8.0/default-dockerregistry-cr.yaml
   descriptor: {} # descriptor field will be removed in the future, now provided for compatibility reasons
