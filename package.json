@@ -1,0 +1,13 @@
+{
+  "name": "community-modules-aggregator",
+  "version": "1.0.0",
+  "description": "Aggregates and validates module templates from YAML to JSON.",
+  "main": "scripts/aggregate-modules.js",
+  "scripts": {
+    "aggregate": "node scripts/aggregate-modules.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "glob": "^10.3.10"
+  }
+}

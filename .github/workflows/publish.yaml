@@ -1,0 +1,56 @@
+name: Aggregate and Publish ModuleTemplates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install js-yaml glob
+        name: Install dependencies
+      - name: Aggregate and validate modules
+        run: node scripts/aggregate-modules.js
+      - name: Move all-modules.json to public/
+        run: mv all-modules.json public/
+      - name: Upload artifact (PR only)
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-modules.json
+          path: public/all-modules.json
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build-and-validate
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install js-yaml glob
+        name: Install dependencies
+      - name: Aggregate and validate modules
+        run: node scripts/aggregate-modules.js
+      - name: Move all-modules.json to public/
+        run: mv all-modules.json public/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deployment
+        uses: actions/deploy-pages@v4

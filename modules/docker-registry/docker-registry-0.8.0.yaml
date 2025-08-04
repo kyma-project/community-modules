@@ -2,7 +2,6 @@ apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
   name: docker-registry-0.8.0
-  namespace: kyma-system
   labels:
     "operator.kyma-project.io/module-name": "docker-registry"
   annotations:
