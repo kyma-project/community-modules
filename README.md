@@ -125,6 +125,12 @@ All `ModuleTemplate` CRs are aggregated and published as:
 
 These endpoints are consumed by Kyma Dashboard to render a catalog of installable community modules.
 
+You can also use these files to install all modules at once:
+
+```bash
+kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
+```
+
 ---
 
 ## 📥 How to Contribute
