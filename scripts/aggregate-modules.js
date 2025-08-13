@@ -12,6 +12,17 @@ function validateModule(obj, file) {
   if (!obj.apiVersion) throw new Error(`${file}: Missing apiVersion`);
   if (!obj.kind) throw new Error(`${file}: Missing kind`);
   if (!obj.metadata || !obj.metadata.name) throw new Error(`${file}: Missing metadata.name`);
+  
+}
+
+function addSourceLabel(obj, file) {
+  if (!obj.metadata) obj.metadata = {};
+  if (!obj.metadata.labels) obj.metadata.labels = {};
+  // Add a label to indicate the source of the module
+  obj.metadata.labels['source'] = 'https://kyma-project.github.io/community-modules/all-modules.yaml';
+  // Add a timestamp label for tracking when the module was last updated
+  obj.metadata.labels['lastUpdated'] = new Date().toISOString();
+  return obj;
 }
 
 function main() {
@@ -23,6 +34,7 @@ function main() {
     try {
       doc = yaml.load(content);
       validateModule(doc, file);
+      doc = addSourceLabel(doc, file);
       modules.push(doc);
     } catch (e) {
       console.error(`Validation failed for ${file}:`, e.message);
