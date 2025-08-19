@@ -15,26 +15,27 @@ function validateModule(obj, file) {
   
 }
 
-function addSourceLabel(obj, file) {
+function addSourceAnnotations(obj, file) {
   if (!obj.metadata) obj.metadata = {};
   if (!obj.metadata.labels) obj.metadata.labels = {};
-  // Add a label to indicate the source of the module
-  obj.metadata.labels['source'] = 'https://kyma-project.github.io/community-modules/all-modules.yaml';
+  if (!obj.metadata.annotations) obj.metadata.annotations = {};
+  // Add an annotation to indicate the source of the module (annotations don't have size limits)
+  obj.metadata.annotations['source'] = 'https://kyma-project.github.io/community-modules/all-modules.yaml';
   // Add a timestamp label for tracking when the module was last updated
-  obj.metadata.labels['lastUpdated'] = new Date().toISOString();
+  obj.metadata.annotations['lastUpdated'] = new Date().toISOString();
   return obj;
 }
 
 function main() {
   const files = glob.sync(`${MODULES_DIR}/**/*.yaml`);
   const modules = [];
-  for (const file of files) {
+    for (const file of files) {
     const content = fs.readFileSync(file, 'utf8');
     let doc;
     try {
       doc = yaml.load(content);
       validateModule(doc, file);
-      doc = addSourceLabel(doc, file);
+      doc = addSourceAnnotations(doc, file);
       modules.push(doc);
     } catch (e) {
       console.error(`Validation failed for ${file}:`, e.message);
