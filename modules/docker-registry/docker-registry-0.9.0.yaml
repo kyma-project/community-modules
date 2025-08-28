@@ -1,14 +1,14 @@
 apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
-  name: docker-registry-0.8.0
+  name: docker-registry-0.9.0
   labels:
     "operator.kyma-project.io/module-name": "docker-registry"
   annotations:
     "operator.kyma-project.io/is-cluster-scoped": "false" 
 spec:
   moduleName: docker-registry
-  version: 0.8.0
+  version: 0.9.0
   mandatory: false
   requiresDowntime: false
   info:
@@ -36,7 +36,7 @@ spec:
     kind: Deployment
   resources:
   - name: rawManifest
-    link: https://github.com/kyma-project/docker-registry/releases/download/0.8.0/dockerregistry-operator.yaml
+    link: https://github.com/kyma-project/docker-registry/releases/download/0.9.0/dockerregistry-operator.yaml
   - name: defaultResource
-    link: https://github.com/kyma-project/docker-registry/releases/download/0.8.0/default-dockerregistry-cr.yaml
+    link: https://github.com/kyma-project/docker-registry/releases/download/0.9.0/default-dockerregistry-cr.yaml
   descriptor: {} # descriptor field will be removed in the future, now provided for compatibility reasons
