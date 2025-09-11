@@ -117,8 +117,6 @@ We welcome community module contributions! Follow these steps:
 3. Add a valid `moduletemplate.yaml` (based on `v1beta2` spec)
 4. Open a pull request with a short description
 
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for detailed instructions and validation tips (using [`modulectl`](https://github.com/kyma-project/modulectl)).
-
 ---
 
 ## Known Limitations
