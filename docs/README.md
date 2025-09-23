@@ -4,11 +4,14 @@
 
 Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules. Unlike managed modules, community modules aren't automatically updated or maintained.
 
+> [!WARNING]
+> In SAP BTP, Kyma runtime community modules aren't subject to the Service Level Agreement (SLA).
+
 ## Quick Install
 
 <!-- tabs:start -->
 
-#### **Kyma Dashboard**
+### **Kyma Dashboard**
 
 1. Go to your Kyma dashboard and select **Modify Modules**.
 
@@ -18,9 +21,11 @@ Community modules are modules provided by the Kyma community. Use them to enhanc
 
 Your module is installed once its status changes to `Ready`.
 
+#### Next Steps
+
 To delete your module, select the trash icon next to the module name.
 
-#### **Kyma CLI**
+### **Kyma CLI**
 
 1. Check the list of modules that you can add:
 
@@ -42,7 +47,15 @@ To delete your module, select the trash icon next to the module name.
 
     You should see your module on the module's list.
 
-#### **kubectl**
+#### Next Steps
+
+To delete your module, use the following command:
+
+   ```bash
+   kyma module delete {MODULE_NAME} --community
+   ```
+
+### **kubectl**
 
 1. Install the ModuleTemplate CustomResourceDefinition (CRD):
 
@@ -55,4 +68,13 @@ To delete your module, select the trash icon next to the module name.
    ```bash
    kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
    ```
+
+#### Next Steps
+
+To delete your modules, use the following command:
+
+   ```bash
+   kubectl 
+   ```
+
    <!-- tabs:end -->
