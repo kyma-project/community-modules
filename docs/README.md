@@ -2,7 +2,7 @@
 
 ## Overview
 
-The community modules are modules provided by the Kyma community and can be installed alongside the managed modules. They are not automatically updated or maintained, but they can be used to enhance your Kyma experience with additional features and capabilities.
+Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules. Unlike managed modules, community modules aren't automatically updated or maintained.
 
 ## Quick Install
 
@@ -16,7 +16,7 @@ The community modules are modules provided by the Kyma community and can be inst
 
 3. Select **Add**.
 
-Your module is installed, when its status changes to `Ready`.
+Your module is installed once its status changes to `Ready`.
 
 To delete your module, select the trash icon next to the module name.
 
@@ -44,7 +44,7 @@ To delete your module, select the trash icon next to the module name.
 
 #### **kubectl**
 
-1. Install the ModuleTemplare CustomResourceDefinition (CRD):
+1. Install the ModuleTemplate CustomResourceDefinition (CRD):
 
    ```bash
    kubectl apply -f https://raw.githubusercontent.com/kyma-project/lifecycle-manager/refs/heads/main/config/crd/bases/operator.kyma-project.io_moduletemplates.yaml
