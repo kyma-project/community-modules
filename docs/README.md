@@ -55,26 +55,4 @@ To delete your module, use the following command:
    kyma module delete {MODULE_NAME} --community
    ```
 
-### **kubectl**
-
-1. Install the ModuleTemplate CustomResourceDefinition (CRD):
-
-   ```bash
-   kubectl apply -f https://raw.githubusercontent.com/kyma-project/lifecycle-manager/refs/heads/main/config/crd/bases/operator.kyma-project.io_moduletemplates.yaml
-   ```
-
-2. Install all community modules:
-
-   ```bash
-   kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
-   ```
-
-#### Next Steps
-
-To delete your modules, use the following command:
-
-   ```bash
-   kubectl 
-   ```
-
    <!-- tabs:end -->
