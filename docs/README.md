@@ -23,7 +23,7 @@ Your module is installed once its status changes to `Ready`.
 
 #### Next Steps
 
-To delete your module, select the trash icon next to the module name.
+To delete a community module, select the trash icon next to the module's name.
 
 ### **Kyma CLI**
 
@@ -45,11 +45,11 @@ To delete your module, select the trash icon next to the module name.
     kyma module list
     ```
 
-    You should see your module on the module's list.
+    You should see your module in the list of modules.
 
 #### Next Steps
 
-To delete your module, use the following command:
+To delete a community module, use the following command:
 
    ```bash
    kyma module delete {MODULE_NAME} --community
