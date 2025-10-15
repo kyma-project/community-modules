@@ -1,39 +1,66 @@
-# Docs
+# Kyma Community Modules
 
 ## Overview
 
-The `docs` folder contains two subfolders - `user` and `contributor`. 
+Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules. Unlike managed modules, community modules aren't automatically updated or maintained.
 
-The `user` subfolder contains the end-user documentation, which is displayed on the [Kyma website](https://kyma-project.io/#/). Depending on your module needs, the subfolder must include overview, usage, or technical reference documents. To display the content on the website properly, create a `_sidebar.md` file in the `user` subfolder and list the documents it contains there. For more information on how to publish user documentation, follow [this guide](https://github.com/kyma-project/community/blob/main/docs/guidelines/content-guidelines/01-user-docs.md).
+> [!WARNING]
+> In SAP BTP, Kyma runtime community modules aren't subject to the Service Level Agreement (SLA).
 
-The `contributor` subfolder includes any developer-related documentation to help them manually install, develop, and operate a module.
+## Quick Install
 
-To have a common structure across all modules, all documents must be properly numbered according to the following structure:
+<!-- tabs:start -->
 
-> **NOTE:** It is suggested to use the following titles if you have the content that matches them; otherwise use your own, more suitable titles, or simply skip the ones you find irrelevant.
+### **Kyma Dashboard**
 
-   - 00-xx-overview
-   - 01-xx-tutorial/configuration  
-   - 02-xx-usage  
-   - 03-xx-troubleshooting
+1. Go to your Kyma dashboard and select **Modify Modules**.
 
-where `xx` is the number of the given document. For example:
+2. In the **Community Modules** section, select **Add** and mark the modules you want to install.
+
+3. Select **Add**.
+
+Your module is installed once its status changes to `Ready`.
+
+#### Next Steps
+
+To delete a community module, select the trash icon next to the module's name.
+
+### **Kyma CLI**
+
+1. Check the list of modules that you can add:
+
+    ```bash
+    kyma module catalog
+    ```
+
+2. Pull the ModuleTemplate:
+
+    ```bash
+    kyma module pull {MODULE_NAME}
+    ```
+
+    This command pulls the ModuleTemplate for the given module. You can specify the namespace where the ModuleTemplate should be stored using the `--namespace` flag (by default, the `default` namespace is used). If there are multiple versions available in the catalog, you can specify the version with `--version`.
+
+3. Install the module by pointing to the pulled ModuleTemplate using the `--origin` flag:
+
+    ```bash
+    kyma module add {MODULE_NAME} --origin {NAMESPACE}/{MODULE_NAME}-{VERSION}
+    ```
+
+4. See if your module is added:
+
+    ```bash
+    kyma module list
+    ```
+
+    You should see your module in the list of modules.
+
+#### Next Steps
+
+To delete a community module, use the following command:
 
    ```bash
-   00-00-overview-telemetry-manager
-   00-10-overview-logs
-   00-20-overview-traces
-   00-30-overview-metrics
-   01-10-configure-logs 
-   01-20-configure-traces 
-   01-30-configure-metrics
-   02-10-use-logs
-   02-20-use-traces
-   02-30-use-metrics
-   (...)
+   kyma module delete {MODULE_NAME} --community
    ```
-> **NOTE:** Before introducing [docsify](https://docsify.js.org/#/?id=docsify), we agreed to use the `10`, `20`, `30` numbering. It was to help maintain the proper order of docs if they were rendered automatically on the website. With docsify, you manually add the content to the `_sidebar.md` file, and docs are displayed in the order you add them. However, this numbering is still recommended to have the unified structure of the docs in the module repositories.
-      
-If you have other content that does not fit into the above topics, create your own 04-10-module-specific document(s).
 
-You can divide your documentation into subfolders to avoid having too many documents in one `docs/user` or `docs/contributor` folder. For example, if you have many technical reference documents, you can create a `technical reference` subfolder in `docs/user` and keep relevant documentation there. Each subfolder in the `user` folder must have its own `_sidebar.md` file with the links to the main module page and the list of docs it contains.
+   <!-- tabs:end -->
