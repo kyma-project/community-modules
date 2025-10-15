@@ -33,15 +33,15 @@ To delete a community module, select the trash icon next to the module's name.
     kyma module catalog
     ```
 
-2. Pull the module template:
+2. Pull the ModuleTemplate:
 
     ```bash
     kyma module pull {MODULE_NAME}
     ```
 
-    This command pulls the module template for the given module. You can specify the namespace where the module template should be stored using the `--namespace` flag (by default, the `default` namespace is used). If there are multiple versions available in the catalog, you can specify the version with `--version`.
+    This command pulls the ModuleTemplate for the given module. You can specify the namespace where the ModuleTemplate should be stored using the `--namespace` flag (by default, the `default` namespace is used). If there are multiple versions available in the catalog, you can specify the version with `--version`.
 
-3. Install the module by pointing to the pulled module template using the `--origin` flag:
+3. Install the module by pointing to the pulled ModuleTemplate using the `--origin` flag:
 
     ```bash
     kyma module add {MODULE_NAME} --origin {NAMESPACE}/{MODULE_NAME}-{VERSION}
