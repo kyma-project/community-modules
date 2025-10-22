@@ -1,14 +1,14 @@
 apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
-  name: registry-proxy-0.13.0
+  name: registry-proxy-0.14.0
   labels:
     "operator.kyma-project.io/module-name": "registry-proxy"
   annotations:
     "operator.kyma-project.io/is-cluster-scoped": "false" 
 spec:
   moduleName: registry-proxy
-  version: 0.13.0
+  version: 0.14.0
   mandatory: false
   requiresDowntime: false
   info:
@@ -29,18 +29,18 @@ spec:
     kind: RegistryProxy
     metadata:
       name: default
-      namespace: kyma-system
+      namespace: registry-proxy
     spec: {}
   manager:
-    namespace: kyma-system
+    namespace: registry-proxy
     name: registry-proxy-operator
     group: apps
     version: v1
     kind: Deployment
   resources:
   - name: rawManifest
-    link: https://github.com/kyma-project/registry-proxy/releases/download/0.13.0/registry-proxy-operator.yaml
+    link: https://github.com/kyma-project/registry-proxy/releases/download/0.14.0/registry-proxy-operator.yaml
   - name: defaultResource
-    link: https://github.com/kyma-project/registry-proxy/releases/download/0.13.0/default-registry-proxy-cr.yaml
+    link: https://github.com/kyma-project/registry-proxy/releases/download/0.14.0/default-registry-proxy-cr.yaml
   descriptor: {} # descriptor field will be removed in the future, now provided for compatibility reasons
  
