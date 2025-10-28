@@ -1,14 +1,14 @@
 apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
-  name: cap-operator-0.15.0
+  name: cap-operator-0.20.1
   labels:
     "operator.kyma-project.io/module-name": "cap-operator"
   annotations:
     "operator.kyma-project.io/is-cluster-scoped": "false" 
 spec:
   moduleName: cap-operator
-  version: 0.15.0
+  version: 0.20.1
   mandatory: false
   requiresDowntime: false
   info:
@@ -30,7 +30,7 @@ spec:
         app.kubernetes.io/instance: cap-operator
         app.kubernetes.io/name: cap-operator
         app.kubernetes.io/part-of: cap-operator-manager
-        app.kubernetes.io/version: 0.15.0
+        app.kubernetes.io/version: 0.20.1
         kyma-project.io/module: cap-operator
       name: cap-operator
     spec:
@@ -49,7 +49,7 @@ spec:
     kind: Deployment
   resources:
   - name: rawManifest
-    link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.15.0/manager_manifest.yaml
+    link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.20.1/manager_manifest.yaml
   - name: defaultResource
-    link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.15.0/manager_default_CR.yaml
+    link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.20.1/manager_default_CR.yaml
   descriptor: {} # descriptor field will be removed in the future, now provided for compatibility reasons
