@@ -11,7 +11,7 @@ Community modules are modules provided by the Kyma community. Use them to enhanc
 
 <!-- tabs:start -->
 
-### **Kyma Dashboard**
+#### **Kyma Dashboard**
 
 1. Go to your Kyma dashboard and select **Modify Modules**.
 
@@ -25,7 +25,7 @@ Your module is installed once its status changes to `Ready`.
 
 To delete a community module, select the trash icon next to the module's name.
 
-### **Kyma CLI**
+#### **Kyma CLI**
 
 1. Check the list of modules that you can add:
 
@@ -63,4 +63,4 @@ To delete a community module, use the following command:
    kyma module delete {MODULE_NAME} --community
    ```
 
-   <!-- tabs:end -->
+<!-- tabs:end -->
