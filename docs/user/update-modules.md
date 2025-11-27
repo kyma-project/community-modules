@@ -208,12 +208,3 @@ You can update community modules using any of the following methods:
    Verify that the new ModuleTemplate exists and the module operator deployment is running.
 
 <!-- tabs:end -->
-
-
-
-## Related Documentation
-
-- [Install Community Modules](README.md#quick-install)
-- [ModuleTemplate Specification](../../README.md#-moduletemplate-specification)
-- [Kyma CLI Module Commands](https://github.com/kyma-project/cli/blob/main/docs/user/gen-docs/kyma_module.
-md)
