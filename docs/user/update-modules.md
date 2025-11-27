@@ -19,17 +19,13 @@ Unlike managed modules in the SAP Kyma Runtime offering, community modules are n
 - **Security**: Receive security patches and vulnerability fixes that protect your cluster and applications
 - **New Features**: Access the latest functionality, improvements, and capabilities added by the community
 - **Bug Fixes**: Benefit from bug fixes and stability improvements
-- **Compatibility**: Ensure compatibility with newer versions of Kyma and other dependencies
+- **Compatibility**: Ensure compatibility with newer versions of Kyma modules and other dependencies
 - **Performance**: Take advantage of performance optimizations and efficiency improvements
 
 > [!WARNING]
 > Before updating a module, review the release notes and changelog for breaking changes or migration requirements. Some updates may require additional configuration or manual migration steps.
 
-## Prerequisites
 
-- Access to your Kyma cluster
-- Appropriate permissions to modify modules
-- Knowledge of the module name you want to update
 
 ## Check Available Versions
 
@@ -167,35 +163,7 @@ You can update community modules using any of the following methods:
 
 4. **Install the Module Operator**
    
-   After applying the ModuleTemplate, you need to install the actual module operator by applying the manifest referenced in the ModuleTemplate's `spec.resources.rawManifest` field.
-   
-   First, extract the rawManifest link from the ModuleTemplate:
-   ```bash
-   kubectl get moduletemplate {MODULE_NAME}-{NEW_VERSION} -o yaml | grep -A 1 "name: rawManifest" | grep "link:" | awk '{print $2}'
-   ```
-   
-   Then apply the manifest using the extracted URL:
-   ```bash
-   RAW_MANIFEST_URL=$(kubectl get moduletemplate {MODULE_NAME}-{NEW_VERSION} -o yaml | grep -A 1 "name: rawManifest" | grep "link:" | awk '{print $2}')
-   kubectl apply -f $RAW_MANIFEST_URL
-   ```
-   
-   Replace:
-   - `{MODULE_NAME}` with your module name
-   - `{NEW_VERSION}` with the new version
-   
-   Example:
-   ```bash
-   RAW_MANIFEST_URL=$(kubectl get moduletemplate cap-operator-0.21.0 -o yaml | grep -A 1 "name: rawManifest" | grep "link:" | awk '{print $2}')
-   kubectl apply -f $RAW_MANIFEST_URL
-   ```
-   
-   Alternatively, you can view the ModuleTemplate to find the rawManifest link:
-   ```bash
-   kubectl get moduletemplate {MODULE_NAME}-{NEW_VERSION} -o yaml
-   ```
-   
-   Then apply the manifest directly using the URL from `spec.resources[].link` where `name: rawManifest`:
+   After applying the ModuleTemplate, you need to install the actual module operator by applying the manifest referenced in the ModuleTemplate's `spec.resources.rawManifest` field:
    ```bash
    kubectl apply -f <rawManifest_URL>
    ```
