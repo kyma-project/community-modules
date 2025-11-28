@@ -1,5 +1,7 @@
 # Repository Structure and Components
 
+Learn more about the repository structure and key elements.
+
 ## Repository Structure
 
 This is the structure of the `/community-module` repository:
@@ -69,7 +71,7 @@ All ModuleTemplate CRs are aggregated and published as:
 These endpoints are consumed by Kyma dashboard to render a catalog of installable community modules.
 
 > [!TIP]
-> You can also use these files to install all modules at once:
+> You can use `all-modules.yaml` to install all modules at once:
 >
 >   ```bash
 >   kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
