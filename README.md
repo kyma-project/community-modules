@@ -25,7 +25,17 @@ Modules are independent, composable building blocks that extend Kyma functionali
 - A **default configuration custom resource (CR)**
 - Optional metadata, documentation, and versioning
 
-Community modules are contributed by the Kyma community and can be installed alongside managed modules provided by SAP. Community modules are not automatically updated or maintained by SAP, but they can be used to enhance your Kyma experience with additional features and capabilities.
+Community modules are contributed by the Kyma community and can be installed alongside managed modules provided by SAP. 
+
+> [!IMPORTANT]
+> **Key Distinction**: Community modules differ fundamentally from standard (regular) Kyma modules:
+>
+> - **Community modules are NOT handled in the Kyma CR** - They are managed independently and are not part of the Kyma resource specification
+> - **Community modules are NOT managed by Kyma Control Plane** - The control plane does not automatically manage their lifecycle
+> - **All actions are performed explicitly by the user** - Installation, updates, and removal require manual intervention
+> - **Community modules are NOT part of automatic lifecycle management** - They do not benefit from automatic updates, health monitoring, or lifecycle management provided by the Kyma Control Plane
+>
+> Community modules are not automatically updated or maintained by SAP. You are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
 
 ---
 

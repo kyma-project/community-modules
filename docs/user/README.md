@@ -2,7 +2,16 @@
 
 ## Overview
 
-Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules. Unlike managed modules, community modules aren't automatically updated or maintained.
+Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules.
+
+> [!IMPORTANT]
+> **Key Distinction**: Community modules differ fundamentally from managed SAP BTP, Kyma runtime modules:
+>
+> - Community modules are **NOT** handled in the Kyma CR - They are managed independently and are not part of the Kyma resource specification
+> - Community modules are **NOT** managed by Kyma Control Plane - The control plane does not automatically manage their lifecycle, update them, or monitor their health
+> - You must perform all the necessary actions - Installation, updates, and removal require manual intervention
+>
+> Unlike managed modules, community modules aren't automatically updated or maintained. You are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
 
 > [!WARNING]
 > In SAP BTP, Kyma runtime community modules aren't subject to the Service Level Agreement (SLA).
@@ -64,3 +73,8 @@ To delete a community module, use the following command:
    ```
 
 <!-- tabs:end -->
+
+## Update Community Modules
+
+Community modules are not automatically updated. For more information on how to keep your modules up-to-date with the latest security patches, bug fixes, and new features, see [Update Community Modules](update-modules.md).
+
