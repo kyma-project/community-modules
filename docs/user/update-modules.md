@@ -1,20 +1,17 @@
 # Update Community Modules
 
-## Community Modules vs. Standard Kyma Modules
-
 > [!IMPORTANT]
-> **Key Distinction**: Community modules differ fundamentally from standard (regular) Kyma modules:
+> **Key Distinction**: Community modules differ fundamentally from managed SAP BTP, Kyma runtime modules:
 >
-> - **Community modules are NOT handled in the Kyma CR** - They are managed independently and are not part of the Kyma resource specification
-> - **Community modules are NOT managed by Kyma Control Plane** - The control plane does not automatically manage their lifecycle
-> - **All actions are performed explicitly by the user** - Installation, updates, and removal require manual intervention
-> - **Community modules are NOT part of automatic lifecycle management** - They do not benefit from automatic updates, health monitoring, or lifecycle management provided by the Kyma Control Plane
+> - Community modules are **NOT** handled in the Kyma CR - They are managed independently and are not part of the Kyma resource specification
+> - Community modules are **NOT** managed by Kyma Control Plane - The control plane does not automatically manage their lifecycle, update them, or monitor their health
+> - You must perform all the necessary actions - Installation, updates, and removal require manual intervention
 >
-> This means you are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
+> Unlike managed modules, community modules aren't automatically updated or maintained. You are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
 
-## Why Keep Modules Up-to-Date?
+## Context
 
-Unlike managed modules in the SAP Kyma Runtime offering, community modules are not automatically updated. It's important to regularly update your community modules to:
+Unlike managed modules in SAP BTP, Kyma runtime, community modules are not automatically updated. Regularly update your community modules to:
 
 - **Security**: Receive security patches and vulnerability fixes that protect your cluster and applications
 - **New Features**: Access the latest functionality, improvements, and capabilities added by the community
@@ -22,26 +19,17 @@ Unlike managed modules in the SAP Kyma Runtime offering, community modules are n
 - **Compatibility**: Ensure compatibility with newer versions of Kyma modules and other dependencies
 - **Performance**: Take advantage of performance optimizations and efficiency improvements
 
+
+## Prerequisites
+
+Check the available versions for your community module. Run `kyma module catalog` to list all available modules and their versions in the community modules catalog. Alternatively, you can check the [community modules catalog](https://kyma-project.github.io/community-modules/all-modules.yaml) directly.
+
 > [!WARNING]
 > Before updating a module, review the release notes and changelog for breaking changes or migration requirements. Some updates may require additional configuration or manual migration steps.
 
+## Procedure
 
-
-## Check Available Versions
-
-Before updating, check which versions are available for your module:
-
-```bash
-kyma module catalog
-```
-
-This command lists all available modules and their versions in the community modules catalog.
-
-Alternatively, you can check the [community modules catalog](https://kyma-project.github.io/community-modules/all-modules.yaml) directly.
-
-## Update Methods
-
-You can update community modules using any of the following methods:
+You can update community modules using Kyma dashbord, Kyma CLI, or kubectl.
 
 <!-- tabs:start -->
 
