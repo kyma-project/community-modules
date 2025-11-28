@@ -26,7 +26,7 @@ community-modules/
 
 ## ModuleTemplate Custom Resources
 
-A ModuleTemplate is a Kubernetes custom resource (`operator.kyma-project.io/v1beta2`) which defines a module. A ModuleTemplate describes:
+A ModuleTemplate is a Kubernetes custom resource (`operator.kyma-project.io/v1beta2`) that defines a module. A ModuleTemplate describes:
 
 - Module metadata and visual assets
 - The module manager resource for health tracking (**spec.manager**)

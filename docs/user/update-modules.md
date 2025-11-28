@@ -109,7 +109,7 @@ You can update community modules using Kyma dashboard, Kyma CLI, or kubectl.
 
 #### **kubectl**
 
-1. Check the vailable module versions in the module catalog.
+1. Check the available module versions in the module catalog.
 
    ```bash
    curl -s https://kyma-project.github.io/community-modules/all-modules.yaml | grep -A 5 "moduleName: {MODULE_NAME}"
