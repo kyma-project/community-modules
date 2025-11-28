@@ -1,14 +1,5 @@
 # Update Community Modules
 
-> [!IMPORTANT]
-> **Key Distinction**: Community modules differ fundamentally from managed SAP BTP, Kyma runtime modules:
->
-> - Community modules are **NOT** handled in the Kyma CR - They are managed independently and are not part of the Kyma resource specification
-> - Community modules are **NOT** managed by Kyma Control Plane - The control plane does not automatically manage their lifecycle, update them, or monitor their health
-> - **You** must perform all the necessary actions - Installation, updates, and removal require manual intervention
->
-> Unlike managed modules, community modules aren't automatically updated or maintained. You are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
-
 ## Prerequisites
 
 Check the available versions for your community module. Run `kyma module catalog` to list all available modules and their versions in the community modules catalog. Alternatively, you can check the [community modules catalog](https://kyma-project.github.io/community-modules/all-modules.yaml) directly.
@@ -20,11 +11,11 @@ Check the available versions for your community module. Run `kyma module catalog
 
 Unlike managed modules in SAP BTP, Kyma runtime, community modules are not automatically updated. Regularly update your community modules to:
 
-- **Security**: Receive security patches and vulnerability fixes that protect your cluster and applications
-- **New Features**: Access the latest functionality, improvements, and capabilities added by the community
-- **Bug Fixes**: Benefit from bug fixes and stability improvements
-- **Compatibility**: Ensure compatibility with newer versions of Kyma modules and other dependencies
-- **Performance**: Take advantage of performance optimizations and efficiency improvements
+- Receive **security** patches and vulnerability fixes that protect your cluster and applications
+- Access the **latest** functionality, improvements, and capabilities added by the community
+- Benefit from **bug fixes** and stability improvements
+- Ensure **compatibility** with newer versions of Kyma modules and other dependencies
+- Take advantage of **performance** optimizations and efficiency improvements
 
 ## Procedure
 
@@ -118,7 +109,7 @@ You can update community modules using Kyma dashboard, Kyma CLI, or kubectl.
 
 #### **kubectl**
 
-1. Check the vailable module versions in the module catalog.
+1. Check the available module versions in the module catalog.
 
    ```bash
    curl -s https://kyma-project.github.io/community-modules/all-modules.yaml | grep -A 5 "moduleName: {MODULE_NAME}"
