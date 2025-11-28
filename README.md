@@ -25,7 +25,7 @@ We welcome community module contributions! To contribute, follow these steps:
 3. Add a valid `moduletemplate.yaml` based on the `v1beta2` spec. For more information, see [`moduletemplate_types.go`](https://github.com/kyma-project/lifecycle-manager/blob/main/api/v1beta2/moduletemplate_types.go).
 4. Open a pull request with a short description.
 
-For standard contribution rules see [CONTRIBUTING.md](CONTRIBUTING.md).
+For standard contribution rules, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Code of Conduct
 
