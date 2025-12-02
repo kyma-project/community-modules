@@ -71,7 +71,7 @@ All ModuleTemplate CRs are aggregated and published as:
 These endpoints are consumed by Kyma dashboard to render a catalog of installable community modules.
 
 > [!TIP]
-> You can use `all-modules.yaml` to install all modules at once:
+> You can use `all-modules.yaml` or `all-modules.json` to install all modules at once:
 >
 >   ```bash
 >   kubectl apply -f https://kyma-project.github.io/community-modules/all-modules.yaml
