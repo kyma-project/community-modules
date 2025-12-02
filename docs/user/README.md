@@ -7,9 +7,9 @@ Community modules are modules provided by the Kyma community. Use them to enhanc
 > [!IMPORTANT]
 > **Key Distinction**: Community modules differ fundamentally from managed SAP BTP, Kyma runtime modules:
 >
-> - Community modules are **NOT** handled in the Kyma CR - They are managed independently and are not part of the Kyma resource specification
-> - Community modules are **NOT** managed by Kyma Control Plane - The control plane does not automatically manage their lifecycle, update them, or monitor their health
-> - **You** must perform all the necessary actions - Installation, updates, and removal require manual intervention
+> - Community modules are **NOT** handled in the Kyma custom resource (CR): They are managed independently and are not part of the Kyma resource specification.
+> - Community modules are **NOT** managed by Kyma Control Plane: The control plane does not automatically manage their lifecycle, update them, or monitor their health.
+> - **You** must perform all the necessary actions: Installation, updates, and removal require manual intervention.
 >
 > Unlike managed modules, community modules aren't automatically updated or maintained. You are fully responsible for managing community modules, including keeping them updated, monitoring their health, and handling any issues that arise.
 
