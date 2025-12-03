@@ -4,7 +4,7 @@
 
 Community modules are modules provided by the Kyma community. Use them to enhance your Kyma experience with additional features and capabilities. You can install community modules alongside managed modules.
 
-> [!WARNING]
+> [!NOTE]
 > **Key Distinction**: Community modules differ fundamentally from managed SAP BTP, Kyma runtime modules:
 >
 > - Community modules are **NOT** handled in the Kyma custom resource (CR): They are managed independently and are not part of the Kyma resource specification.
