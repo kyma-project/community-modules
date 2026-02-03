@@ -26,6 +26,7 @@ spec:
     kind: DockerRegistry
     metadata:
       name: default
+      namespace: kyma-system
     spec: {}
   manager:
     name: dockerregistry-operator
