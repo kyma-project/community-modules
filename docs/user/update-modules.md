@@ -34,12 +34,12 @@ You can update community modules using Kyma dashboard, Kyma CLI, or kubectl.
 
 3. Choose **Update** next to a single module you want to update. Alternatively, you can choose **Update All** to update all outdated modules at once. By default, the operation deletes old ModuleTemplates. In the pop-up window, uncheck the **Delete old module templates** box to keep them.
 
-4. Choose **Update** to confirm the opration.
+4. Choose **Update** to confirm the operation.
 
 5.  To verify the update:
 
    * Wait for the module status to change to `Ready`.
-   * Verify the version number has been updated.
+   * Verify that the version number has been updated.
    * Check if the module is functioning correctly.
 
 #### **Kyma CLI**
