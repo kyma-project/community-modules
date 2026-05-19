@@ -2,6 +2,9 @@
 
 ## Prerequisites
 
+> [!TIP]
+> The prerequisite is required only for Kyma CLI and kubectl updates. In Kyma dashboard, the available version is picked automatically.
+
 Check the available versions for your community module. Run `kyma module catalog` to list all available modules and their versions in the community modules catalog. Alternatively, you can check the [community modules catalog](https://kyma-project.github.io/community-modules/all-modules.yaml) directly.
 
 > [!WARNING]
@@ -25,33 +28,19 @@ You can update community modules using Kyma dashboard, Kyma CLI, or kubectl.
 
 #### **Kyma Dashboard (Busola)**
 
-1. Go to Kyma dashboard. The URL is in the Overview section of your subaccount.
+1. Go to Kyma dashboard. The URL is in the **Overview** section of your subaccount.
 
-2. Go to **Configuration** -> **Modules** and scroll down to the list of community modules to find the one you want to update, noting the current version displayed.
+2. Go to **Configuration** -> **Modules** and scroll down to the list of community modules. You can see the **Outdated** label next to modules with a newer version available.
 
-4. Check and install the latest ModuleTemplate custom resources (CRs).
+3. Choose **Update** next to a single module you want to update. Alternatively, you can choose **Update All** to update all outdated modules at once. By default, the operation deletes old ModuleTemplates. In the pop-up window, uncheck the **Delete old module templates** box to keep them.
 
-   a. In the **Community Modules** table, choose **Add** -> **Add source YAML**. A pop-up window appears with the following details.
+4. Choose **Update** to confirm the opration.
 
-    * the default **Source YAML URL** (`https://kyma-project.github.io/community-modules/all-modules.yaml`) 
-    * a list of ModuleTemplates that already exist in the cluster
-    * a list of **ModuleTemplates to add**
+5.  To verify the update:
 
-   b. Choose **Add** to install any missing ModuleTemplates.
-
-5. Update your module.
-
-   a. Go back to the modules list view and switch to the **Edit** tab.
-
-   b. Scroll down to the **Community Modules** section and find the module you want to update.
-
-   c. From the dropdown, select the latest version and choose **Save**.
-
-6. Switch back to the **View** tab and verify the update.
-
-   * Wait for the module status to change to `Ready`
-   * Verify the version number has been updated
-   * Check if the module is functioning correctly
+   * Wait for the module status to change to `Ready`.
+   * Verify the version number has been updated.
+   * Check if the module is functioning correctly.
 
 #### **Kyma CLI**
 
