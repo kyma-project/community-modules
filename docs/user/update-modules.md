@@ -38,9 +38,9 @@ You can update community modules using Kyma dashboard, Kyma CLI, or kubectl.
 
 5.  To verify the update:
 
-   * Wait for the module status to change to `Ready`.
-   * Verify that the version number has been updated.
-   * Check if the module is functioning correctly.
+     * Wait for the module status to change to `Ready`.
+     * Verify that the version number has been updated.
+     * Check if the module is functioning correctly.
 
 #### **Kyma CLI**
 
