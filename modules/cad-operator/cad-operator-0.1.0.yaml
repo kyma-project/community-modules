@@ -1,0 +1,67 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: cloud-active-defense-operator-0.1.0
+  labels:
+    "operator.kyma-project.io/module-name": "cloud-active-defense-operator"
+  annotations:
+    "operator.kyma-project.io/is-cluster-scoped": "false"
+spec:
+  moduleName: cloud-active-defense-operator
+  version: 0.1.0
+  mandatory: false
+  requiresDowntime: false
+  
+  info:
+    repository: https://github.com/SAP/cloud-active-defense-operator
+    documentation: https://github.com/SAP/cloud-active-defense-operator/blob/main/README.md
+    icons:
+    - name: module-icon
+      link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  
+  associatedResources:
+  - group: operator.sundew.com
+    version: v1alpha1
+    kind: CloudActiveDefense
+  
+  manager:
+    name: cad-operator-controller-manager
+    namespace: cad-operator-system
+    group: apps
+    version: v1
+    kind: Deployment
+  
+  data:
+    apiVersion: operator.sundew.com/v1alpha1
+    kind: CloudActiveDefense
+    metadata:
+      labels:
+        app.kubernetes.io/name: clou-active-defense
+        app.kubernetes.io/instance: cad-module
+        app.kubernetes.io/version: "0.1.0"
+        kyma-project.io/module: cad-operator
+      name: cad-operator
+      namespace: default
+    spec:
+      # domain is auto-detected from the Kyma cluster
+      # Users can still override it if needed by specifying: domain: "custom.domain.com"
+      controlpanelAPI:
+        image: ghcr.io/sap/controlpanel-api:latest
+      controlpanelFront:
+        image: ghcr.io/sap/controlpanel-frontend:latest
+      deploymentManager:
+        image: ghcr.io/sap/deployment-manager:latest
+      keycloak:
+        image: ghcr.io/sap/keycloak-controlpanel:latest
+        database:
+          port: 5432
+      database:
+        port: 5432
+
+  resources:
+  - name: rawManifest
+    link: https://github.com/SAP/cloud-active-defense-operator/releases/download/0.1.0/manifests.yaml
+  - name: defaultResource
+    link: https://raw.githubusercontent.com/SAP/cloud-active-defense-operator/refs/heads/main/default-cad-CR.yaml
+  
+  descriptor: {}
