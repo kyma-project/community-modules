@@ -1,14 +1,14 @@
 apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
-  name: cloud-active-defense-operator-0.1.0
+  name: cloud-active-defense-operator-0.1.1
   labels:
     "operator.kyma-project.io/module-name": "cloud-active-defense-operator"
   annotations:
     "operator.kyma-project.io/is-cluster-scoped": "false"
 spec:
   moduleName: cloud-active-defense-operator
-  version: 0.1.0
+  version: 0.1.1
   mandatory: false
   requiresDowntime: false
   
@@ -36,9 +36,9 @@ spec:
     kind: CloudActiveDefense
     metadata:
       labels:
-        app.kubernetes.io/name: clou-active-defense
+        app.kubernetes.io/name: cloud-active-defense
         app.kubernetes.io/instance: cad-module
-        app.kubernetes.io/version: "0.1.0"
+        app.kubernetes.io/version: "0.1.1"
         kyma-project.io/module: cad-operator
       name: cad-operator
       namespace: default
@@ -60,7 +60,7 @@ spec:
 
   resources:
   - name: rawManifest
-    link: https://github.com/SAP/cloud-active-defense-operator/releases/download/0.1.0/manifests.yaml
+    link: https://github.com/SAP/cloud-active-defense-operator/releases/download/0.1.1/manifests.yaml
   - name: defaultResource
     link: https://raw.githubusercontent.com/SAP/cloud-active-defense-operator/refs/heads/main/default-cad-CR.yaml
   
