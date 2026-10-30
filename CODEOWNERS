@@ -1,6 +1,11 @@
+* @pbochynski
+
 # Owners of all .md files in the repository
-*.md @kyma-project/technical-writers
+*.md @kyma-project/technical-writers @pbochynski
+
+# pbochynski owns all modules
+/modules/ @pbochynski
 
 # team-otters owns the docker-registry and registry-proxy modules
-/modules/docker-registry/ @kyma-project/otters-dev
-/modules/registry-proxy/  @kyma-project/otters-dev
+/modules/docker-registry/ @kyma-project/otters-dev @pbochynski
+/modules/registry-proxy/  @kyma-project/otters-dev @pbochynski
